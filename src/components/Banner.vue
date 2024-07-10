@@ -1,13 +1,13 @@
 <template>
-    <div class="banner">
-        <div class="banner-title">
-            <span>Zww</span>
-        </div>
-        <div class="banner-subtitle">
-            Man proposes,God disposes
-        </div>
-        <a class="arrow" @click="scrollTo()"></a>
-    </div>
+       <div class="banner"  v-show="this.$route.path==='/home'">
+           <div class="banner-title">
+               <span>Zww</span>
+           </div>
+           <div class="banner-subtitle">
+               Man proposes,God disposes
+           </div>
+           <a class="arrow" @click="scrollTo()" v-show="this.$route.path==='/home'"></a>
+       </div>
 </template>
 
 <script>
@@ -26,6 +26,7 @@ export default {
 </script>
 
 <style scoped>
+
 /* banner区域 */
 .banner {
     height: 100vh;

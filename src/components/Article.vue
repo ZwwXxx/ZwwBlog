@@ -2,25 +2,36 @@
   <!-- 文章内容-->
 
     <div class="article">
-        <div class="article-title">{{ article.title }}</div>
+        <div class="article-title" @click="openArticle(article.id)">{{ article.title }}</div>
         <div class="article-content" v-html="article.summary"/>
-        <div class="createTime">发布时间:{{getTime(article.createTime)}}</div>
-        <div class="updateTime">修改时间:{{getTime(article.updateTime)}}</div>
-        <div class="category">分类名:{{article.categoryName}}</div>
+        <div class="createTime">发布时间:{{ getTime(article.createTime) }}</div>
+        <div class="updateTime">修改时间:{{ getTime(article.updateTime) }}</div>
+        <div class="category">分类名:{{ article.categoryName }}</div>
     </div>
 </template>
 
 
 <script>
 import common from "@/utils/timestampToTime";
+
 export default {
     name: "Article",
     props: ['article'],
-    methods:{
-        getTime(createTime){
-            console.log(createTime)
-            return common.timestampToTime(createTime,1)
-        }
+    methods: {
+        getTime(createTime) {
+            return common.timestampToTime(createTime, 1)
+        },
+        openArticle(articleId) {
+            this.$store.commit('changeArticle', articleId)
+            sessionStorage.setItem("ArticleId", articleId);
+            this.$router.push({
+                name:'ArticleDetail',
+                params: {articleId}
+                // path:'/articleDetail',
+                // query: {articleId}
+            })
+        },
+
     }
 }
 </script>
@@ -50,15 +61,17 @@ export default {
     overflow: hidden;
 }
 
-.createTime{
+.createTime {
     position: absolute;
     bottom: 50px;
 }
-.updateTime{
+
+.updateTime {
     position: absolute;
     bottom: 20px;
 }
-.category{
+
+.category {
     position: absolute;
     bottom: 20px;
     right: 10px;

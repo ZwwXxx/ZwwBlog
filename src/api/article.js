@@ -12,3 +12,10 @@ export function selectList(page, limit, searchObj) {
         params: searchObj // 使用@RequestBody接收
     })
 }
+
+export function selectById(id) {
+    return request({
+        url: `${module}/${id}`,
+        method: 'get',
+    })
+}

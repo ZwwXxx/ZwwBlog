@@ -17,6 +17,7 @@
                 <Description/>
             </div>
 
+
         </div>
 
     </div>
@@ -26,11 +27,33 @@
 import Article from "@/components/Article.vue";
 import Description from "@/components/Description.vue";
 import Footer from "@/components/Footer.vue";
+import {selectList} from "@/api/article";
 
 export default {
-    props:['articleList'],
     name: "Container",
-    components: {Footer, Description, Article}
+    components: {Footer, Description, Article},
+    data() {
+        return {
+            page: '1',
+            limit: '5',
+            searchObj: {},
+            articleList: []
+        }
+    },
+    activated() {
+        console.log('TestComponent activated')
+    },
+    deactivated() {
+        console.log('TestComponent deactivated')
+    },
+    created() {
+        selectList(this.page, this.limit, this.searchObj).then(res => {
+            // console.log(res)
+            if (res.code === 20000) {
+                this.articleList = res.data.records
+            }
+        })
+    },
 }
 </script>
 

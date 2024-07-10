@@ -1,16 +1,16 @@
 <template>
 
-    <div class="navbar-main">
+        <div class="navbar-main">
 
-        <!--左侧导航栏部分-->
-        <LeftNav/>
-
-
-        <!--右侧导航栏部分-->
-        <RightNav/>
+            <!--左侧导航栏部分-->
+            <LeftNav/>
 
 
-    </div>
+            <!--右侧导航栏部分-->
+            <RightNav/>
+
+
+        </div>
 </template>
 
 <script>

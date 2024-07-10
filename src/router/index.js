@@ -1,11 +1,19 @@
 import VueRouter from 'vue-router'
-import Home from "@/views/Home/index.vue";
 // 书写路由表
 const routes = [
     {
         path: '/',
-        component: Home,
-        name: 'Home',
+        redirect: '/home'
+    },
+    {
+        path: '/home',
+        name:'home',
+        component: () => import('../components/Home.vue')
+    },
+    {
+        path: '/articleDetail/:articleId',
+        name: 'ArticleDetail',
+        component: () => import('../views/home/ArticleDetail')
     }
 ]
 
