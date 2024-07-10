@@ -3,22 +3,38 @@
 
     <div class="article">
         <div class="article-title">{{ article.title }}</div>
-        <div class="article-content">
-            {{ article.content }}
-        </div>
+        <div class="article-content" v-html="article.summary"/>
+        <div class="createTime">发布时间:{{getTime(article.createTime)}}</div>
+        <div class="updateTime">修改时间:{{getTime(article.updateTime)}}</div>
+        <div class="category">分类名:{{article.categoryName}}</div>
     </div>
 </template>
 
+
 <script>
+import common from "@/utils/timestampToTime";
 export default {
     name: "Article",
-    props: ['article']
+    props: ['article'],
+    methods:{
+        getTime(createTime){
+            console.log(createTime)
+            return common.timestampToTime(createTime,1)
+        }
+    }
 }
 </script>
 
 <style scoped>
 
-
+.article {
+    border-radius: 20px;
+    background: #fff;
+    margin-bottom: 30px;
+    height: 400px;
+    overflow: hidden;
+    position: relative;
+}
 
 .article-title {
     text-align: center;
@@ -28,8 +44,23 @@ export default {
     cursor: pointer;
 }
 
-
 .article-content {
     padding: 0 15px;
+    height: 65%;
+    overflow: hidden;
+}
+
+.createTime{
+    position: absolute;
+    bottom: 50px;
+}
+.updateTime{
+    position: absolute;
+    bottom: 20px;
+}
+.category{
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
 }
 </style>
