@@ -1,6 +1,6 @@
 <template>
-    <div class="articleDetailBox">
-        <div class="articleHeader">
+    <div class="articleDetailBox" >
+        <div class="articleHeader" v-show="!loading">
             <div class="title">《{{ article.title }}》</div>
             <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
             <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
@@ -8,28 +8,28 @@
         <div v-html="article.content" class="content">
         </div>
 
+        <div class="loading-wrapper" v-show="loading">
+            <loading/>
+        </div>
     </div>
 </template>
 
 <script>
 import {selectById} from "@/api/article";
 import common from "@/utils/timestampToTime";
+import Loading from "@/components/Loading.vue";
 
 export default {
     name: "ArticleDetail",
+    components: {Loading},
     data() {
         return {
             article: {},
-            loading:false
+            loading: false
         }
     },
     created() {
-        this.loading=true
-        selectById(this.$route.params.articleId).then(res => {
-            if (res.code === 20000) {
-                this.article = res.data
-            }
-        })
+        this.getArticleData()
     },
     methods: {
         scrollTo() {
@@ -41,6 +41,15 @@ export default {
         },
         getTime(time) {
             return common.timestampToTime(time, 1)
+        },
+        getArticleData(){
+            this.loading=true
+            selectById(this.$route.params.articleId).then(res => {
+                if (res.code === 20000) {
+                    this.article = res.data
+                }
+                this.loading=false
+            })
         }
 
     }
@@ -82,6 +91,14 @@ export default {
 
 .createTime {
     margin: 15px 0;
+}
+
+.loading-wrapper{
+    font-size: 80px;
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 </style>

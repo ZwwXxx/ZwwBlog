@@ -1,7 +1,7 @@
 <template>
     <div class="container" id="container">
         <!--            整体宽度，用来控制主体内容，外层设置父盒子便于flex布局居中-->
-        <div class="content">
+        <div class="content" v-show="!loading">
 
             <!-- 文章显示区域-->
             <div class="lside">
@@ -19,7 +19,9 @@
 
 
         </div>
-
+        <div class="loading-wrapper" v-show="loading">
+            <loading/>
+        </div>
     </div>
 </template>
 
@@ -28,12 +30,14 @@ import Article from "@/components/Article.vue";
 import Description from "@/components/Description.vue";
 import Footer from "@/components/Footer.vue";
 import {selectList} from "@/api/article";
+import Loading from "@/components/Loading.vue";
 
 export default {
     name: "Container",
-    components: {Footer, Description, Article},
+    components: {Loading, Footer, Description, Article},
     data() {
         return {
+            loading:false,
             page: '1',
             limit: '5',
             searchObj: {},
@@ -47,13 +51,20 @@ export default {
         console.log('TestComponent deactivated')
     },
     created() {
-        selectList(this.page, this.limit, this.searchObj).then(res => {
-            // console.log(res)
-            if (res.code === 20000) {
-                this.articleList = res.data.records
-            }
-        })
+        this.getArticleList()
     },
+    methods:{
+        getArticleList(){
+            this.loading=true
+            selectList(this.page, this.limit, this.searchObj).then(res => {
+                // console.log(res)
+                if (res.code === 20000) {
+                    this.articleList = res.data.records
+                }
+                this.loading=false
+            })
+        }
+    }
 }
 </script>
 
@@ -89,6 +100,15 @@ export default {
     background: #fff;
     margin-left: 20px;
     border-radius: 20px;
+}
+
+.loading-wrapper{
+    font-size: 80px;
+    position: absolute;
+    background: red;
+    top: 600px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 </style>

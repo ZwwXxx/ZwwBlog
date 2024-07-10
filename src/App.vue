@@ -14,7 +14,7 @@
 <script>
 
 
-import Container from "@/components/Home.vue";
+import Container from "@/views/home/Home.vue";
 import TopNav from "@/components/TopNav.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";

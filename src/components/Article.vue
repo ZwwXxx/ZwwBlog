@@ -51,8 +51,9 @@ export default {
     text-align: center;
     font-size: 30px;
     font-weight: bolder;
-    margin: 15px 0;
+    padding: 15px 0;
     cursor: pointer;
+    border-bottom: 3px solid black;
 }
 
 .article-content {
