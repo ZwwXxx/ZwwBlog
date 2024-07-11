@@ -1,5 +1,8 @@
 <template>
     <div class="container" id="container">
+        <div class="loading-wrapper"  v-show="loading">
+            <loading/>
+        </div>
         <!--            整体宽度，用来控制主体内容，外层设置父盒子便于flex布局居中-->
         <div class="content" v-show="!loading">
 
@@ -19,9 +22,7 @@
 
 
         </div>
-        <div class="loading-wrapper" v-show="loading">
-            <loading/>
-        </div>
+
     </div>
 </template>
 
@@ -37,7 +38,7 @@ export default {
     components: {Loading, Footer, Description, Article},
     data() {
         return {
-            loading:false,
+            loading: false,
             page: '1',
             limit: '5',
             searchObj: {},
@@ -53,15 +54,15 @@ export default {
     created() {
         this.getArticleList()
     },
-    methods:{
-        getArticleList(){
-            this.loading=true
+    methods: {
+        getArticleList() {
+            this.loading = true
             selectList(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.articleList = res.data.records
                 }
-                this.loading=false
+                this.loading = false
             })
         }
     }
@@ -78,6 +79,8 @@ export default {
     align-items: center;
     padding-top: 82px;
     margin-top: -82px;
+    border-radius: 20px;
+    /*max-width: 1024px;*/
 }
 
 .content {
@@ -101,14 +104,10 @@ export default {
     margin-left: 20px;
     border-radius: 20px;
 }
-
 .loading-wrapper{
-    font-size: 80px;
-    position: absolute;
-    background: red;
-    top: 600px;
-    left: 50%;
-    transform: translateX(-50%);
+    width: 60%;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
 
 </style>

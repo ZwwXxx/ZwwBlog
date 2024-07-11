@@ -1,14 +1,16 @@
 <template>
-    <div class="articleDetailBox" >
-        <div class="articleHeader" v-show="!loading">
-            <div class="title">《{{ article.title }}》</div>
-            <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
-            <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
-        </div>
-        <div v-html="article.content" class="content">
+    <div class="articleDetailBox">
+        <div v-show="!loading">
+            <div class="articleHeader" >
+                <div class="title">《{{ article.title }}》</div>
+                <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
+                <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
+                <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
+            </div>
+            <div v-html="article.content" class="content"/>
         </div>
 
-        <div class="loading-wrapper" v-show="loading">
+        <div v-show="loading">
             <loading/>
         </div>
     </div>
@@ -31,6 +33,10 @@ export default {
     created() {
         this.getArticleData()
     },
+    mounted() {
+        // 切换页面时滚动条自动滚动到顶部
+        window.scrollTo(0,0);
+    },
     methods: {
         scrollTo() {
             const container = document.getElementById("container")
@@ -42,13 +48,13 @@ export default {
         getTime(time) {
             return common.timestampToTime(time, 1)
         },
-        getArticleData(){
-            this.loading=true
+        getArticleData() {
+            this.loading = true
             selectById(this.$route.params.articleId).then(res => {
                 if (res.code === 20000) {
                     this.article = res.data
                 }
-                this.loading=false
+                this.loading = false
             })
         }
 
@@ -67,7 +73,7 @@ export default {
     overflow-wrap: break-word;
     border-radius: 20px;
     position: relative;
-    top: 80px;
+    top: 82px;
     min-height: calc(100vh - 163px);
 }
 
@@ -93,12 +99,9 @@ export default {
     margin: 15px 0;
 }
 
-.loading-wrapper{
-    font-size: 80px;
-    position: absolute;
-    top: 200px;
-    left: 50%;
-    transform: translateX(-50%);
+.categoryName{
+    margin-top: 15px;
 }
+
 
 </style>

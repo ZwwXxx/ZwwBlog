@@ -1,5 +1,4 @@
 <template>
-
     <div class="footer">
         <div>
             <a href="https://beian.miit.gov.cn/">备案号：粤ICP备2023129239号</a>
