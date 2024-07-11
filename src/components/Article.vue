@@ -3,7 +3,7 @@
 
     <div class="article">
         <div class="article-title" @click="openArticle(article.id)">《{{ article.title }}》</div>
-        <div class="article-summary" v-html="article.summary"/>
+        <div class="article-summary" v-html="article.summary" />
         <div class="createTime">发布时间:{{ getTime(article.createTime) }}</div>
         <div class="updateTime">修改时间:{{ getTime(article.updateTime) }}</div>
         <div class="category">分类名:{{ article.categoryName }}</div>
@@ -60,6 +60,8 @@ export default {
     padding: 0 15px;
     height: 65%;
     overflow: hidden;
+    margin-top: 20px;
+    max-height: 220px;
 }
 
 .createTime {
