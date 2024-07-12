@@ -18,7 +18,7 @@ export default {
             const container = document.getElementById("container")
             container.scrollIntoView({
                 block: "start",
-                behavior: "smooth"
+                // behavior: "smooth"
             })
         }
     }

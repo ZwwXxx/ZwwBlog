@@ -39,15 +39,6 @@ export default {
             }
         })
     },
-    methods: {
-        scrollTo() {
-            const container = document.getElementById("container")
-            container.scrollIntoView({
-                block: "start",
-                behavior: "smooth"
-            })
-        }
-    }
 }
 </script>
 

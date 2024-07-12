@@ -36,6 +36,7 @@ export default {
 
 .loading div {
     position: absolute;
+    top: 35%;
     width: 5px;
     height: 20px;
     background-color: orange;

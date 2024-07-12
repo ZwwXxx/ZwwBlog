@@ -5,13 +5,13 @@
         <!-- 菜单区域 -->
         <div class="menu">
             <a href=""><i class="fa fa-home"></i>首页</a>
-            <a href=""><i class="fa fa-book"></i>文章</a>
-            <a href=""><i class="fa fa-comment"></i>说说</a>
-            <a href=""><i class="fa fa-comments"></i>留言板</a>
-            <a href=""><i class="fa fa-archive"></i>归档</a>
-            <a href=""><i class="fa fa-info"></i>关于</a>
-            <a href=""><i class="fa fa-sign-in"></i>登录</a>
-            <a href=""><i class="fa fa-gear"></i>功能</a>
+            <!--<a href=""><i class="fa fa-book"></i>文章</a>-->
+            <!--<a href=""><i class="fa fa-comment"></i>说说</a>-->
+            <!--<a href=""><i class="fa fa-comments"></i>留言板</a>-->
+            <!--<a href=""><i class="fa fa-archive"></i>归档</a>-->
+            <!--<a href=""><i class="fa fa-info"></i>关于</a>-->
+            <!--<a href=""><i class="fa fa-sign-in"></i>登录</a>-->
+            <!--<a href=""><i class="fa fa-gear"></i>功能</a>-->
         </div>
     </div>
 </template>
