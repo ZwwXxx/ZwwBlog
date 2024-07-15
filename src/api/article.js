@@ -19,3 +19,4 @@ export function selectById(id) {
         method: 'get',
     })
 }
+

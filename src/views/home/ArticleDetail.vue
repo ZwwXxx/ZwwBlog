@@ -1,13 +1,52 @@
 <template>
     <div class="articleDetailBox">
         <div v-show="!loading" class="leftSide">
-            <div class="articleHeader">
-                <div class="title">《{{ article.title }}》</div>
-                <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
-                <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
-                <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
+            <div class="articleBody">
+                <div class="articleHeader">
+                    <div class="title">《{{ article.title }}》</div>
+                    <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
+                    <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
+                    <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
+                </div>
+                <div v-html="article.content" class="articleContent" ref="articleContent"/>
             </div>
-            <div v-html="article.content" class="articleContent" ref="articleContent"/>
+            <div class="articleComment">
+                <div class="commentTitle">评论({{ this.comments.length }})</div>
+                <div class="commentTextarea">
+                    <textarea class="commentContent" placeholder="你的每一条评论我都会look的~~"
+                              v-model="form.commentContent"/>
+                </div>
+                <div class="commentorInfo">
+                    <div style="position: relative">
+                        <i class="fa fa-user"
+                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
+                        <input class="nicknameInput" type="text" placeholder="请输入你的网名..." required
+                               v-model="form.nickname">
+                    </div>
+                    <div style="position: relative">
+                        <i class="fa fa-envelope"
+                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
+                        <input class="emailInput" type="text" placeholder="请输入email（选填）..." v-model="form.email">
+                    </div>
+                    <div style="position: relative">
+                        <i class="fa fa-paperclip"
+                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
+                        <input class="urlInput" type="text" placeholder="请输入主页地址（选填）..." v-model="form.url">
+                    </div>
+                </div>
+                <div class="submit">
+                    <button @click="submitComment">
+                        提交评论
+                    </button>
+                </div>
+            </div>
+            <div class="nullComment" v-show="!this.comments.length">
+                暂无评论~不如你来开个头？
+            </div>
+            <div style="border-radius: 20px;overflow: hidden">
+                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment"/>
+            </div>
+
         </div>
         <div v-show="!loading" class="rightSide">
             <div class="directory">
@@ -41,32 +80,52 @@
 import {selectById} from "@/api/article";
 import common from "@/utils/timestampToTime";
 import Loading from "@/components/Loading.vue";
+import WangEditor from "@/components/WangEditor/index.vue";
+import {selectList, submitComment} from "@/api/comment";
+import Comment from "@/components/Comment.vue";
 
 export default {
     name: "ArticleDetail",
-    components: {Loading},
+    components: {Comment, Loading, WangEditor},
     data() {
         return {
             article: {},
             loading: false,
+            limit:5,
             catelog: [],
             titlesDoms: [],
-            scrollHandler: null
+            scrollHandler: null,
+            form: {
+                nickname: '',
+                email: '',
+                url: '',
+                commentContent: '',
+                articleId: null,
+                pid:null,
+            },
+            comments: [
+                // {
+                //     nickname: 'Zww',
+                //     commentContent:'尽人事，听天命',
+                //     createTime:'2024-09-01'
+                // }
+            ],
         }
     },
     created() {
         this.getArticleData()
+
     },
     mounted() {
         // 切换页面时滚动条自动滚动到顶部
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
         // 监听滚动事件,随着视口高度高亮对应的目录标签
         // window.addEventListener('scroll', this.throttle(this.handleScroll,4000))
-        this.scrollHandler = this.debounce(this.handleScroll, 100)
+        this.scrollHandler = this.debounce(this.handleScroll, 5)
         window.addEventListener('scroll', this.scrollHandler)
     },
     beforeDestroy() {
-        window.removeEventListener('scroll',  this.scrollHandler)
+        window.removeEventListener('scroll', this.scrollHandler)
     },
 
     methods: {
@@ -83,7 +142,9 @@ export default {
             selectById(this.$route.params.articleId).then(res => {
                 if (res.code === 20000) {
                     this.article = res.data
+                    this.form.articleId = res.data.id
                     this.generateCatalog()
+                    this.getCommentList()
                 }
                 this.loading = false
             })
@@ -245,6 +306,35 @@ export default {
             }
         },
 
+        // 提交评论
+        submitComment() {
+            // if (!this.form.commentContent || !this.form.nickname) {
+            //     alert('评论内容和昵称不能为空哦~')
+            //     return
+            // }
+
+            submitComment(this.form).then(res => {
+                location.reload();
+                if (res === 20000) {
+                    console.log('提交评论成功！')
+
+                }
+            }).catch(err => {
+                console.log('提交失败,错误信息为', err)
+            })
+        },
+        // 获取评论
+        getCommentList() {
+            this.loading = true
+            console.log(this.article.id)
+            selectList(this.article.id, this.limit).then(res => {
+                // console.log(res)
+                if (res.code === 20000) {
+                    this.comments = res.data.records
+                }
+                this.loading = false
+            })
+        }
     }
 
 }
@@ -261,6 +351,11 @@ export default {
     display: flex;
     padding-top: 82px;
     position: relative;
+}
+
+.articleBody {
+    background: #eee;
+    border-radius: 20px;
 }
 
 .articleHeader {
@@ -292,8 +387,6 @@ export default {
 
 .leftSide {
     flex: 75%;
-    background: #fff;
-    border-radius: 20px;
     margin-right: 20px;
 }
 
@@ -341,5 +434,68 @@ export default {
     font-weight: bolder;
 }
 
+.articleComment {
+    background: #f3f3f3;
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.commentTitle {
+    text-align: center;
+    font-size: 30px;
+    padding: 0 20px;
+    color: #777777;
+}
+
+.commentContent {
+    width: 100%;
+    height: 100px;
+    background: #e8e8e8;
+    margin: 20px 0;
+    outline: none;
+    border: none;
+    resize: none;
+    padding: 15px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    opacity: 0.8;
+}
+
+.commentorInfo {
+    display: flex;
+    justify-content: space-between;
+    outline: none;
+    border: none;
+}
+
+.commentorInfo input {
+    background-color: #e8e8e8;
+    border-radius: 5px;
+    padding: 10px 10px 10px 30px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.submit {
+    margin: 20px 0 0;
+    display: flex;
+    justify-content: right;
+}
+
+.submit button {
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background: #cb1433;
+    color: white;
+    border-radius: 5px;
+}
+
+.nullComment {
+    margin-top: 20px;
+    border-radius: 20px;
+    background-color: #e8e8e8;
+    padding: 24px;
+    color: #464646;
+}
 
 </style>
