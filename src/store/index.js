@@ -9,11 +9,17 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        articleId: ''
+        articleId: '',
+        theme: localStorage.getItem('theme')||'light',
     },
     mutations: {
         changeArticle(state, articleId) {
             state.articleId = articleId
+        },
+        changeTheme(state) {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark'
+            localStorage.setItem('theme',state.theme)
+            document.documentElement.dataset.theme=state.theme
         }
     }
 })

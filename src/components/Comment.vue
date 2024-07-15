@@ -15,7 +15,7 @@
                 <i class="fa fa-thumbs-o-down thumbDown"></i>
                 <button @click="showReplyView(comment.id)">回复</button>
             </div>
-            <!--子评论界面-->
+            <!--评论回复界面-->
             <div class="replyBox" v-if="currReply===comment.id">
                 <div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>
                 <div class="replyMain">
@@ -103,7 +103,7 @@ export default {
     height: 30px;
     display: flex;
     align-items: center;
-    color: #707070;
+    color: #919191;
 }
 
 .replyBox {
@@ -147,7 +147,7 @@ export default {
 }
 
 .showNickName {
-    color: #707070;
+    color: #a4a4a4;
     transition: 0.2s;
 }
 
@@ -161,7 +161,7 @@ export default {
     height: 16px;
     margin-left: 130px;
     background: transparent;
-    color: #707070;
+    color: #a4a4a4;
     padding: 0;
 }
 

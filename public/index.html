@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="">
+<html lang="" data-theme="light">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -64,6 +64,9 @@
     <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
         Please enable it to continue.</strong>
 </noscript>
+<script>
+    document.documentElement.dataset.theme = localStorage.getItem('theme') || 'light';
+</script>
 <div id="app"></div>
 <!-- built files will be auto injected -->
 </body>

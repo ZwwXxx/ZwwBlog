@@ -1,0 +1,24 @@
+/*等同于html，不过为了权重不同，防止出现后覆盖前问题*/
+
+/*暗色主题*/
+:root {
+    --text-color: #d3d3d3;
+    --bg1: #3b3b3b;
+    --bg2: #9d9d9d;
+    --bg3: #000000;
+    /*悬浮样式*/
+    --bg4: #2c2c2c;
+}
+
+
+/*亮色主题*/
+html[data-theme='light'] {
+    --text-color: #333;
+    --bg1: #f1f1f1;
+    --bg2: #fff;
+    --bg3:#fff;
+    --bg4: #c2c2c2;
+
+}
+
+

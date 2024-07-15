@@ -27,7 +27,7 @@ export default {
 
 /* 顶部导航栏 */
 .navbar-main {
-    background: #fff;
+    background: var(--bg1);
     display: flex;
     justify-content: space-between;
     align-items: center;

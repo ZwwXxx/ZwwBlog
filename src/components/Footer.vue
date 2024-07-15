@@ -3,7 +3,7 @@
         <div class="beian">
             <a href="https://beian.miit.gov.cn/">备案号：粤ICP备2023129239号</a>
         </div>
-        <div class="toTop" :style="dynamicStyles" @click="toTop">
+        <div class="toTop themeBg themeText" :style="dynamicStyles" @click="toTop">
             <i class="fa fa-arrow-up"></i>
         </div>
     </div>
@@ -42,18 +42,24 @@ export default {
 </script>
 
 <style scoped>
-
+.themeText{
+    color: var(--text-color);
+}
+.themeBg{
+    background: var(--bg3);
+}
 /* 页脚 */
 .footer {
     text-align: center;
     width: 100%;
-    background: #ffffff;
+    background: var(--bg1);
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
     font-size: 20px;
     font-weight: bolder;
+
 }
 
 .toTop{
@@ -61,7 +67,6 @@ export default {
     bottom: 80px;
     right: 100px;
     display: block;
-    background: #ffffff;
     width: 50px;
     height: 50px;
     text-align: center;
@@ -69,5 +74,8 @@ export default {
     border-radius: 100%;
     transition: 0.3s ease;
     cursor: pointer;
+}
+.beian a{
+    color: var(--text-color);
 }
 </style>

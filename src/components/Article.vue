@@ -1,12 +1,12 @@
 <template>
   <!-- 文章内容-->
 
-    <div class="article">
-        <div class="article-title" @click="openArticle(article.id)">《{{ article.title }}》</div>
-        <div class="article-summary" v-html="article.summary" />
-        <div class="createTime">发布时间:{{ getTime(article.createTime) }}</div>
-        <div class="updateTime">修改时间:{{ getTime(article.updateTime) }}</div>
-        <div class="category">分类名:{{ article.categoryName }}</div>
+    <div class="article themeBg">
+        <div class="article-title themeText" @click="openArticle(article.id)">《{{ article.title }}》</div>
+        <div class="article-summary themeText" v-html="article.summary"/>
+        <div class="createTime themeText">发布时间:{{ getTime(article.createTime) }}</div>
+        <div class="updateTime themeText">修改时间:{{ getTime(article.updateTime) }}</div>
+        <div class="category themeText">分类名:{{ article.categoryName }}</div>
     </div>
 </template>
 
@@ -25,7 +25,7 @@ export default {
             this.$store.commit('changeArticle', articleId)
             sessionStorage.setItem("ArticleId", articleId);
             this.$router.push({
-                name:'ArticleDetail',
+                name: 'ArticleDetail',
                 params: {articleId}
                 // path:'/articleDetail',
                 // query: {articleId}
@@ -37,10 +37,16 @@ export default {
 </script>
 
 <style scoped>
+.themeText {
+    color: var(--text-color);
+}
+
+.themeBg {
+    background: var(--bg1);
+}
 
 .article {
     border-radius: 20px;
-    background: #fff;
     margin-bottom: 30px;
     height: 400px;
     overflow: hidden;
@@ -56,7 +62,7 @@ export default {
     border-bottom: 3px solid black;
 }
 
-.article-summary{
+.article-summary {
     padding: 0 15px;
     height: 65%;
     overflow: hidden;

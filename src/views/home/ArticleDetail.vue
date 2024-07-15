@@ -1,7 +1,7 @@
 <template>
     <div class="articleDetailBox">
         <div v-show="!loading" class="leftSide">
-            <div class="articleBody">
+            <div class="articleBody themeBg themeText">
                 <div class="articleHeader">
                     <div class="title">《{{ article.title }}》</div>
                     <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
@@ -10,28 +10,29 @@
                 </div>
                 <div v-html="article.content" class="articleContent" ref="articleContent"/>
             </div>
-            <div class="articleComment">
-                <div class="commentTitle">评论({{ this.comments.length }})</div>
+            <div class="articleComment themeBg">
+                <div class="commentTitle themeText">评论({{ this.comments.length }})</div>
                 <div class="commentTextarea">
                     <textarea class="commentContent" placeholder="你的每一条评论我都会look的~~"
                               v-model="form.commentContent"/>
                 </div>
-                <div class="commentorInfo">
+
+                <div class="commentorInfo  ">
                     <div style="position: relative">
                         <i class="fa fa-user"
                            style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="nicknameInput" type="text" placeholder="请输入你的网名..." required
+                        <input class="nicknameInput "   type="text" placeholder="请输入你的网名..." required
                                v-model="form.nickname">
                     </div>
                     <div style="position: relative">
                         <i class="fa fa-envelope"
                            style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="emailInput" type="text" placeholder="请输入email（选填）..." v-model="form.email">
+                        <input class="emailInput "  type="text" placeholder="请输入email（选填）..." v-model="form.email">
                     </div>
                     <div style="position: relative">
-                        <i class="fa fa-paperclip"
+                        <i class="fa fa-paperclip "
                            style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="urlInput" type="text" placeholder="请输入主页地址（选填）..." v-model="form.url">
+                        <input class="urlInput " type="text" placeholder="请输入主页地址（选填）..." v-model="form.url">
                     </div>
                 </div>
                 <div class="submit">
@@ -40,19 +41,22 @@
                     </button>
                 </div>
             </div>
-            <div class="nullComment" v-show="!this.comments.length">
-                暂无评论~不如你来开个头？
+
+            <div class="nullComment themeBg themeText" v-show="!this.comments.length">
+                暂无评论~不如您来开个头？
             </div>
             <div style="border-radius: 20px;overflow: hidden">
-                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment"/>
+                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment" class="themeBg themeText"/>
             </div>
 
         </div>
-        <div v-show="!loading" class="rightSide">
-            <div class="directory">
-                <div class="directoryTitle">文章目录</div>
-                <div class="directoryItem">
-                    <ul class="catalog">
+
+        <!--文章目录-->
+        <div v-show="!loading" class="rightSide" >
+            <div class="directory  themeBg ">
+                <div class="themeText">文章目录</div>
+                <div class="directoryItem ">
+                    <ul class="catalog ">
                         <li v-for="(item,index) in catelog"
                             :key="index"
                         >
@@ -62,6 +66,7 @@
                             <a @click="changeHash(`#${item.id}`)"
                                :id=item.id
                                :style="{paddingLeft:item.level * 10+'px'}"
+                               style="color: var(--text-color)"
                             >
                                 {{ item.title }}
                             </a>
@@ -103,13 +108,7 @@ export default {
                 articleId: null,
                 pid:null,
             },
-            comments: [
-                // {
-                //     nickname: 'Zww',
-                //     commentContent:'尽人事，听天命',
-                //     createTime:'2024-09-01'
-                // }
-            ],
+            comments: [],
         }
     },
     created() {
@@ -143,6 +142,7 @@ export default {
                 if (res.code === 20000) {
                     this.article = res.data
                     this.form.articleId = res.data.id
+                    // 由于以下两种方法依赖data数据中的content中的h1 h2标签，及articleId，因此放在回调有结果里
                     this.generateCatalog()
                     this.getCommentList()
                 }
@@ -314,7 +314,7 @@ export default {
             // }
 
             submitComment(this.form).then(res => {
-                location.reload();
+                window.location.reload()
                 if (res === 20000) {
                     console.log('提交评论成功！')
 
@@ -326,7 +326,6 @@ export default {
         // 获取评论
         getCommentList() {
             this.loading = true
-            console.log(this.article.id)
             selectList(this.article.id, this.limit).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
@@ -341,6 +340,12 @@ export default {
 </script>
 
 <style scoped>
+.themeText{
+    color: var(--text-color);
+}
+.themeBg{
+    background: var(--bg1);
+}
 
 .articleDetailBox {
     overflow: hidden;
@@ -354,7 +359,6 @@ export default {
 }
 
 .articleBody {
-    background: #eee;
     border-radius: 20px;
 }
 
@@ -401,7 +405,6 @@ export default {
 }
 
 .directory {
-    background: #f1f1f1;
     position: fixed;
     width: 250px;
     border-radius: 20px;
@@ -410,9 +413,7 @@ export default {
     color: #414141;
 }
 
-.directoryItem {
-    background: #ffffff;
-}
+
 
 .catalog {
     padding: 0;
@@ -426,32 +427,30 @@ export default {
 }
 
 .catalog li:hover {
-    background: #dedede;
+    background: var(--bg4);
 }
 
 .highlight {
-    color: #ff0059 !important;
+    color: #ff1265 !important;
     font-weight: bolder;
 }
 
 .articleComment {
-    background: #f3f3f3;
     border-radius: 20px;
     padding: 20px;
     margin-bottom: 20px;
 }
 
 .commentTitle {
+
     text-align: center;
     font-size: 30px;
     padding: 0 20px;
-    color: #777777;
 }
 
 .commentContent {
     width: 100%;
     height: 100px;
-    background: #e8e8e8;
     margin: 20px 0;
     outline: none;
     border: none;
@@ -469,11 +468,12 @@ export default {
 }
 
 .commentorInfo input {
-    background-color: #e8e8e8;
+    background: #d8d8d8;
     border-radius: 5px;
     padding: 10px 10px 10px 30px;
     box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
 }
+
 
 .submit {
     margin: 20px 0 0;

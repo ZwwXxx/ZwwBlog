@@ -1,8 +1,15 @@
 <template>
     <div class="right-navbox">
-        <!-- 输入框/头像/夜间模式区域 -->
         <!--                输入框组件-->
-        <Search/>
+        <!--<Search/>-->
+        <!--<div class="NavAvatar">-->
+        <!--&lt;!&ndash; 头像&ndash;&gt;-->
+        <!--    <img src="@/assets/logo.png" alt="">-->
+        <!--</div>-->
+        <!--夜间模式区域-->
+        <div>
+            <button @click="changeTheme">当前主题{{this.$store.state.theme}}</button>
+        </div>
     </div>
 </template>
 
@@ -11,7 +18,12 @@ import Search from "@/components/Search.vue";
 
 export default {
     name: "RightNav",
-    components: {Search}
+    components: {Search},
+    methods:{
+        changeTheme(){
+            this.$store.commit('changeTheme')
+        }
+    }
 }
 </script>
 
@@ -22,4 +34,8 @@ export default {
     align-items: center;
 }
 
+.NavAvatar img {
+    width: 40px;
+    height: 40px;
+}
 </style>

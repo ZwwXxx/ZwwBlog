@@ -100,7 +100,7 @@ export default {
     overflow: hidden;
     flex: 30%;
     height: 400px;
-    background: #fff;
+    background: var(--bg1);
     margin-left: 20px;
     border-radius: 20px;
 }
