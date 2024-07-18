@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style scoped>
-.bgImg{
+.bgImg {
     background: url('@/assets/images/house.png') no-repeat fixed center bottom;
     /* 不重复图片铺满body */
     /*background-repeat: no-repeat;*/

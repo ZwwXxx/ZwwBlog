@@ -3,11 +3,13 @@
 /*暗色主题*/
 :root {
     --text-color: #d3d3d3;
-    --bg1: #3b3b3b;
+    --bg1: #505050;
     --bg2: #9d9d9d;
     --bg3: #000000;
     /*悬浮样式*/
     --bg4: #2c2c2c;
+    /*主题切换按钮样式*/
+    --bg5:#2c2c2c;
 }
 
 
@@ -18,6 +20,7 @@ html[data-theme='light'] {
     --bg2: #fff;
     --bg3:#fff;
     --bg4: #c2c2c2;
+    --bg5: #b6b6b6;
 
 }
 

@@ -1,58 +1,40 @@
 <template>
     <div class="articleDetailBox">
         <div v-show="!loading" class="leftSide">
-            <div class="articleBody themeBg themeText">
-                <div class="articleHeader">
+
+            <!--文章展示区域-->
+            <div class="articleBody themeBg ">
+                <div class="articleHeader themeText">
                     <div class="title">《{{ article.title }}》</div>
                     <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
                     <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
                     <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
                 </div>
-                <div v-html="article.content" class="articleContent" ref="articleContent"/>
+                <div v-html="article.content" class="articleContent themeText" ref="articleContent"/>
             </div>
-            <div class="articleComment themeBg">
-                <div class="commentTitle themeText">评论({{ this.comments.length }})</div>
-                <div class="commentTextarea">
-                    <textarea class="commentContent" placeholder="你的每一条评论我都会look的~~"
-                              v-model="form.commentContent"/>
-                </div>
 
-                <div class="commentorInfo  ">
-                    <div style="position: relative">
-                        <i class="fa fa-user"
-                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="nicknameInput "   type="text" placeholder="请输入你的网名..." required
-                               v-model="form.nickname">
-                    </div>
-                    <div style="position: relative">
-                        <i class="fa fa-envelope"
-                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="emailInput "  type="text" placeholder="请输入email（选填）..." v-model="form.email">
-                    </div>
-                    <div style="position: relative">
-                        <i class="fa fa-paperclip "
-                           style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                        <input class="urlInput " type="text" placeholder="请输入主页地址（选填）..." v-model="form.url">
-                    </div>
-                </div>
-                <div class="submit">
-                    <button @click="submitComment">
-                        提交评论
-                    </button>
-                </div>
+            <!--评论输入区域-->
+            <div class="articleComment themeBg">
+                <div class="commentTitle themeText">评论({{ this.$store.state.total }})</div>
+                <CommentInfoInput :article="article" v-show="!this.$store.state.currReply"/>
             </div>
 
             <div class="nullComment themeBg themeText" v-show="!this.comments.length">
                 暂无评论~不如您来开个头？
             </div>
-            <div style="border-radius: 20px;overflow: hidden">
-                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment" class="themeBg themeText"/>
+
+
+            <!--评论内容区域-->
+            <div
+                    style="border-radius: 20px;overflow: hidden"
+            >
+                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment"/>
             </div>
 
         </div>
 
         <!--文章目录-->
-        <div v-show="!loading" class="rightSide" >
+        <div v-show="!loading" class="rightSide">
             <div class="directory  themeBg ">
                 <div class="themeText">文章目录</div>
                 <div class="directoryItem ">
@@ -88,15 +70,16 @@ import Loading from "@/components/Loading.vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
 import Comment from "@/components/Comment.vue";
+import CommentInfoInput from "@/components/CommentInfoInput.vue";
 
 export default {
     name: "ArticleDetail",
-    components: {Comment, Loading, WangEditor},
+    components: {CommentInfoInput, Comment, Loading, WangEditor},
     data() {
         return {
             article: {},
             loading: false,
-            limit:5,
+            limit: 5,
             catelog: [],
             titlesDoms: [],
             scrollHandler: null,
@@ -106,9 +89,10 @@ export default {
                 url: '',
                 commentContent: '',
                 articleId: null,
-                pid:null,
+                pid: null,
             },
             comments: [],
+            total: null
         }
     },
     created() {
@@ -141,6 +125,7 @@ export default {
             selectById(this.$route.params.articleId).then(res => {
                 if (res.code === 20000) {
                     this.article = res.data
+                    this.$store.state.currArticleId = res.data.id
                     this.form.articleId = res.data.id
                     // 由于以下两种方法依赖data数据中的content中的h1 h2标签，及articleId，因此放在回调有结果里
                     this.generateCatalog()
@@ -187,7 +172,6 @@ export default {
         },
         // 高亮目录标题
         highlight(header) {
-            console.log(header)
             // 清空所有a标签的高亮,进行初始化
             document.querySelectorAll('a.highlight')
                 .forEach(a => a.classList.remove('highlight'));
@@ -330,6 +314,7 @@ export default {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.comments = res.data.records
+                    this.$store.state.total = res.data.total
                 }
                 this.loading = false
             })
@@ -340,10 +325,11 @@ export default {
 </script>
 
 <style scoped>
-.themeText{
+.themeText {
     color: var(--text-color);
 }
-.themeBg{
+
+.themeBg {
     background: var(--bg1);
 }
 
@@ -414,7 +400,6 @@ export default {
 }
 
 
-
 .catalog {
     padding: 0;
     cursor: pointer;
@@ -446,48 +431,6 @@ export default {
     text-align: center;
     font-size: 30px;
     padding: 0 20px;
-}
-
-.commentContent {
-    width: 100%;
-    height: 100px;
-    margin: 20px 0;
-    outline: none;
-    border: none;
-    resize: none;
-    padding: 15px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-    opacity: 0.8;
-}
-
-.commentorInfo {
-    display: flex;
-    justify-content: space-between;
-    outline: none;
-    border: none;
-}
-
-.commentorInfo input {
-    background: #d8d8d8;
-    border-radius: 5px;
-    padding: 10px 10px 10px 30px;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
-}
-
-
-.submit {
-    margin: 20px 0 0;
-    display: flex;
-    justify-content: right;
-}
-
-.submit button {
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    background: #cb1433;
-    color: white;
-    border-radius: 5px;
 }
 
 .nullComment {

@@ -38,7 +38,12 @@ export default {
         skip(index){
             switch (index){
                 case 0:
-                    this.$router.push("/home")
+                    if (this.$route.path!=='/home'){
+                        this.$router.push("/home")
+                    }
+                    else{
+                        window.location.reload()
+                    }
                     break;
                 case 1:
                     this.$router.push("/login")

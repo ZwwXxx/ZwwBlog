@@ -1,71 +1,121 @@
 <template>
-    <div class="commentBox">
-        <div class="commentAvatar">
-            <a :href="comment.url" target="_blank" v-show="comment.url&&comment.email">
-                <img :src="`http://q1.qlogo.cn/g?b=qq&nk=${comment.email.split(`@`)[0]}&s=100`" loading="lazy">
-            </a>
-            <img src="../assets/logo.png" v-show="!comment.email" loading="lazy">
-        </div>
-        <div class="commentBody">
-            <a class="showNickName" :href="comment.url" target="_blank">{{ comment.nickname }}</a>
-            <div class="showComment">{{ comment.commentContent }}{{comment.children}}</div>
-            <div class="commentFooter">
-                <div class="commentTime">{{ getTime(comment.createTime) }}</div>
-                <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
-                <i class="fa fa-thumbs-o-down thumbDown"></i>
-                <button @click="showReplyView(comment.id)">回复</button>
+    <div>
+        <!--一级评论-->
+        <div class="commentBox">
+            <div class="commentAvatar">
+                <a :href="comment.url" target="_blank" v-show="comment.url&&comment.email">
+                    <img :src="`http://q1.qlogo.cn/g?b=qq&nk=${comment.email.split(`@`)[0]}&s=100`" loading="lazy">
+                </a>
+                <img src="../assets/logo.png" v-show="!comment.email" loading="lazy">
             </div>
-            <!--评论回复界面-->
-            <div class="replyBox" v-if="currReply===comment.id">
-                <div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>
-                <div class="replyMain">
-                    <div class="replyInput">
-                        <textarea :placeholder="`回复 @${comment.nickname}:`"></textarea>
-                    </div>
-                    <div class="replyToolBar">
-                        <button class="replyButton">发布</button>
-                    </div>
+            <div class="commentBody">
+                <a class="showNickName" :href="comment.url" target="_blank">{{ comment.nickname }}</a>
+                <div class="showComment themeText">{{ comment.commentContent }}</div>
+                <div class="commentFooter">
+                    <div class="commentTime">{{ getTime(comment.createTime) }}</div>
+                    <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
+                    <i class="fa fa-thumbs-o-down thumbDown"></i>
+                    <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
+                    <button @click="showReplyView(comment.id,comment.nickname)">
+                        {{ this.$store.state.currReply === comment.id ? '取消回复' : '回复' }}
+                    </button>
                 </div>
             </div>
         </div>
+
+        <!--评论回复输入界面-->
+        <div class="replyBox" v-show="this.$store.state.currReply===comment.id">
+            <!--<div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>-->
+            <div class="replyMain">
+                <CommentInfoInput/>
+            </div>
+        </div>
+
+        <!--二级评论-->
+        <div v-show="comment.children&&comment.children.length>0">
+            <div class="commentBox" v-for="subComment in comment.children" :key="subComment.id"
+                 style="padding-left: 50px">
+                <div class="commentAvatar">
+                    <a :href="subComment.url" target="_blank" v-show="subComment.url&&subComment.email">
+                        <!--<img :src="`http://q1.qlogo.cn/g?b=qq&nk=${subComment.email.split(`@`)[0]}&s=100`" loading="lazy">-->
+                    </a>
+                    <img src="../assets/logo.png" v-show="!subComment.email" loading="lazy">
+                </div>
+                <div class="commentBody">
+                    <a class="showNickName" :href="subComment.url" target="_blank">{{ subComment.nickname }}</a>
+                    <div class="showComment themeText"><a  style="color: #00b4d8 ;cursor: pointer">@{{subComment.replyname}}</a>:{{ subComment.commentContent }}</div>
+                    <div class="commentFooter">
+                        <div class="commentTime">{{ getTime(subComment.createTime) }}</div>
+                        <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
+                        <i class="fa fa-thumbs-o-down thumbDown"></i>
+                        <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
+                        <button @click="showReplyView(subComment.id,subComment.nickname)">
+                            {{ currReply === subComment.id ? '取消回复' : '回复' }}
+                        </button>
+                    </div>
+                </div>
+                <!--子评论回复输入界面-->
+                <div class="replyBox" v-show="currReply===subComment.id">
+                    <!--<div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>-->
+                    <div class="replyMain">
+                        <CommentInfoInput/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
     </div>
 </template>
 
 <script>
 import common from "@/utils/timestampToTime";
+import CommentInfoInput from "@/components/CommentInfoInput.vue";
 
 export default {
     name: "Comment",
+    components: {CommentInfoInput},
     props: ['comment'],
-    data() {
-        return {
-            currReply: null,
-            replyView: false,
+    // 计算属性设置值时改变，且获取值时获取，避免v-for里读取不到this.$store问题
+    // 动态变化
+    computed: {
+        currReply: {
+            get() {
+                return this.$store.state.currReply
+            },
+            set(commentId) {
+                this.$store.commit('changeCurrReply', commentId)
+            }
         }
     },
     methods: {
         getTime(time) {
             return common.timestampToTime(time, 1)
         },
-        showReplyView(commentId) {
-            if (commentId === this.currReply) {
-                this.currReply = null
+        showReplyView(commentId, nickName) {
+            if (commentId === this.$store.state.currReply) {
+                this.$store.state.currReply = null
                 return
             }
             this.currReply = commentId
+            this.$store.state.currReplyName = nickName
         },
     }
 }
 </script>
 
 <style scoped>
+.themeText {
+    color: var(--text-color);
+}
 
 .commentBox {
-    background: #f3f3f3;
-    padding-top: 30px;
+    background: var(--bg1);
+    padding-top: 10px;
     display: flex;
     border-bottom: 1px solid #adadad;
-
+    flex-wrap: wrap;
 }
 
 .commentBox img {
@@ -77,7 +127,7 @@ export default {
 }
 
 .commentAvatar {
-    padding: 10px 25px;
+    padding: 10px 20px;
     /*flex: 20%;*/
 
 }
@@ -90,10 +140,11 @@ export default {
     padding: 10px 25px 10px 0;
     height: 80%;
     width: 663px;
+    flex: 1;
 }
 
 .showComment {
-    margin: 25px 0;
+    margin: 10px 0;
     overflow-wrap: break-word;
     /*max-width: 556px;*/
 }
@@ -103,37 +154,26 @@ export default {
     height: 30px;
     display: flex;
     align-items: center;
-    color: #919191;
+    color: var(--text-color);
 }
 
 .replyBox {
-    padding-top: 25px;
+    background: var(--bg1);
     display: flex;
+    padding: 20px;
+    border-bottom: 1px solid #adadad;
+    flex: 1;
 }
 
 .replyAvatar {
     flex: 8%;
-    padding: 0 15px;
+    margin-right: 20px;
 }
 
 .replyMain {
     flex: 92%;
 }
 
-.replyToolBar {
-    margin-top: 10px;
-    display: flex;
-    justify-content: right;
-}
-
-.replyButton {
-    padding: 6px 15px;
-    background: #00b4d8;
-    color: #ffffff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
 
 .replyInput textarea {
     resize: none;
@@ -161,7 +201,7 @@ export default {
     height: 16px;
     margin-left: 130px;
     background: transparent;
-    color: #a4a4a4;
+    color: var(--text-color);
     padding: 0;
 }
 

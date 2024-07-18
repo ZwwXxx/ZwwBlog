@@ -11,6 +11,10 @@ const store = new Vuex.Store({
     state: {
         articleId: '',
         theme: localStorage.getItem('theme')||'light',
+        currReply:null,
+        currReplyName:'',
+        currArticleId:null,
+        total:null,
     },
     mutations: {
         changeArticle(state, articleId) {
@@ -20,6 +24,9 @@ const store = new Vuex.Store({
             state.theme = state.theme === 'dark' ? 'light' : 'dark'
             localStorage.setItem('theme',state.theme)
             document.documentElement.dataset.theme=state.theme
+        },
+        changeCurrReply(state,id){
+            state.currReply=id
         }
     }
 })

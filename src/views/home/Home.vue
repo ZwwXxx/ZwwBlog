@@ -61,6 +61,7 @@ export default {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.articleList = res.data.records
+                    this.$store.state.total=res.data.total
                 }
                 this.loading = false
             })

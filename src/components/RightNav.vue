@@ -8,7 +8,12 @@
         <!--</div>-->
         <!--夜间模式区域-->
         <div>
-            <button @click="changeTheme">当前主题{{this.$store.state.theme}}</button>
+            <div class="changeButton" @click="changeTheme">
+                <transition name="theme-transition">
+                <span :class="{'sun':this.$store.state.theme==='light','moon':this.$store.state.theme==='dark'}">
+                </span>
+                </transition>
+            </div>
         </div>
     </div>
 </template>
@@ -19,8 +24,8 @@ import Search from "@/components/Search.vue";
 export default {
     name: "RightNav",
     components: {Search},
-    methods:{
-        changeTheme(){
+    methods: {
+        changeTheme() {
             this.$store.commit('changeTheme')
         }
     }
@@ -38,4 +43,43 @@ export default {
     width: 40px;
     height: 40px;
 }
+
+.changeButton {
+    background: var(--bg5);
+    height: 20px;
+    width: 40px;
+
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+}
+.changeButton span{
+}
+.sun {
+    position: absolute;
+    background: white;
+    height: 16px;
+    width: 16px;
+    border-radius: 20px;
+    left: 2px;
+    top:2px;
+    transition: 0.2s ;
+}
+
+.moon {
+    position: absolute;
+    background: black;
+    height: 16px;
+    width: 16px;
+    border-radius: 20px;
+    left: 22px;
+    top: 2px;
+    transition: 0.2s ;
+}
+.theme-transition-enter-active,
+.theme-transition-leave-active {
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+
 </style>
