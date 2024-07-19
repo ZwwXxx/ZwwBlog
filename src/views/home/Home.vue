@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import Article from "@/components/Article.vue";
+import Article from "@/views/article/Article.vue";
 import Description from "@/components/Description.vue";
 import Footer from "@/components/Footer.vue";
 import {selectList} from "@/api/article";

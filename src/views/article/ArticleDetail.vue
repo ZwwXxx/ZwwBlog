@@ -69,8 +69,11 @@ import common from "@/utils/timestampToTime";
 import Loading from "@/components/Loading.vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
-import Comment from "@/components/Comment.vue";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import Comment from "@/views/article/Comment.vue";
+import CommentInfoInput from "@/views/article/CommentInfoInput.vue";
+// import VueMarkdownEditor, { xss } from '@kangc/v-md-editor';
+
+// 调用方法将 markdown 转换成 html 并使用 xss 过滤
 
 export default {
     name: "ArticleDetail",
@@ -124,7 +127,9 @@ export default {
             this.loading = true
             selectById(this.$route.params.articleId).then(res => {
                 if (res.code === 20000) {
-                    this.article = res.data
+                    // const html = xss.process(VueMarkdownEditor.themeConfig.markdownParser.render( res.data));
+                    const html=res.data
+                    this.article =html
                     this.$store.state.currArticleId = res.data.id
                     this.form.articleId = res.data.id
                     // 由于以下两种方法依赖data数据中的content中的h1 h2标签，及articleId，因此放在回调有结果里
@@ -364,6 +369,8 @@ export default {
 
 .articleContent {
     padding: 0px 40px;
+    min-height: 300px;
+    margin-bottom: 20px;
 }
 
 .createTime {

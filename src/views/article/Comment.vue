@@ -6,7 +6,7 @@
                 <a :href="comment.url" target="_blank" v-show="comment.url&&comment.email">
                     <img :src="`http://q1.qlogo.cn/g?b=qq&nk=${comment.email.split(`@`)[0]}&s=100`" loading="lazy">
                 </a>
-                <img src="../assets/logo.png" v-show="!comment.email" loading="lazy">
+                <img src="../../assets/logo.png" v-show="!comment.email" loading="lazy">
             </div>
             <div class="commentBody">
                 <a class="showNickName" :href="comment.url" target="_blank">{{ comment.nickname }}</a>
@@ -39,11 +39,23 @@
                     <a :href="subComment.url" target="_blank" v-show="subComment.url&&subComment.email">
                         <!--<img :src="`http://q1.qlogo.cn/g?b=qq&nk=${subComment.email.split(`@`)[0]}&s=100`" loading="lazy">-->
                     </a>
-                    <img src="../assets/logo.png" v-show="!subComment.email" loading="lazy">
+                    <img src="../../assets/logo.png" v-show="!subComment.email" loading="lazy">
                 </div>
                 <div class="commentBody">
-                    <a class="showNickName" :href="subComment.url" target="_blank">{{ subComment.nickname }}</a>
-                    <div class="showComment themeText"><a  style="color: #00b4d8 ;cursor: pointer">@{{subComment.replyname}}</a>:{{ subComment.commentContent }}</div>
+
+                    <div class="showComment themeText" style="margin-top: 0">
+                        <a
+                            class="showNickName" :href="subComment.url" target="_blank" style="margin-right: 5px">{{
+                                subComment.nickname
+                            }}
+                        </a>
+                        <a style="color: #00b4d8 ;cursor: pointer" v-if="subComment.replyname!==subComment.nickname">
+                            回复
+                            @{{ subComment.replyname }}
+                        </a>
+                        <!--文章内容区域-->
+                        {{ subComment.commentContent }}
+                    </div>
                     <div class="commentFooter">
                         <div class="commentTime">{{ getTime(subComment.createTime) }}</div>
                         <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
@@ -71,7 +83,7 @@
 
 <script>
 import common from "@/utils/timestampToTime";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import CommentInfoInput from "@/views/article/CommentInfoInput.vue";
 
 export default {
     name: "Comment",
@@ -144,7 +156,7 @@ export default {
 }
 
 .showComment {
-    margin: 10px 0;
+    margin: 10px 0 5px ;
     overflow-wrap: break-word;
     /*max-width: 556px;*/
 }
