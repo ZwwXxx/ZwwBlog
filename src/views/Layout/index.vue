@@ -8,15 +8,18 @@
         <router-view></router-view>
         <!-- 页脚区域 -->
         <Footer/>
+        <!--提示框组件-->
+        <!--<div class="alert alert-success alertBox hidden" ref="alertBox" role="alert">-->
+        <!--    复制成功-->
+        <!--</div>-->
     </div>
 </template>
 
 <script>
-import Container from "@/views/home/Home.vue";
-import TopNav from "@/components/TopNav.vue";
+import Container from "@/views/Home/Home.vue";
+import TopNav from "@/components/Header/TopNav.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
-import {selectList} from "@/api/article";
 
 export default {
     name: 'LayOut',
@@ -28,14 +31,6 @@ export default {
             searchObj: {},
             articleList: []
         }
-    },
-    created() {
-        selectList(this.page, this.limit, this.searchObj).then(res => {
-            // console.log(res)
-            if (res.code === 20000) {
-                this.articleList = res.data.records
-            }
-        })
     },
 }
 </script>
@@ -50,5 +45,17 @@ export default {
     /*background-attachment: fixed;*/
     /* 显示背景图的中心，靠下位置 */
     /*background-position: center bottom;*/
+}
+.alertBox {
+    transition: 0.2s;
+    position: absolute;
+    left: 50%;
+    top: 5%;
+    transform: translateX(-50%)
+}
+
+.hidden {
+    opacity: 0;
+    top: 0;
 }
 </style>

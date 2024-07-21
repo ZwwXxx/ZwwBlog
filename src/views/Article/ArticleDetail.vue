@@ -98,6 +98,9 @@
         <div v-show="loading" class="loading-wrapper">
             <loading/>
         </div>
+        <div class="alert alert-success alertBox hidden" ref="alertBox" role="alert">
+            复制成功
+        </div>
     </div>
 </template>
 
@@ -107,8 +110,8 @@ import common from "@/utils/timestampToTime";
 import Loading from "@/components/Loading.vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
-import Comment from "@/views/article/Comment.vue";
-import CommentInfoInput from "@/views/article/CommentInfoInput.vue";
+import Comment from "@/components/Comment.vue";
+import CommentInfoInput from "@/components/CommentInfoInput.vue";
 // import VueMarkdownEditor, {xss} from '@kangc/v-md-editor';
 
 // 调用方法将 markdown 转换成 html 并使用 xss 过滤
@@ -119,43 +122,43 @@ export default {
     data() {
         return {
             initSuccess: false,
-            markdown: `
-# heading 1
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-
-## heading 2
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-
-contentcontentcontent
-
-### heading 3
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-
-## heading 2
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-
-### heading 3
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-contentcontentcontent
-`,
+//             markdown: `
+// # heading 1
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+//
+// ## heading 2
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+//
+// contentcontentcontent
+//
+// ### heading 3
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+//
+// ## heading 2
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+//
+// ### heading 3
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// contentcontentcontent
+// `,
 
             article: {},
             loading: false,
@@ -193,8 +196,12 @@ contentcontentcontent
     },
 
     methods: {
-        handleCopyCodeSuccess(code) {
-            console.log(code);
+        handleCopyCodeSuccess() {
+            console.log(111)
+            this.$refs.alertBox.classList.remove('hidden')
+            setTimeout(() => {
+                this.$refs.alertBox.classList.add('hidden')
+            }, 3000)
         },
         getTitles() {
             // 文章目录操作
@@ -583,4 +590,17 @@ contentcontentcontent
     padding: 24px;
 }
 
+.alertBox {
+    transition: 0.2s;
+    position: fixed;
+    left: 50%;
+    top: 20%;
+    transform: translateX(-50%);
+    z-index: 999;
+}
+
+.hidden {
+    opacity: 0;
+    top: 0;
+}
 </style>

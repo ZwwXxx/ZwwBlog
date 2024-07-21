@@ -4,7 +4,7 @@
         <div class="nav-title">Zww</div>
         <!-- 菜单区域 -->
         <div class="menu " v-for="(m,index) in menu" :key="index">
-            <div @click="skip(index)"><i :class="`fa ${m.icon}`"></i> {{m.name}}</div>
+            <div @click="skip(index)"><i :class="`fa ${m.icon}`"></i> {{ m.name }}</div>
             <!--<a href=""><i class="fa fa-home" @click="skip()"></i>首页</a>-->
             <!--<a href=""><i class="fa fa-book"></i>文章</a>-->
             <!--<a href=""><i class="fa fa-comment"></i>说说</a>-->
@@ -20,12 +20,16 @@
 <script>
 export default {
     name: "Leftnav",
-    data(){
-        return{
-            menu:[
+    data() {
+        return {
+            menu: [
                 {
-                    name:'首页',
-                    icon:'fa fa-home'
+                    name: '首页',
+                    icon: 'fa fa-home'
+                },
+                {
+                    name: '留言板',
+                    icon: 'fa fa-home'
                 },
                 // {
                 //     name:'登录',
@@ -34,19 +38,23 @@ export default {
             ]
         }
     },
-    methods:{
-        skip(index){
-            switch (index){
+    methods: {
+        skip(index) {
+            switch (index) {
                 case 0:
-                    if (this.$route.path!=='/home'){
+                    if (this.$route.path !== '/home') {
                         this.$router.push("/home")
-                    }
-                    else{
+                    } else {
                         window.location.reload()
                     }
                     break;
                 case 1:
-                    this.$router.push("/login")
+                    if (this.$route.path !== '/message') {
+                        this.$router.push("/message")
+                    } else {
+                        window.location.reload()
+                    }
+
             }
         }
     }
@@ -90,7 +98,7 @@ export default {
     color: var(--text-color);
 }
 
-.menu i{
+.menu i {
     margin-right: 5px;
 }
 </style>

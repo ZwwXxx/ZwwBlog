@@ -3,24 +3,29 @@ import VueRouter from 'vue-router'
 const routes = [
     {
         path: '/',
-        component:()=>import('../views/layout/index.vue'),
+        component:()=>import('@/views/Layout/index.vue'),
         redirect: '/home',
         children:[
             {
                 path: '/home',
                 name: 'home',
-                component: () => import('../views/home/Home.vue')
+                component: () => import('@/views/Home/Home.vue')
             },
             {
                 path: '/articleDetail/:articleId',
                 name: 'ArticleDetail',
-                component: () => import('../views/article/ArticleDetail.vue')
+                component: () => import('@/views/Article/ArticleDetail.vue')
             },
+            {
+                path: '/message',
+                name:'Message',
+                component:()=>import('@/views/Message/Message.vue')
+            }
         ]
     },
     {
         path: '/login',
-        component: () => import('../views/login/index.vue')
+        component: () => import('@/views/Login/index.vue')
     }
 ]
 

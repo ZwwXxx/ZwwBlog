@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Search from "@/components/Search.vue";
+import Search from "@/components/Header/Search.vue";
 
 export default {
     name: "RightNav",

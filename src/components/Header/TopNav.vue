@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import RightNav from "@/components/RightNav.vue";
-import LeftNav from "@/components/LeftNav.vue";
+import RightNav from "@/components/Header/RightNav.vue";
+import LeftNav from "@/components/Header/LeftNav.vue";
 
 export default {
     name: "TopNav",

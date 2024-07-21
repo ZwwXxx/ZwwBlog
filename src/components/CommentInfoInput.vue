@@ -33,10 +33,11 @@
 
 <script>
 import {submitComment} from "@/api/comment";
+import {submitMessage} from "@/api/message";
 
 export default {
     name: "CommentInfoInput",
-    props: ['article'],
+    props: ['article', 'customPlaceholder'],
     data() {
         return {
             form: {
@@ -48,26 +49,38 @@ export default {
                 articleId: null,
                 pid: null,
             },
-            placeholder: '你的每一条评论我都会look的~~'
+            placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~'
         }
     },
     methods: {
         // 发起请求后刷新评论区域,回填数据
         commentRefrash() {
-            this.$store.state.componentKey=this.$store.state.componentKey+1
+            this.$store.state.componentKey = this.$store.state.componentKey + 1
         },
         // 提交评论
         submitComment() {
-            // if (!this.form.commentContent || !this.form.nickname) {
-            //     alert('评论内容和昵称不能为空哦~')
-            //     return
-            // }
+            if (this.$route.path !== '/message') {
+                console.log(this.$route.path)
+                // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
+                this.form.articleId = this.$store.state.currArticleId
+                this.form.pid = this.$store.state.currReply
+                this.form.replyname = this.$store.state.currReplyName
+                submitComment(this.form).then(res => {
 
-            // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
-            this.form.articleId = this.$store.state.currArticleId
+                    window.location.reload()
+                    if (res === 20000) {
+                        console.log('提交评论成功！')
+
+                    }
+                }).catch(err => {
+                    console.log('提交失败,错误信息为', err)
+                })
+                return
+            }
+            // 提交留言
             this.form.pid = this.$store.state.currReply
             this.form.replyname = this.$store.state.currReplyName
-            submitComment(this.form).then(res => {
+            submitMessage(this.form).then(res => {
 
                 window.location.reload()
                 if (res === 20000) {
