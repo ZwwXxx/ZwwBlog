@@ -15,7 +15,7 @@
                     <div class="commentTime">{{ getTime(comment.createTime) }}</div>
                     <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
                     <i class="fa fa-thumbs-o-down thumbDown"></i>
-                    <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
+                    <!--当用户点击回复时，如果是第一次点,则显示,如果是第二次,则隐藏-->
                     <button @click="showReplyView(comment.id,comment.nickname)">
                         {{ this.$store.state.currReply === comment.id ? '取消回复' : '回复' }}
                     </button>
@@ -24,6 +24,7 @@
         </div>
 
         <!--评论回复输入界面-->
+        <!--点击回复时记录了当前回复的id,评论比对是否等于自身id,是的话则显示-->
         <div class="replyBox" v-show="this.$store.state.currReply===comment.id">
             <!--<div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>-->
             <div class="replyMain">

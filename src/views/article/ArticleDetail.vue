@@ -5,12 +5,19 @@
             <!--文章展示区域-->
             <div class="articleBody themeBg ">
                 <div class="articleHeader themeText">
-                    <div class="title">《{{ article.title }}》</div>
+                    <div class="articleTitle">《{{ article.title }}》</div>
                     <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
                     <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
                     <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
                 </div>
-                <div v-html="article.content" class="articleContent themeText" ref="articleContent"/>
+                <!--将md转为html后渲染-->
+                <!--<div v-html="article.content" class="articleContent themeText" ref="articleContent" />-->
+                <!--直接渲染md-->
+                <!--<div ref="articleContent">-->
+                <v-md-preview :text="article.content" ref="articleContent"
+                              class="articleContent themeText"
+                              @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
+                <!--</div>-->
             </div>
 
             <!--评论输入区域-->
@@ -36,24 +43,55 @@
         <!--文章目录-->
         <div v-show="!loading" class="rightSide">
             <div class="directory  themeBg ">
-                <div class="themeText">文章目录</div>
+                <div class="themeText" style="margin-bottom: 10px;">文章目录</div>
                 <div class="directoryItem ">
-                    <ul class="catalog ">
-                        <li v-for="(item,index) in catelog"
+                    <!--<div-->
+                    <!--        v-for="(anchor,index) in titles"-->
+                    <!--        @click="handleAnchorClick(anchor)"-->
+                    <!--        :key="index"-->
+                    <!--        v-show="initSuccess"-->
+                    <!--        class="title"-->
+                    <!--&gt;-->
+                    <!--    <a-->
+                    <!--            style="cursor: pointer;-->
+                    <!--            color: var(&#45;&#45;text-color)"-->
+                    <!--            :style="{ paddingLeft: `${anchor.indent * 20}px` }"-->
+                    <!--            :id="anchor.id">{{ anchor.title }}</a>-->
+                    <!--</div>-->
+                    <ul class="title "
+                        v-show="initSuccess">
+                        <li v-for="(anchor,index) in titles"
                             :key="index"
                         >
                             <!--<a :href="'#'+item.id">-->
                             <!--    {{ item.title }}-->
                             <!--</a>-->
-                            <a @click="changeHash(`#${item.id}`)"
-                               :id=item.id
-                               :style="{paddingLeft:item.level * 10+'px'}"
+                            <a @click="handleAnchorClick(anchor)"
+                               :id=anchor.id
+                               :style="{paddingLeft:anchor.level * 10+'px'}"
                                style="color: var(--text-color)"
                             >
-                                {{ item.title }}
+                                {{ anchor.title }}
                             </a>
                         </li>
                     </ul>
+
+                    <!--<ul class="title ">-->
+                    <!--    <li v-for="(item,index) in titles"-->
+                    <!--        :key="index"-->
+                    <!--    >-->
+                    <!--        &lt;!&ndash;<a :href="'#'+item.id">&ndash;&gt;-->
+                    <!--        &lt;!&ndash;    {{ item.title }}&ndash;&gt;-->
+                    <!--        &lt;!&ndash;</a>&ndash;&gt;-->
+                    <!--        <a @click="changeHash(`#${item.id}`)"-->
+                    <!--           :id=item.id-->
+                    <!--           :style="{paddingLeft:item.level * 10+'px'}"-->
+                    <!--           style="color: var(&#45;&#45;text-color)"-->
+                    <!--        >-->
+                    <!--            {{ item.title }}-->
+                    <!--        </a>-->
+                    <!--    </li>-->
+                    <!--</ul>-->
                 </div>
             </div>
         </div>
@@ -71,7 +109,7 @@ import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
 import Comment from "@/views/article/Comment.vue";
 import CommentInfoInput from "@/views/article/CommentInfoInput.vue";
-// import VueMarkdownEditor, { xss } from '@kangc/v-md-editor';
+// import VueMarkdownEditor, {xss} from '@kangc/v-md-editor';
 
 // 调用方法将 markdown 转换成 html 并使用 xss 过滤
 
@@ -80,10 +118,49 @@ export default {
     components: {CommentInfoInput, Comment, Loading, WangEditor},
     data() {
         return {
+            initSuccess: false,
+            markdown: `
+# heading 1
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+
+## heading 2
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+
+contentcontentcontent
+
+### heading 3
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+
+## heading 2
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+
+### heading 3
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+contentcontentcontent
+`,
+
             article: {},
             loading: false,
             limit: 5,
-            catelog: [],
+            titles: [],
             titlesDoms: [],
             scrollHandler: null,
             form: {
@@ -100,13 +177,14 @@ export default {
     },
     created() {
         this.getArticleData()
-
     },
     mounted() {
         // 切换页面时滚动条自动滚动到顶部
         // window.scrollTo(0, 0);
         // 监听滚动事件,随着视口高度高亮对应的目录标签
         // window.addEventListener('scroll', this.throttle(this.handleScroll,4000))
+        // 因为得等md渲染完毕，才能显示违章目录读取，否则一开始显示目录读取时由于请求还未返回值而读取空值
+        this.initSuccess = true
         this.scrollHandler = this.debounce(this.handleScroll, 5)
         window.addEventListener('scroll', this.scrollHandler)
     },
@@ -115,30 +193,83 @@ export default {
     },
 
     methods: {
-        changeHash(id) {
-            const element = document.querySelector(id)
-            const distanceTop = element.offsetTop;
-            scrollTo(0, distanceTop - 82)
+        handleCopyCodeSuccess(code) {
+            console.log(code);
         },
+        getTitles() {
+            // 文章目录操作
+            const anchors = this.$refs.articleContent.$el.querySelectorAll('h1,h2,h3,h4,h5,h6');
+            // 给h1，2，3标签设置id
+            anchors.forEach((item, index) => {
+                item.setAttribute('id', 'header-' + index)
+            })
+            // 存数组，后续监听该标题的变化位置来高亮标题
+            this.titlesDoms = anchors
+
+            // 判断标题里是否为空
+            const titles = Array.from(anchors).filter((title) => title.innerText.trim() !== null);
+            if (!titles.length) {
+                this.titles = [];
+                return;
+            }
+
+            const hTags = Array.from(new Set(titles.map((title) => title.tagName))).sort();
+            this.titles = titles.map((el, index) => ({
+                id: 'header-' + index,
+                title: el.innerText,
+                // lineIndex: el.getAttribute('data-v-md-line'),
+                level: Number(el.nodeName.substring(1, 2)),
+                indent: hTags.indexOf(el.tagName),
+            }));
+            setTimeout(() => {
+                this.setClickListen()
+                // 初始化高亮
+            }, 50)
+        },
+        // 目录点击锚点跳转操作
+        handleAnchorClick(anchor) {
+            const {articleContent} = this.$refs;
+            const heading = articleContent.$el.querySelector(`[id="${anchor.id}"]`);
+
+            if (heading) {
+                // Note: If you are using the preview mode of the editing component, the method name here is changed to previewScrollToTarget
+                articleContent.scrollToTarget({
+                    target: heading,
+                    scrollContainer: window,
+                    top: 80,
+                });
+            }
+        },
+
+        // 点击A标签不影响url路径为#
+        // changeHash(id) {
+        //     const element = document.querySelector(id)
+        //     const distanceTop = element.offsetTop;
+        //     scrollTo(0, distanceTop - 82)
+        // },
         getTime(time) {
             return common.timestampToTime(time, 1)
         },
-        getArticleData() {
+        async getArticleData() {
             this.loading = true
-            selectById(this.$route.params.articleId).then(res => {
-                if (res.code === 20000) {
-                    // const html = xss.process(VueMarkdownEditor.themeConfig.markdownParser.render( res.data));
-                    const html=res.data
-                    this.article =html
-                    this.$store.state.currArticleId = res.data.id
-                    this.form.articleId = res.data.id
-                    // 由于以下两种方法依赖data数据中的content中的h1 h2标签，及articleId，因此放在回调有结果里
-                    this.generateCatalog()
-                    this.getCommentList()
-                }
-                this.loading = false
-            })
+            const res = await selectById(this.$route.params.articleId)
+            if (res.code === 20000) {
+                this.article = res.data
+                // this.article.content = xss.process(VueMarkdownEditor.themeConfig.markdownParser.render(this.article.content));
+                this.$nextTick(() => {
+                    this.getTitles()
+                })
+                this.$store.state.currArticleId = res.data.id
+                this.form.articleId = res.data.id
+                this.getCommentList()
+            }
+            this.loading = false
         },
+
+
+        // 给H1,H2加自定义标签，后续检测并高亮
+
+
         // 加工目录数组
         generateCatalog() {
             // 等待所有dom标签挂载完毕
@@ -146,7 +277,7 @@ export default {
                 // 获取到文章的根标签
                 const articleContent = this.$refs.articleContent;
                 // 定义要分层的标签
-                const titleTag = ["H1", "H2", "H3"];
+                const titleTag = ["H1", "H2", "H3", "H4", "H5", "H6"];
                 // 空数组收集所有的层级对象,id标识每一个div,标题,层级,节点标签名
                 let titles = [];
                 articleContent.childNodes.forEach((item, index) => {
@@ -169,24 +300,12 @@ export default {
                 // 等待a标签挂载完毕后设置监听器
                 setTimeout(() => {
                     this.setClickListen()
-
                     // 初始化高亮
                 }, 50)
-                this.catelog = titles
+                this.titles = titles
             })
         },
         // 高亮目录标题
-        highlight(header) {
-            // 清空所有a标签的高亮,进行初始化
-            document.querySelectorAll('a.highlight')
-                .forEach(a => a.classList.remove('highlight'));
-            //将此次点击的header目录进行添加高亮
-            if (document.querySelector(`a#${header.id}`) === null) {
-                console.log('空')
-                return
-            }
-            document.querySelector(`a#${header.id}`).classList.add('highlight')
-        },
         // 给每一个a标签设置点击监听器，点击后触发高亮方法
         setClickListen() {
             const headers = document.querySelectorAll('a');
@@ -199,6 +318,17 @@ export default {
                     })
                 }
             })
+        },
+        highlight(header) {
+            // 清空所有a标签的高亮,进行初始化
+            document.querySelectorAll('a.highlight')
+                .forEach(a => a.classList.remove('highlight'));
+            //将此次点击的header目录进行添加高亮
+            if (document.querySelector(`a#${header.id}`) === null) {
+                console.log('空')
+                return
+            }
+            document.querySelector(`a#${header.id}`).classList.add('highlight')
         },
         // 防抖，
         // 为滚动后目录定位做准备，防止多次触发scroll事件
@@ -232,7 +362,7 @@ export default {
 
         handleScroll() {
             // 遍历所有item,获取其位置
-            const rects = this.titlesDoms.map(titleDom => {
+            const rects = Array.from(this.titlesDoms).map(titleDom => {
                 // 将所有位置信息封装成新的数组
                 return titleDom.getBoundingClientRect()
             })
@@ -295,6 +425,7 @@ export default {
             }
         },
 
+
         // 提交评论
         submitComment() {
             // if (!this.form.commentContent || !this.form.nickname) {
@@ -323,13 +454,17 @@ export default {
                 }
                 this.loading = false
             })
-        }
+        },
     }
 
 }
 </script>
 
 <style scoped>
+.vuepress-markdown-body {
+    background: var(--bg1) !important;
+}
+
 .themeText {
     color: var(--text-color);
 }
@@ -351,6 +486,9 @@ export default {
 
 .articleBody {
     border-radius: 20px;
+    min-height: 400px;
+    margin-bottom: 20px;
+    overflow: hidden;
 }
 
 .articleHeader {
@@ -362,13 +500,12 @@ export default {
     border-bottom: 2px solid black;
 }
 
-.title {
+.articleTitle {
     font-size: 40px;
     font-weight: bolder;
 }
 
 .articleContent {
-    padding: 0px 40px;
     min-height: 300px;
     margin-bottom: 20px;
 }
@@ -407,18 +544,18 @@ export default {
 }
 
 
-.catalog {
-    padding: 0;
+.title {
+    padding-left: 0px;
     cursor: pointer;
 }
 
-.catalog a {
+.title a {
     display: block;
     padding: 10px;
     color: #414141;
 }
 
-.catalog li:hover {
+.title a:hover {
     background: var(--bg4);
 }
 
@@ -443,9 +580,7 @@ export default {
 .nullComment {
     margin-top: 20px;
     border-radius: 20px;
-    background-color: #e8e8e8;
     padding: 24px;
-    color: #464646;
 }
 
 </style>
