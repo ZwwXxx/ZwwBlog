@@ -1,8 +1,6 @@
 <template>
-    <div class="container" id="container">
-        <div class="loading-wrapper"  v-show="loading">
-            <loading/>
-        </div>
+    <div class="categoryBox">
+        <div class="introduce">{{ this.$route.params.cname }}</div>
         <!--            整体宽度，用来控制主体内容，外层设置父盒子便于flex布局居中-->
         <div class="content" v-show="!loading">
 
@@ -22,34 +20,28 @@
 
 
         </div>
-
     </div>
 </template>
 
 <script>
 import Article from "@/views/Article/Article.vue";
-import Description from "@/components/Description.vue";
-import Footer from "@/components/Footer.vue";
 import {selectList} from "@/api/article";
-import Loading from "@/components/Loading.vue";
+import Description from "@/components/Description.vue";
 
 export default {
-    name: "Container",
-    components: {Loading, Footer, Description, Article},
+    name: "Category",
     data() {
         return {
             loading: false,
             page: '1',
-            limit: '5',
+            limit: '15',
             searchObj: {},
             articleList: []
         }
     },
-    activated() {
-        console.log('TestComponent activated')
-    },
-    deactivated() {
-        console.log('TestComponent deactivated')
+    components: {Description, Article},
+    mounted() {
+        console.log(this.$route.params.cname)
     },
     created() {
         this.getArticleList()
@@ -57,11 +49,12 @@ export default {
     methods: {
         getArticleList() {
             this.loading = true
+            this.searchObj.categoryName=this.$route.params.cname
             selectList(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.articleList = res.data.records
-                    this.$store.state.total=res.data.total
+                    this.$store.state.total = res.data.total
                 }
                 this.loading = false
             })
@@ -71,22 +64,29 @@ export default {
 </script>
 
 <style scoped>
-
-/* 内容区 */
-.container {
+.categoryBox {
+    padding-top: 76px;
+    min-height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 82px;
-    margin-top: -82px;
-    border-radius: 20px;
-    /*max-width: 1024px;*/
+}
+
+.introduce {
+    width: 100%;
+    height: 200px;
+    line-height: 200px;
+    font-size: 40px;
+    background: var(--bg1);
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 50px;
 }
 
 .content {
     display: flex;
-    width: 80%;
+    width: 68%;
 }
 
 
@@ -104,10 +104,4 @@ export default {
     margin-left: 20px;
     border-radius: 20px;
 }
-.loading-wrapper{
-    width: 60%;
-    border-radius: 20px;
-    margin-bottom: 20px;
-}
-
 </style>

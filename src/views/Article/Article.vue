@@ -22,6 +22,7 @@ export default {
             return common.timestampToTime(createTime, 1)
         },
         openArticle(articleId) {
+            // 存id，评论指向对应文章id,归为该文章下的评论
             this.$store.commit('changeArticle', articleId)
             sessionStorage.setItem("ArticleId", articleId);
             this.$router.push({

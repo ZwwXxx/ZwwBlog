@@ -20,6 +20,11 @@ const routes = [
                 path: '/message',
                 name:'Message',
                 component:()=>import('@/views/Message/Message.vue')
+            },
+            {
+                path:'/category/:cname',
+                name:'Category',
+                component:()=>import('@/views/Category/Category.vue')
             }
         ]
     },

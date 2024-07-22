@@ -4,7 +4,19 @@
         <div class="nav-title">Zww</div>
         <!-- 菜单区域 -->
         <div class="menu " v-for="(m,index) in menu" :key="index">
-            <div @click="skip(index)"><i :class="`fa ${m.icon}`"></i> {{ m.name }}</div>
+            <div @click="menuSkip(index)"
+                 :class="{articleHover:articleHoverIndex===index}"
+            >
+                <i :class="`fa ${m.icon}`"></i> {{ m.name }}
+            </div>
+            <ul class="dropdown-menu"
+                style="position: absolute;top: 60px"
+            >
+                <li v-for="(item,index) in category"
+                    :key="index">
+                    <button class="dropdown-item" type="button" @click="dropDownSkip(item)">{{ item }}</button>
+                </li>
+            </ul>
             <!--<a href=""><i class="fa fa-home" @click="skip()"></i>首页</a>-->
             <!--<a href=""><i class="fa fa-book"></i>文章</a>-->
             <!--<a href=""><i class="fa fa-comment"></i>说说</a>-->
@@ -14,17 +26,28 @@
             <!--<a><i class="fa fa-sign-in"></i>登录</a>-->
             <!--<a href=""><i class="fa fa-gear"></i>功能</a>-->
         </div>
+        <div class="dropdown ">
+
+        </div>
     </div>
+
 </template>
 
 <script>
+import Article from "@/views/Article/Article.vue";
+
 export default {
     name: "Leftnav",
+    components: {Article},
     data() {
         return {
             menu: [
                 {
                     name: '首页',
+                    icon: 'fa fa-home'
+                },
+                {
+                    name: '文章',
                     icon: 'fa fa-home'
                 },
                 {
@@ -35,11 +58,17 @@ export default {
                 //     name:'登录',
                 //     icon:'fa fa-sign-in'
                 // }
-            ]
+            ],
+            category: [
+                'Java',
+                'Vue',
+                'JavaScript'
+            ],
+            articleHoverIndex: 1
         }
     },
     methods: {
-        skip(index) {
+        menuSkip(index) {
             switch (index) {
                 case 0:
                     if (this.$route.path !== '/home') {
@@ -49,13 +78,31 @@ export default {
                     }
                     break;
                 case 1:
+                    break;
+                case 2:
                     if (this.$route.path !== '/message') {
                         this.$router.push("/message")
                     } else {
                         window.location.reload()
                     }
-
+                    break;
             }
+        },
+        dropDownSkip(item) {
+            if (item===this.$route.params.cname){
+                return
+            }
+            console.log(item)
+            this.$router.push({
+                // 这里使用name不使用path使用path需要这样写
+                // path: `/category/${item}`,
+                name: 'Category',
+                params: {
+                    cname: item
+                }
+            }).then(()=>{
+                window.location.reload()
+            })
         }
     }
 }
@@ -100,5 +147,29 @@ export default {
 
 .menu i {
     margin-right: 5px;
+}
+
+.dropdown-menu {
+    border: none;
+}
+
+.articleHover:hover ~ .dropdown-menu {
+    display: block;
+    border: none;
+}
+
+.dropdown-menu:before {
+    content: '';
+    position: absolute;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid #ffffff;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    top: -19px;
+    left: 19px;
+}
+
+.dropdown-menu:hover {
+    display: block;
 }
 </style>

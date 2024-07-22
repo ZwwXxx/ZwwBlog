@@ -53,8 +53,10 @@ export default {
     position: relative;
     cursor: pointer;
 }
-.changeButton span{
+
+.changeButton span {
 }
+
 .sun {
     position: absolute;
     background: white;
@@ -62,8 +64,8 @@ export default {
     width: 16px;
     border-radius: 20px;
     left: 2px;
-    top:2px;
-    transition: 0.2s ;
+    top: 2px;
+    transition: 0.2s;
 }
 
 .moon {
@@ -74,8 +76,9 @@ export default {
     border-radius: 20px;
     left: 22px;
     top: 2px;
-    transition: 0.2s ;
+    transition: 0.2s;
 }
+
 .theme-transition-enter-active,
 .theme-transition-leave-active {
     transition: opacity 0.5s, transform 0.5s;

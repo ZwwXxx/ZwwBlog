@@ -10,18 +10,18 @@
             <div style="position: relative">
                 <i class="fa fa-user"
                    style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                <input type="text" placeholder="请输入你的网名..." required
+                <input type="text" placeholder="请输入你的网名(选填)..." required
                        v-model="form.nickname">
             </div>
             <div style="position: relative">
                 <i class="fa fa-envelope"
                    style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                <input type="text" placeholder="请输入email（选填）..." v-model="form.email">
+                <input type="text" placeholder="请输入email(选填)..." v-model="form.email">
             </div>
             <div style="position: relative">
                 <i class="fa fa-paperclip "
                    style="position:absolute;top: 50%;transform: translateY(-50%)translateX(8px)"></i>
-                <input type="text" placeholder="请输入主页地址（选填）..." v-model="form.url">
+                <input type="text" placeholder="请输入主页地址(选填)..." v-model="form.url">
             </div>
         </div>
         <div class="submit">
@@ -54,7 +54,7 @@ export default {
                 pid: null,
             },
             loading: false,
-            placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~'
+            placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~(必填)'
         }
     },
     methods: {

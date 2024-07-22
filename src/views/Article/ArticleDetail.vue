@@ -175,7 +175,7 @@ export default {
                 pid: null,
             },
             comments: [],
-            total: null
+            total: null,
         }
     },
     created() {
@@ -237,7 +237,6 @@ export default {
         handleAnchorClick(anchor) {
             const {articleContent} = this.$refs;
             const heading = articleContent.$el.querySelector(`[id="${anchor.id}"]`);
-
             if (heading) {
                 // Note: If you are using the preview mode of the editing component, the method name here is changed to previewScrollToTarget
                 articleContent.scrollToTarget({
@@ -250,9 +249,13 @@ export default {
 
         // 点击A标签不影响url路径为#
         // changeHash(id) {
-        //     const element = document.querySelector(id)
+        //     const element = document.getElementById(id)
         //     const distanceTop = element.offsetTop;
-        //     scrollTo(0, distanceTop - 82)
+        //     window.scrollTo({
+        //         top: distanceTop-82,
+        //         left:0,
+        //         behavior:'smooth',
+        //     })
         // },
         getTime(time) {
             return common.timestampToTime(time, 1)
@@ -321,6 +324,7 @@ export default {
                 if (header.id.startsWith('header')) {
                     //监听自己，如果被点击了，就触发函数，将自己丢过去
                     header.addEventListener('click', () => {
+                        // 点击时取消监听，防止点击后亮完监听滚动其他的也亮了
                         this.highlight(header)
                     })
                 }
@@ -383,7 +387,9 @@ export default {
                 // console.log(rects[i+1].top)
                 // 判头顶法
                 // 当top大于0时说明目录在视窗内,如果距顶小于范围则高亮
-                if (rect.top >= 0 && rect.top <= range) {
+
+                // 70为顶部导航栏的高度，这里以70为起点说明必须距顶为70 说明在视觉窗口内，同时距顶小于range范围则高亮
+                if (rect.top >= 70 && rect.top <= range) {
                     this.highlight(titleDom)
                     // 结束循环,后续标签不用管位置了
                     break;
@@ -395,7 +401,7 @@ export default {
                 // 也就是说不一定非要距顶小于range,
                 // 还要当下一个标题存在且在视口外也就是大于视口高度
                 // 且当前的标签内容在视口上面,也就是说正在看标题内容时
-                if (rect.top < 0
+                if (rect.top < 70
                     && rects[i + 1]
                     && rects[i + 1].top > document.documentElement.clientHeight) {
                     this.highlight(titleDom)
