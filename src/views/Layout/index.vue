@@ -12,6 +12,7 @@
         <!--<div class="alert alert-success alertBox hidden" ref="alertBox" role="alert">-->
         <!--    复制成功-->
         <!--</div>-->
+        <loading v-show="this.$store.state.loading"/>
     </div>
 </template>
 
@@ -20,10 +21,11 @@ import Container from "@/views/Home/Home.vue";
 import TopNav from "@/components/Header/TopNav.vue";
 import Banner from "@/components/Banner.vue";
 import Footer from "@/components/Footer.vue";
+import Loading from "@/components/Loading.vue";
 
 export default {
     name: 'LayOut',
-    components: {Container, TopNav, Banner, Footer},
+    components: {Loading, Container, TopNav, Banner, Footer},
     data() {
         return {
             page: '1',

@@ -58,17 +58,15 @@ export default {
 }
 
 .messageInput {
-    border-radius: 10px;
     padding: 10px;
     height: 300px;
     background: white;
-    min-width: 400px;
+    width: 800px;
 }
 
 .messageBody {
-    border-radius: 10px;
     background: red;
     overflow: hidden;
-    max-width: 800px;
+    width: 800px;
 }
 </style>

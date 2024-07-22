@@ -86,12 +86,12 @@ export default {
 
 .content {
     display: flex;
-    width: 60%;
+    width: 80%;
 }
 
 
 .lside {
-    flex: 70%;
+    flex: 80%;
     max-width: 70%;
     overflow-wrap: break-word;
 }
@@ -99,7 +99,7 @@ export default {
 
 .rside {
     overflow: hidden;
-    flex: 30%;
+    flex: 20%;
     height: 400px;
     background: var(--bg1);
     margin-left: 20px;

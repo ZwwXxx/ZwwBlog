@@ -482,13 +482,14 @@ export default {
 
 .articleDetailBox {
     overflow: hidden;
-    max-width: 1024px;
+    max-width: 1324px;
     margin: 0 auto 30px;
     overflow-wrap: break-word;
     min-height: calc(100vh - 100px);
     display: flex;
     padding-top: 82px;
     position: relative;
+    justify-content: center;
 }
 
 .articleBody {
@@ -527,12 +528,12 @@ export default {
 }
 
 .leftSide {
-    flex: 75%;
+    flex: 1;
     margin-right: 20px;
 }
 
 .rightSide {
-    flex: 25%;
+    width: 250px;
     /*background: red;*/
 }
 

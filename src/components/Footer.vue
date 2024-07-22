@@ -65,7 +65,7 @@ export default {
 .toTop{
     position: fixed;
     bottom: 80px;
-    right: 100px;
+    right: 30px;
     display: block;
     width: 50px;
     height: 50px;

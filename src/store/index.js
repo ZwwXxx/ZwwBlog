@@ -15,6 +15,7 @@ const store = new Vuex.Store({
         currReplyName:'',
         currArticleId:null,
         total:null,
+        loading:false,
     },
     mutations: {
         changeArticle(state, articleId) {

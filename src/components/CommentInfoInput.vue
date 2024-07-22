@@ -1,5 +1,6 @@
 <template>
     <div style="max-width: 100%">
+        <loading v-show="loading"/>
         <div class="commentTextarea">
                     <textarea class="commentContent"
                               :placeholder="this.$store.state.currReply?`回复@${this.$store.state.currReplyName}`:this.placeholder"
@@ -28,20 +29,23 @@
                 提交评论
             </button>
         </div>
+
     </div>
 </template>
 
 <script>
 import {submitComment} from "@/api/comment";
 import {submitMessage} from "@/api/message";
+import Loading from "@/components/Loading.vue";
 
 export default {
     name: "CommentInfoInput",
+    components: {Loading},
     props: ['article', 'customPlaceholder'],
     data() {
         return {
             form: {
-                nickname: 'Zww',
+                nickname: '',
                 replyname: '',
                 email: '',
                 url: '',
@@ -49,6 +53,7 @@ export default {
                 articleId: null,
                 pid: null,
             },
+            loading: false,
             placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~'
         }
     },
@@ -59,6 +64,14 @@ export default {
         },
         // 提交评论
         submitComment() {
+            this.loading = true
+            if (this.form.nickname.trim() === '') {
+                this.form.nickname = '匿名用户'
+            }
+            if (this.form.commentContent.trim() === '') {
+                alert('输入内容不能为空')
+                return;
+            }
             if (this.$route.path !== '/message') {
                 console.log(this.$route.path)
                 // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
@@ -70,7 +83,7 @@ export default {
                     window.location.reload()
                     if (res === 20000) {
                         console.log('提交评论成功！')
-
+                        this.loading = false
                     }
                 }).catch(err => {
                     console.log('提交失败,错误信息为', err)
