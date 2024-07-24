@@ -6,9 +6,15 @@
             <div class="articleBody themeBg ">
                 <div class="articleHeader themeText">
                     <div class="articleTitle">《{{ article.title }}》</div>
-                    <div class="createTime"><strong>发布日期</strong> : {{ getTime(article.createTime) }}</div>
-                    <div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>
-                    <div class="categoryName"><strong>分类名</strong> : {{ article.categoryName }}</div>
+
+                    <!--<div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>-->
+                    <div class="titleBar">
+                        <div><i class=" fa fa-clock-o"/> {{ getTime(article.createTime) }}</div>
+                        <div><i class="fa fa-eye"/> {{ article.views }}</div>
+                        <div><i class="fa fa-comment"/> {{ this.$store.state.total }} </div>
+                        <div><i class="fa fa-folder"/> {{ article.categoryName }}</div>
+                        <div><i class="fa fa-tags"/> {{ article.tags}}</div>
+                    </div>
                 </div>
                 <!--将md转为html后渲染-->
                 <!--<div v-html="article.content" class="articleContent themeText" ref="articleContent" />-->
@@ -519,19 +525,21 @@ export default {
     font-weight: bolder;
 }
 
+.titleBar {
+    display: flex;
+    justify-content: center;
+}
+
+.titleBar div {
+    margin: 0 10px;
+}
+
+
 .articleContent {
     min-height: 300px;
     margin-bottom: 20px;
 }
 
-.createTime {
-    margin: 15px 0;
-}
-
-
-.categoryName {
-    margin-top: 15px;
-}
 
 .leftSide {
     flex: 1;

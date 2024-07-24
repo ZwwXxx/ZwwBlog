@@ -9,6 +9,8 @@
             >
                 <i :class="`fa ${m.icon}`"></i> {{ m.name }}
             </div>
+
+            <!--文章分类下拉菜单-->
             <ul class="dropdown-menu"
                 style="position: absolute;top: 60px"
             >
@@ -48,16 +50,16 @@ export default {
                 },
                 {
                     name: '文章',
-                    icon: 'fa fa-home'
+                    icon: 'fa fa-book'
                 },
                 {
                     name: '留言板',
-                    icon: 'fa fa-home'
+                    icon: 'fa fa-comment'
                 },
-                // {
-                //     name:'登录',
-                //     icon:'fa fa-sign-in'
-                // }
+                {
+                    name: '友链',
+                    icon: 'fa fa-chain'
+                },
             ],
             category: [
                 'Java',
@@ -82,6 +84,13 @@ export default {
                 case 2:
                     if (this.$route.path !== '/message') {
                         this.$router.push("/message")
+                    } else {
+                        window.location.reload()
+                    }
+                    break;
+                case 3:
+                    if (this.$route.path !== '/friends') {
+                        this.$router.push("/friends")
                     } else {
                         window.location.reload()
                     }

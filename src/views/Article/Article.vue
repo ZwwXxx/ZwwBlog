@@ -52,6 +52,7 @@ export default {
     height: 400px;
     overflow: hidden;
     position: relative;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 
 .article-title {

@@ -31,6 +31,9 @@ export default {
 
 @import '@/assets/css/theme/theme.css';
 
+*{
+    font-family: "Helvetica Neue"
+}
 #app {
     /*background: url('@/assets/images/house.png') no-repeat fixed center bottom;*/
     /*!* 不重复图片铺满body *!*/

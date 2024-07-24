@@ -16,7 +16,8 @@
 /*亮色主题*/
 html[data-theme='light'] {
     --text-color: #333;
-    --bg1: #f1f1f1;
+    --bg1: #ffffff;
+    /*--bg1: #f1f1f1;*/
     --bg2: #fff;
     --bg3:#fff;
     --bg4: #c2c2c2;

@@ -3,7 +3,7 @@
         <!--一级评论-->
         <div class="commentBox">
             <div class="commentAvatar">
-                <a :href="comment.url" target="_blank" v-show="comment.url&&comment.email">
+                <a :href="comment.url" target="_blank" v-show="comment.email">
                     <img :src="`http://q1.qlogo.cn/g?b=qq&nk=${comment.email.split(`@`)[0]}&s=100`" loading="lazy">
                 </a>
                 <img src="../assets/logo.png" v-show="!comment.email" loading="lazy">
@@ -13,13 +13,19 @@
                 <div class="showComment themeText">{{ comment.commentContent }}</div>
                 <div class="commentFooter">
                     <div class="commentTime">{{ getTime(comment.createTime) }}</div>
-                    <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
-                    <i class="fa fa-thumbs-o-down thumbDown"></i>
+                    <div class="thumbUp"
+                         @click="handleLike(comment.id)"
+                    ><i class="fa  fa-heart-o" :id="comment.id"
+                    ></i>
+                        {{ comment.likes }}
+                    </div>
+                    <!--<i class="fa fa-thumbs-o-down thumbDown"></i>-->
                     <!--当用户点击回复时，如果是第一次点,则显示,如果是第二次,则隐藏-->
-                    <button @click="showReplyView(comment.id,comment.nickname)">
+                    <button style="height: 100%;" @click="showReplyView(comment.id,comment.nickname)">
                         {{ this.$store.state.currReply === comment.id ? '取消回复' : '回复' }}
                     </button>
                 </div>
+
             </div>
         </div>
 
@@ -46,8 +52,8 @@
 
                     <div class="showComment themeText" style="margin-top: 0">
                         <a
-                            class="showNickName" :href="subComment.url" target="_blank" style="margin-right: 5px">{{
-                                subComment.nickname
+                                class="showNickName" :href="subComment.url" target="_blank" style="margin-right: 5px">{{
+                            subComment.nickname
                             }}
                         </a>
                         <a style="color: #00b4d8 ;cursor: pointer" v-if="subComment.replyname!==subComment.nickname">
@@ -59,10 +65,15 @@
                     </div>
                     <div class="commentFooter">
                         <div class="commentTime">{{ getTime(subComment.createTime) }}</div>
-                        <div class="thumbUp"><i class="fa fa-thumbs-o-up"></i> 666</div>
-                        <i class="fa fa-thumbs-o-down thumbDown"></i>
+                        <div class="thumbUp"
+                             @click="handleLike(subComment.id)">
+                            <i class="fa fa-heart-o" :id="comment.id"
+                            />
+                            {{ subComment.likes }}
+                        </div>
+                        <!--<i class="fa fa-thumbs-o-down thumbDown"></i>-->
                         <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
-                        <button @click="showReplyView(subComment.id,subComment.nickname)">
+                        <button style="height: 100%;" @click="showReplyView(subComment.id,subComment.nickname)">
                             {{ currReply === subComment.id ? '取消回复' : '回复' }}
                         </button>
                     </div>
@@ -85,6 +96,7 @@
 <script>
 import common from "@/utils/timestampToTime";
 import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import {commentLike} from "@/api/comment";
 
 export default {
     name: "Comment",
@@ -103,6 +115,12 @@ export default {
         }
     },
     methods: {
+        async handleLike(cid) {
+            const res = await commentLike(cid)
+            if (res.code === 20000) {
+                window.location.reload()
+            }
+        },
         getTime(time) {
             return common.timestampToTime(time, 1)
         },
@@ -157,7 +175,7 @@ export default {
 }
 
 .showComment {
-    margin: 10px 0 5px ;
+    margin: 10px 0 5px;
     overflow-wrap: break-word;
     /*max-width: 556px;*/
 }
@@ -200,8 +218,9 @@ export default {
 }
 
 .showNickName {
-    color: #a4a4a4;
     transition: 0.2s;
+    color: #000000;
+    font-weight: bolder;
 }
 
 .showNickName:hover {

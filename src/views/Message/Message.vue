@@ -1,5 +1,6 @@
 <template>
     <div class="messageBox">
+        <BgBoard title="留言板" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
         <div class="messageInput" v-show="!this.$store.state.currReply">
             <CommentInfoInput :custom-placeholder="'留个言再走呗~'"/>
         </div>
@@ -14,10 +15,12 @@ import Banner from "@/components/Banner.vue";
 import Comment from "@/components/Comment.vue";
 import CommentInfoInput from "@/components/CommentInfoInput.vue";
 import {selectList} from "@/api/message";
+import BgBoard from "@/components/BgBoard.vue";
+import Loading from "@/components/Loading.vue";
 
 export default {
     name: "Message",
-    components: {CommentInfoInput, Comment, Banner},
+    components: {Loading, BgBoard, CommentInfoInput, Comment, Banner},
     data() {
         return {
             messages: [
@@ -36,7 +39,7 @@ export default {
     methods: {
         async getAllMessages() {
             this.loading = true
-            const res = await selectList(999)
+            const res = await selectList(1,999)
             if (res.code === 20000) {
                 console.log(res.data.records)
                 this.messages = res.data.records
@@ -49,12 +52,14 @@ export default {
 
 <style scoped>
 .messageBox {
-    padding-top: 82px;
+    margin: 0 auto;
+    padding-top: 60px;
     min-height: calc(100vh - 70px);
     display: flex;
     flex-direction: column;
     align-items: center;
     flex-wrap: wrap;
+
 }
 
 .messageInput {

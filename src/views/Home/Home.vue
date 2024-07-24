@@ -85,6 +85,7 @@ export default {
 }
 
 .content {
+    margin-top: 20px;
     display: flex;
     width: 80%;
 }
@@ -103,6 +104,7 @@ export default {
     background: var(--bg1);
     margin-left: 20px;
     border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
 }
 .loading-wrapper{
     width: 60%;

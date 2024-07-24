@@ -15,6 +15,7 @@ export default {
 <style scoped>
 .desc {
     text-align: center;
+
 }
 
 .avatar {

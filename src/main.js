@@ -1,9 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
+
+// 路由引入
 import VueRouter from "vue-router";
 import router from "@/router";
+
+Vue.use(VueRouter)
+
+// 图标库引入
 import 'font-awesome/css/font-awesome.min.css'
-// 主题样式
+
+
 import store from "@/store";
 
 Vue.config.productionTip = false
@@ -33,19 +40,30 @@ import hljs from 'highlight.js'
 // github主题
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js'
 import '@kangc/v-md-editor/lib/theme/style/github.css'
-VMdPreview.use(githubTheme,{
+
+VMdPreview.use(githubTheme, {
     Hljs: hljs
 })
-
-
-
-
-
 Vue.use(VMdPreview)
 // Vue.use(VueMarkdownEditor)
 
+// 引入bs5
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-Vue.use(VueRouter)
+
+// 字体引入
+import "@/assets/text/text.css"
+
+// 引入element
+import {Form, Message, FormItem, Input,} from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
+Vue.prototype.$message = Message;
+
 new Vue({
     router,
     store,

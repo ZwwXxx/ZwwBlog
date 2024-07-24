@@ -8,9 +8,9 @@ export function submitMessage(form) {
         data:form
     })
 }
-export function selectList(limit) {
+export function selectList(page,limit) {
     return request({
-        url:`${module}/selectList/${limit}`,
+        url:`${module}/selectList/${[page]}/${limit}`,
         method:'get'
     })
 }

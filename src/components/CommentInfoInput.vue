@@ -65,12 +65,13 @@ export default {
         // 提交评论
         submitComment() {
             this.loading = true
-            if (this.form.nickname.trim() === '') {
-                this.form.nickname = '匿名用户'
-            }
             if (this.form.commentContent.trim() === '') {
                 alert('输入内容不能为空')
+                this.loading = false
                 return;
+            }
+            if (this.form.nickname.trim() === '') {
+                this.form.nickname = '匿名用户'
             }
             if (this.$route.path !== '/message') {
                 console.log(this.$route.path)

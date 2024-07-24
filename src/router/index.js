@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 const routes = [
     {
         path: '/',
-        component:()=>import('@/views/Layout/index.vue'),
+        component:()=>import('@/views/Layout/LayOut.vue'),
         redirect: '/home',
         children:[
             {
@@ -25,6 +25,11 @@ const routes = [
                 path:'/category/:cname',
                 name:'Category',
                 component:()=>import('@/views/Category/Category.vue')
+            },
+            {
+                path:'/friends',
+                name:'Friends',
+                component:()=>import('@/views/Friends/Friends.vue')
             }
         ]
     },

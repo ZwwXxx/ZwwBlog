@@ -12,42 +12,44 @@
 <script>
 export default {
     name: "Footer",
-    data(){
-      return{
-          dynamicStyles:{
-              opacity:0
-          }
-      }
+    data() {
+        return {
+            dynamicStyles: {
+                opacity: 0
+            }
+        }
     },
     mounted() {
         // 当所有组件都挂载好后，监听窗口的滚动事件，触发回调
-        window.addEventListener('scroll',this.handleWindowScroll)
+        window.addEventListener('scroll', this.handleWindowScroll)
     },
     beforeUnmount() {
         window.removeEventListener('scroll', this.handleWindowScroll);
     },
-    methods:{
-        handleWindowScroll(){
-            if (window.scrollY>document.documentElement.clientHeight/2){
-                this.dynamicStyles.opacity=1
-            }else{
-                this.dynamicStyles.opacity=0
+    methods: {
+        handleWindowScroll() {
+            if (window.scrollY > document.documentElement.clientHeight / 2) {
+                this.dynamicStyles.opacity = 1
+            } else {
+                this.dynamicStyles.opacity = 0
             }
         },
-        toTop(){
-            scrollTo(0,0)
+        toTop() {
+            scrollTo(0, 0)
         }
     }
 }
 </script>
 
 <style scoped>
-.themeText{
+.themeText {
     color: var(--text-color);
 }
-.themeBg{
+
+.themeBg {
     background: var(--bg3);
 }
+
 /* 页脚 */
 .footer {
     text-align: center;
@@ -59,10 +61,10 @@ export default {
     padding: 20px;
     font-size: 20px;
     font-weight: bolder;
-
+    margin-top: 40px;
 }
 
-.toTop{
+.toTop {
     position: fixed;
     bottom: 80px;
     right: 30px;
@@ -75,7 +77,8 @@ export default {
     transition: 0.3s ease;
     cursor: pointer;
 }
-.beian a{
+
+.beian a {
     color: var(--text-color);
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
     <div class="categoryBox">
-        <div class="introduce">{{ this.$route.params.cname }}</div>
+        <BgBoard :title="this.$route.params.cname"/>
+
         <!--            整体宽度，用来控制主体内容，外层设置父盒子便于flex布局居中-->
         <div class="content" v-show="!loading">
 
@@ -27,6 +28,7 @@
 import Article from "@/views/Article/Article.vue";
 import {selectList} from "@/api/article";
 import Description from "@/components/Description.vue";
+import BgBoard from "@/components/BgBoard.vue";
 
 export default {
     name: "Category",
@@ -39,7 +41,7 @@ export default {
             articleList: []
         }
     },
-    components: {Description, Article},
+    components: {BgBoard, Description, Article},
     mounted() {
         console.log(this.$route.params.cname)
     },
@@ -49,7 +51,7 @@ export default {
     methods: {
         getArticleList() {
             this.loading = true
-            this.searchObj.categoryName=this.$route.params.cname
+            this.searchObj.categoryName = this.$route.params.cname
             selectList(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
@@ -65,26 +67,13 @@ export default {
 
 <style scoped>
 .categoryBox {
-    padding-top: 76px;
+    padding-top: 60px;
     min-height: calc(100vh - 70px);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
-.introduce {
-    width: 100%;
-    height: 200px;
-    line-height: 200px;
-    font-size: 40px;
-    background: var(--bg1);
-    color: var(--text-color);
-    text-align: center;
-    margin-bottom: 50px;
-}
 
 .content {
+    margin: 0 auto;
     display: flex;
     width: 68%;
 }

@@ -15,7 +15,7 @@
 
 <script>
 import RightNav from "@/components/Header/RightNav.vue";
-import LeftNav from "@/components/Header/LeftNav.vue";
+import LeftNav from "@/components/Header/SideBar.vue";
 
 export default {
     name: "TopNav",
@@ -35,7 +35,7 @@ export default {
     box-sizing: border-box;
     position: fixed;
     width: 100%;
-    z-index: 999;
+    z-index: 2000;
     /*opacity: 0.7;*/
 }
 
