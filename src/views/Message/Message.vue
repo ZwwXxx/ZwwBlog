@@ -14,9 +14,9 @@
 import Banner from "@/components/Banner.vue";
 import Comment from "@/components/Comment.vue";
 import CommentInfoInput from "@/components/CommentInfoInput.vue";
-import {selectList} from "@/api/message";
 import BgBoard from "@/components/BgBoard.vue";
 import Loading from "@/components/Loading.vue";
+import {selectListByPage} from "@/api/message";
 
 export default {
     name: "Message",
@@ -39,9 +39,9 @@ export default {
     methods: {
         async getAllMessages() {
             this.loading = true
-            const res = await selectList(1,999)
+            const res = await selectListByPage(1, 999)
+            // const res = await selectList()
             if (res.code === 20000) {
-                console.log(res.data.records)
                 this.messages = res.data.records
             }
             this.loading = false

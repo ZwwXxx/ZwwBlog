@@ -1,22 +1,22 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/message'
-export function submitMessage(form) {
+const module = '/talkComment'
+export function submitComment(form) {
     return request({
         url:`${module}/add`,
         method:'post',
         data:form
     })
 }
-export function selectList() {
+export function selectList(talkId,limit) {
     return request({
-        url:`${module}/selectList`,
+        url:`${module}/selectList/${talkId}/${limit}`,
         method:'get'
     })
 }
-export function selectListByPage(page,limit) {
+export function commentLike(commentId) {
     return request({
-        url:`${module}/selectList/${[page]}/${limit}`,
+        url:`${module}/commentLike/${commentId}/`,
         method:'get'
     })
 }

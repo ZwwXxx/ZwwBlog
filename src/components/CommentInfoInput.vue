@@ -36,6 +36,7 @@
 <script>
 import {submitComment} from "@/api/comment";
 import {submitMessage} from "@/api/message";
+import {submitComment as submitTalkComment} from "@/api/talkComment";
 import Loading from "@/components/Loading.vue";
 
 export default {
@@ -73,6 +74,26 @@ export default {
             if (this.form.nickname.trim() === '') {
                 this.form.nickname = '匿名用户'
             }
+            // 说说使用该组件
+            if (this.$route.path === '/talk') {
+                // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
+                this.form.talkId = this.$store.state.currRepyTalkId
+                this.form.pid = this.$store.state.currReply
+                this.form.replyname = this.$store.state.currReplyName
+                submitTalkComment(this.form).then(res => {
+                    window.location.reload()
+                    if (res === 20000) {
+                        console.log('提交评论成功！')
+                        this.loading = false
+                        return
+                    }
+                }).catch(err => {
+                    console.log('提交失败,错误信息为', err)
+                })
+                return
+            }
+
+            // 留言版使用该组件
             if (this.$route.path !== '/message') {
                 console.log(this.$route.path)
                 // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
@@ -81,7 +102,7 @@ export default {
                 this.form.replyname = this.$store.state.currReplyName
                 submitComment(this.form).then(res => {
 
-                    window.location.reload()
+                    // window.location.reload()
                     if (res === 20000) {
                         console.log('提交评论成功！')
                         this.loading = false
@@ -91,12 +112,12 @@ export default {
                 })
                 return
             }
-            // 提交留言
+            // 文章使用该组件
             this.form.pid = this.$store.state.currReply
             this.form.replyname = this.$store.state.currReplyName
             submitMessage(this.form).then(res => {
 
-                window.location.reload()
+                // window.location.reload()
                 if (res === 20000) {
                     console.log('提交评论成功！')
 

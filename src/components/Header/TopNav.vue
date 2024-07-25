@@ -15,7 +15,7 @@
 
 <script>
 import RightNav from "@/components/Header/RightNav.vue";
-import LeftNav from "@/components/Header/SideBar.vue";
+import LeftNav from "@/components/Header/LeftNav.vue";
 
 export default {
     name: "TopNav",

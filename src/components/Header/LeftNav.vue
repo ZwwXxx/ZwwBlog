@@ -54,11 +54,15 @@ export default {
                 },
                 {
                     name: '留言板',
-                    icon: 'fa fa-comment'
+                    icon: 'fa fa-comments'
                 },
                 {
                     name: '友链',
                     icon: 'fa fa-chain'
+                },
+                {
+                    name: '说说',
+                    icon: 'fa fa-comment'
                 },
             ],
             category: [
@@ -91,6 +95,13 @@ export default {
                 case 3:
                     if (this.$route.path !== '/friends') {
                         this.$router.push("/friends")
+                    } else {
+                        window.location.reload()
+                    }
+                    break;
+                case 4:
+                    if (this.$route.path !== '/talk') {
+                        this.$router.push("/talk")
                     } else {
                         window.location.reload()
                     }

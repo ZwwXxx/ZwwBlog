@@ -14,6 +14,7 @@ const store = new Vuex.Store({
         currReply:null,
         currReplyName:'',
         currArticleId:null,
+        currRepyTalkId:null,
         total:null,
         loading:false,
     },
@@ -28,6 +29,9 @@ const store = new Vuex.Store({
         },
         changeCurrReply(state,id){
             state.currReply=id
+        },
+        changeCurrReplyTalkId(state,id){
+            state.currRepyTalkId=id
         }
     }
 })
