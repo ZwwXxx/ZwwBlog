@@ -27,6 +27,11 @@ const routes = [
                 component:()=>import('@/views/Category/Category.vue')
             },
             {
+                path:'/tag/:tname',
+                name:'Tag',
+                component:()=>import('@/views/Tag/Tag.vue')
+            },
+            {
                 path:'/friends',
                 name:'Friends',
                 component:()=>import('@/views/Friends/Friends.vue')

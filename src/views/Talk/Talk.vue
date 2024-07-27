@@ -189,7 +189,6 @@ export default {
 
 .content {
     margin-bottom: 20px;
-
 }
 
 .toolbar {

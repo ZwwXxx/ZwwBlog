@@ -4,7 +4,7 @@
         <el-card class="box-card cardBox">
             <div v-for="(item,index) in archive" :key="index">
                 <h1>{{ item.year }}</h1>
-                <el-timeline :reverse="reverse">
+                <el-timeline :reverse="false">
                     <el-timeline-item
                             v-for="(article, index) in item.articles"
                             :key="index"

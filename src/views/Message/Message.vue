@@ -1,12 +1,15 @@
 <template>
     <div class="messageBox">
-        <BgBoard title="留言板" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
-        <div class="messageInput" v-show="!this.$store.state.currReply">
-            <CommentInfoInput :custom-placeholder="'留个言再走呗~'"/>
-        </div>
-        <div class="messageBody">
-            <Comment v-for="(message,index) in messages" :comment="message" :key="index" style="border-radius: 10px"/>
-        </div>
+        <BgBoard title="留言" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
+        <el-card class="box-card cardBox">
+            <div class="messageInput" v-show="!this.$store.state.currReply">
+                <CommentInfoInput :custom-placeholder="'留个言再走呗~'"/>
+            </div>
+            <div class="messageBody">
+                <Comment v-for="(message,index) in messages" :comment="message" :key="index"
+                         style="border-radius: 10px"/>
+            </div>
+        </el-card>
     </div>
 </template>
 
@@ -51,6 +54,13 @@ export default {
 </script>
 
 <style scoped>
+.cardBox {
+    width: 60%;
+    margin: auto;
+    padding: 0 !important;
+
+}
+
 .messageBox {
     margin: 0 auto;
     padding-top: 60px;

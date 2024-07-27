@@ -53,7 +53,7 @@ export default {
                     icon: 'fa fa-book'
                 },
                 {
-                    name: '留言板',
+                    name: '留言',
                     icon: 'fa fa-comments'
                 },
                 {
@@ -78,9 +78,8 @@ export default {
                 },
             ],
             category: [
-                'Java',
-                'Vue',
-                'JavaScript'
+                '分类',
+                '标签',
             ],
             articleHoverIndex: 1
         }
@@ -142,20 +141,35 @@ export default {
             }
         },
         dropDownSkip(item) {
-            if (item===this.$route.params.cname){
+            // 防止重复进入页面
+            if (item===this.$route.params.cname||item===this.$route.params.tname){
                 return
             }
             console.log(item)
+          if (item==='分类'){
+              this.$router.push({
+                  // 这里使用name不使用path使用path需要这样写
+                  // path: `/category/${item}`,
+                  name: 'Category',
+                  params: {
+                      cname: item
+                  }
+              })
+              return;
+          }
             this.$router.push({
                 // 这里使用name不使用path使用path需要这样写
                 // path: `/category/${item}`,
-                name: 'Category',
-                params: {
-                    cname: item
+                name: 'Tag',
+                params:{
+                    tname:'标签'
                 }
-            }).then(()=>{
-                window.location.reload()
             })
+
+            // 忘记下面是干嘛的了，bug了再说
+            //     .then(()=>{
+            //     window.location.reload()
+            // })
         }
     }
 }

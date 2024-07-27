@@ -57,10 +57,10 @@ import "@/assets/text/text.css"
 
 // 引入element
 import {
-    Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem,
+    Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-
+Vue.use( Autocomplete)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)

@@ -125,6 +125,13 @@ import CommentInfoInput from "@/components/CommentInfoInput.vue";
 export default {
     name: "ArticleDetail",
     components: {CommentInfoInput, Comment, Loading, WangEditor},
+    watch: {
+        '$route.params.articleId': {
+            handler() {
+                this.getArticleData();
+            }
+        }
+    },
     data() {
         return {
             initSuccess: false,

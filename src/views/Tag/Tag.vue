@@ -1,23 +1,22 @@
 <template>
-    <div class="categoryBox">
-        <BgBoard :title="this.$route.params.cname"/>
-        <el-card class="box-card cardBox" v-show="this.$route.params.cname==='分类'">
+    <div class="TagBox">
+        <BgBoard :title="this.$route.params.tname"/>
+        <el-card class="box-card cardBox" v-show="this.$route.params.tname==='标签'">
             <div class="title">分类-4</div>
             <div class="contentBox">
                 <span
                         class="primaryContent"
-                        v-for="category in categoryList" :key="category"
-                        @click="jumpTo(category)"
+                        v-for="tag in tagList" :key="tag"
+                        @click="jumpTo(tag)"
                         :style="{
                           color:colorArray[randomNumForColor()],
                           fontSize:randomNumForFontSize()+'px',
                       }"
-                >{{ category }}</span>
+                >{{ tag }}</span>
             </div>
         </el-card>
-
         <!--展示具体文章-->
-        <el-card class="box-card cardBox" v-show="this.$route.params.cname!='分类'">
+        <el-card class="box-card cardBox" v-show="this.$route.params.tname!='标签'">
             <Article v-for="article in articleList"
                      :key="article.id"
                      :article="article"
@@ -28,55 +27,41 @@
 </template>
 
 <script>
-import Article from "@/views/Article/Article.vue";
-import {selectList} from "@/api/article";
-import Description from "@/components/Description.vue";
 import BgBoard from "@/components/BgBoard.vue";
-import ArticleDetail from "@/views/Article/ArticleDetail.vue";
+import { selectListByTag} from "@/api/article";
+import Article from "@/views/Article/Article.vue";
 
 export default {
-    name: "Category",
-    data() {
-        return {
-            loading: false,
+    name: "Tag",
+    components: {Article, BgBoard},
+    data(){
+        return{
             page: '1',
             limit: '15',
-            searchObj: {},
-            articleList: [],
-            categoryList: ['Java', 'MySQL', 'Vue2'],
+            searchObj:{},
+            tagList: ['Java','MySQL'],
+            articleList:[],
             colorArray: ['#cc0035', '#a2af00', '#0077d5', ' #00a81f', '#7500bb', '#f66500'],
         }
     },
-    watch: {
-        '$route.params.cname': {
-            handler() {
-                this.getArticleList();
-            }
-        }
-    },
-    components: {ArticleDetail, BgBoard, Description, Article},
-    mounted() {
-    },
-    created() {
-        this.getArticleList()
-    },
-    methods: {
+    methods:{
         randomNumForFontSize() {
             return Math.random() * 21 + 15
         },
         randomNumForColor() {
             return Math.floor(Math.random() * 6)
         },
-        jumpTo(categoryName) {
-            this.$router.push(`/category/${categoryName}`)
+        jumpTo(tag) {
+            this.$router.push(`/tag/${tag}`)
+            this.getArticleList()
         },
         getArticleList() {
-            if (this.$route.params.cname === '分类') {
+            if (this.$route.params.cname === '标签') {
                 return
             }
             this.loading = true
-            this.searchObj.categoryName = this.$route.params.cname
-            selectList(this.page, this.limit, this.searchObj).then(res => {
+            this.searchObj.tags = this.$route.params.tname
+            selectListByTag(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.articleList = res.data.records
@@ -90,11 +75,10 @@ export default {
 </script>
 
 <style scoped>
-.categoryBox {
+.TagBox {
     padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
-
 .cardBox {
     width: 60%;
     margin: auto;
