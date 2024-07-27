@@ -64,6 +64,14 @@ export default {
                     name: '说说',
                     icon: 'fa fa-comment'
                 },
+                {
+                    name: '相册',
+                    icon: 'fa fa-file-text-o'
+                },
+                {
+                    name: '归档',
+                    icon: 'fa fa-archive'
+                },
             ],
             category: [
                 'Java',
@@ -102,6 +110,20 @@ export default {
                 case 4:
                     if (this.$route.path !== '/talk') {
                         this.$router.push("/talk")
+                    } else {
+                        window.location.reload()
+                    }
+                    break;
+                case 5:
+                    if (this.$route.path !== '/album') {
+                        this.$router.push("/album")
+                    } else {
+                        window.location.reload()
+                    }
+                    break;
+                case 6:
+                    if (this.$route.path !== '/archive') {
+                        this.$router.push("/archive")
                     } else {
                         window.location.reload()
                     }

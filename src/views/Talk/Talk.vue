@@ -8,9 +8,16 @@
                                            alt=""></div>
                 <div class="rightSide">
                     <div class="name">Zww</div>
-                    <div class="content">{{ item.talkContent }}</div>
+                    <div class="content" v-html="item.talkContent">{{ item.talkContent }}</div>
                     <div class="toolbar">
-                        <div class="timeToNow">{{ getTime(item.createTime) }}<span>{{isDay?'天':'小时'}}</span>前</div>
+                        <div class="timeToNow">
+                            <span v-if="item.toNow >= 31536000000">{{ Math.floor(item.toNow / 31536000000) }} 年</span>
+                            <span v-else-if="item.toNow >= 2592000000">{{ Math.floor(item.toNow / 2592000000) }} 月</span>
+                            <span v-else-if="item.toNow >= 86400000">{{ Math.floor(item.toNow / 86400000) }} 天</span>
+                            <span v-else-if="item.toNow >= 3600000">{{ Math.floor(item.toNow / 3600000) }} 小时</span>
+                            <span v-else-if="item.toNow >= 60000">{{ Math.floor(item.toNow / 60000) }} 分钟</span>
+                            <span v-else>{{ Math.floor(item.toNow / 1000) }} 秒</span>前
+                        </div>
                         <div class="commentNlike">
                             <div class="comment" @click="showInput(item.id)"><i class="fa fa-commenting-o "></i>
                                 {{
@@ -50,7 +57,13 @@ export default {
             isShow: false,
             talk: [],
             talkComment: [],
-            isDay: false
+            isDay: false,
+            isHour: false,
+            isMinute: false,
+            isSecond: false,
+            now: null,
+            nowDeep:null,
+            test:1
         }
     },
     computed: {
@@ -69,38 +82,59 @@ export default {
             set(commentId) {
                 this.$store.commit('changeCurrReply', commentId)
             }
-        }
+        },
     },
     mounted() {
         this.getTalkData()
     },
     methods: {
-        getTime(createTime) {
-            const nowTime = (new Date().getTime() - createTime) / 60 / 60 / 24 / 1000
-            if (nowTime < 1) {
-                this.isDay = false
-                return Math.floor(nowTime * 24)
+        getTime(toNow) {
+            // 天数
+            const day = toNow / 60 / 60 / 24 / 1000
+            // 小时
+            const hour = toNow / 60 / 60 / 1000
+            // 分钟
+            const minute = toNow / 60 / 1000
+            //秒
+            const second = toNow / 1000
+
+            if (day < 1 && hour < 1 && minute < 1) {
+                return Math.floor(second)
+            }
+            if (day < 1 && hour < 1) {
+                return Math.floor(minute)
+            }
+            // 天数小于1返回小时
+            if (day < 1) {
+                return Math.floor(hour)
             }
             this.isDay=true
-            return Math.floor(nowTime)
+            return Math.floor(day)
         },
-        async showInput(id) {
-            if (id === this.$store.state.currRepyTalkId) {
+        showInput(id) {
+            if (id === this.currRepyTalkId) {
                 this.$store.state.currRepyTalkId = null
                 return
             }
             this.currRepyTalkId = id
-            const res2 = await selectTalkCommentList(id, 999)
-            if (res2.code === 20000) {
-                this.talkComment = res2.data.records
-            }
-        },
-        async getTalkData() {
-            const res = await selectList(1, 999)
-            if (res.code === 20000) {
-                this.talk = res.data.records
-            }
+            this.$nextTick(() => {
+                this.getTalkComment(id)
+            })
 
+        },
+        getTalkData() {
+            selectList(1, 999).then(res => {
+                if (res.code === 20000) {
+                    this.talk = res.data.records
+                }
+            })
+        },
+        getTalkComment(id) {
+            selectTalkCommentList(id, 999).then(res => {
+                if (res.code === 20000) {
+                    this.talkComment = res.data.records
+                }
+            })
         }
 
     },
@@ -140,6 +174,8 @@ export default {
     display: flex;
     flex-direction: column;
     position: relative;
+    color: var(--text-color);
+
 }
 
 .name {
@@ -153,6 +189,7 @@ export default {
 
 .content {
     margin-bottom: 20px;
+
 }
 
 .toolbar {

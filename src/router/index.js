@@ -35,6 +35,21 @@ const routes = [
                 path:'/talk',
                 name:'Talk',
                 component:()=>import('@/views/Talk/Talk.vue')
+            },
+            {
+                path:'/album',
+                name:'Album',
+                component:()=>import('@/views/Album/Album.vue')
+            },
+            {
+                path:'/photos/:id',
+                name:'Photos',
+                component:()=>import('@/views/Album/Photos.vue')
+            },
+            {
+                path:'/archive',
+                name:'Archive',
+                component:()=>import('@/views/Archive/Archive.vue')
             }
         ]
     },

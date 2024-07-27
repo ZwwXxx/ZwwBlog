@@ -32,7 +32,7 @@ const store = new Vuex.Store({
         },
         changeCurrReplyTalkId(state,id){
             state.currRepyTalkId=id
-        }
+        },
     }
 })
 

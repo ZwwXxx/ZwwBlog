@@ -65,10 +65,8 @@ export default {
         },
         // 提交评论
         submitComment() {
-            this.loading = true
             if (this.form.commentContent.trim() === '') {
                 alert('输入内容不能为空')
-                this.loading = false
                 return;
             }
             if (this.form.nickname.trim() === '') {
@@ -83,44 +81,46 @@ export default {
                 submitTalkComment(this.form).then(res => {
                     window.location.reload()
                     if (res === 20000) {
-                        console.log('提交评论成功！')
-                        this.loading = false
+                        console.log('提交说说评论成功！')
                         return
                     }
                 }).catch(err => {
                     console.log('提交失败,错误信息为', err)
                 })
-                return
             }
 
             // 留言版使用该组件
-            if (this.$route.path !== '/message') {
-                console.log(this.$route.path)
-                // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
-                this.form.articleId = this.$store.state.currArticleId
+            if (this.$route.path === '/message') {
+                console.log('文章评论')
+
+                // 文章使用该组件
                 this.form.pid = this.$store.state.currReply
                 this.form.replyname = this.$store.state.currReplyName
-                submitComment(this.form).then(res => {
+                submitMessage(this.form).then(res => {
 
-                    // window.location.reload()
+                    window.location.reload()
                     if (res === 20000) {
-                        console.log('提交评论成功！')
-                        this.loading = false
+                        console.log('提交留言评论成功！')
+                        return
                     }
                 }).catch(err => {
                     console.log('提交失败,错误信息为', err)
                 })
-                return
+
             }
-            // 文章使用该组件
+
+
+
+            console.log(this.$route.path)
+            // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
+            this.form.articleId = this.$store.state.currArticleId
             this.form.pid = this.$store.state.currReply
             this.form.replyname = this.$store.state.currReplyName
-            submitMessage(this.form).then(res => {
+            submitComment(this.form).then(res => {
 
-                // window.location.reload()
+                window.location.reload()
                 if (res === 20000) {
-                    console.log('提交评论成功！')
-
+                    console.log('提交文章评论成功！')
                 }
             }).catch(err => {
                 console.log('提交失败,错误信息为', err)
