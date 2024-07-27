@@ -72,6 +72,10 @@ export default {
                     name: '归档',
                     icon: 'fa fa-archive'
                 },
+                {
+                    name: '关于',
+                    icon: 'fa fa-info'
+                },
             ],
             category: [
                 'Java',
@@ -124,6 +128,13 @@ export default {
                 case 6:
                     if (this.$route.path !== '/archive') {
                         this.$router.push("/archive")
+                    } else {
+                        window.location.reload()
+                    }
+                    break;
+                case 7:
+                    if (this.$route.path !== '/about') {
+                        this.$router.push("/about")
                     } else {
                         window.location.reload()
                     }
