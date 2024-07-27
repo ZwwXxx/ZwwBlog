@@ -9,7 +9,7 @@
                             v-for="(article, index) in item.articles"
                             :key="index"
                             :timestamp="getTime(article.createTime)">
-                        <div class="title" @click="jumpTo(article.id)"> {{ article.title }}</div>
+                        <span class="title" @click="jumpTo(article.id)"> {{ article.title }}</span>
                     </el-timeline-item>
                 </el-timeline>
                 <!--<div v-for="article in item.articles" :key="article.id">-->

@@ -50,6 +50,11 @@ const routes = [
                 path:'/archive',
                 name:'Archive',
                 component:()=>import('@/views/Archive/Archive.vue')
+            },
+            {
+                path:'/about',
+                name:'About',
+                component:()=>import('@/views/About/About.vue')
             }
         ]
     },
