@@ -56,7 +56,9 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import "@/assets/text/text.css"
 
 // 引入element
-import {Form, Message, FormItem, Input, Card,Image} from 'element-ui';
+import {
+    Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem,
+} from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.use(Form)
@@ -64,6 +66,8 @@ Vue.use(FormItem)
 Vue.use(Input)
 Vue.use(Card)
 Vue.use(Image)
+Vue.use(Timeline);
+Vue.use(TimelineItem);
 Vue.prototype.$message = Message;
 
 new Vue({

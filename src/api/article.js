@@ -20,3 +20,13 @@ export function selectById(id) {
     })
 }
 
+export function getArchive() {
+    return request({
+        url: `${module}/getArchive`,
+        method: 'get',
+    })
+}
+
+
+
+
