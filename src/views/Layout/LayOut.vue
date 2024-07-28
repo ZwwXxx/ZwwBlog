@@ -20,8 +20,8 @@
 <script>
 import Container from "@/views/Home/Home.vue";
 import TopNav from "@/components/Header/TopNav.vue";
-import Banner from "@/components/Banner.vue";
-import Footer from "@/components/Footer.vue";
+import Banner from "@/components/Banner/Banner.vue";
+import Footer from "@/components/Footer/Footer.vue";
 import Loading from "@/components/Loading.vue";
 
 export default {

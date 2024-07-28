@@ -1,7 +1,7 @@
 <template>
     <div class="photosBox">
         <BgBoard :title="`图库-${this.$route.params.id}`"/>
-        <el-card class="box-card cardBox">
+        <MyCard>
             <div class="cardBody">
                 <div style="position: relative" class="singleCategory"
                      v-for="(item,index) in photos" :key="index"
@@ -16,17 +16,18 @@
                     </div>
                 </div>
             </div>
-        </el-card>
+        </MyCard>
     </div>
 </template>
 
 <script>
 import BgBoard from "@/components/BgBoard.vue";
 import {selectList} from "@/api/photo";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Photos",
-    components: {BgBoard},
+    components: {MyCard, BgBoard},
     data() {
         return {
             photos: [],
@@ -57,12 +58,7 @@ export default {
     min-height: calc(100vh - 70px);
 }
 
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 0 !important;
 
-}
 
 .cardBody {
     display: grid;

@@ -1,29 +1,25 @@
 <template>
     <div class="messageBox">
         <BgBoard title="留言" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
-        <el-card class="box-card cardBox">
-            <div class="messageInput" v-show="!this.$store.state.currReply">
-                <CommentInfoInput :custom-placeholder="'留个言再走呗~'"/>
-            </div>
-            <div class="messageBody">
-                <Comment v-for="(message,index) in messages" :comment="message" :key="index"
-                         style="border-radius: 10px"/>
-            </div>
-        </el-card>
+        <MyCard>
+            <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.currReply"/>
+            <Comment v-for="(message,index) in messages" :comment="message" :key="index"/>
+        </MyCard>
     </div>
 </template>
 
 <script>
-import Banner from "@/components/Banner.vue";
-import Comment from "@/components/Comment.vue";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import Banner from "@/components/Banner/Banner.vue";
+import Comment from "@/components/Comment/Comment.vue";
+import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
 import BgBoard from "@/components/BgBoard.vue";
 import Loading from "@/components/Loading.vue";
 import {selectListByPage} from "@/api/message";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Message",
-    components: {Loading, BgBoard, CommentInfoInput, Comment, Banner},
+    components: {MyCard, Loading, BgBoard, CommentInfoInput, Comment, Banner},
     data() {
         return {
             messages: [
@@ -54,34 +50,10 @@ export default {
 </script>
 
 <style scoped>
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 0 !important;
-
-}
-
 .messageBox {
-    margin: 0 auto;
     padding-top: 60px;
     min-height: calc(100vh - 70px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-wrap: wrap;
 
 }
 
-.messageInput {
-    padding: 10px;
-    height: 300px;
-    background: white;
-    width: 800px;
-}
-
-.messageBody {
-    background: red;
-    overflow: hidden;
-    width: 800px;
-}
 </style>

@@ -116,8 +116,8 @@ import common from "@/utils/timestampToTime";
 import Loading from "@/components/Loading.vue";
 import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
-import Comment from "@/components/Comment.vue";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import Comment from "@/components/Comment/Comment.vue";
+import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
 // import VueMarkdownEditor, {xss} from '@kangc/v-md-editor';
 
 // 调用方法将 markdown 转换成 html 并使用 xss 过滤
@@ -313,7 +313,7 @@ export default {
                             id: id,
                             title: item.innerHTML,
                             // 截取节点名H3  的数字部分作为层数,
-                            // 截取下标为1的字符串,不截取下标为2的字符串,也就是左开右闭
+                            // 截取下标为1的字符串,不截取下标为2的字符串,也就是左闭右开
                             // 层级作用为缩进的长度
                             level: Number(item.nodeName.substring(1, 2)),
                             nodeName: item.nodeName
@@ -580,6 +580,7 @@ export default {
 
 .title a {
     display: block;
+    text-decoration: none;
     padding: 10px;
     color: #414141;
 }

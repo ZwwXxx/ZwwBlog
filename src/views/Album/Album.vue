@@ -1,7 +1,7 @@
 <template>
     <div class="albumBox">
         <BgBoard title="相册" content="用镜头捕捉光影中的美好"/>
-        <el-card class="box-card cardBox">
+        <MyCard>
             <div class="cardBody">
                 <div style="position: relative" class="singleCategory"
                 @click="jumpTo('风景')"
@@ -34,17 +34,18 @@
                     <div class="subDescription ">一起走过的时光</div>
                 </div>
             </div>
-        </el-card>
+        </MyCard>
     </div>
 
 </template>
 
 <script>
 import BgBoard from "@/components/BgBoard.vue";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Album",
-    components: {BgBoard},
+    components: {MyCard, BgBoard},
     data() {
         return {
             url: 'https://cdn.zww0891.fun/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240701112347.jpg'
@@ -69,12 +70,7 @@ export default {
     min-height: calc(100vh - 70px);
 }
 
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 0 !important;
 
-}
 
 .cardBody {
     display: grid;

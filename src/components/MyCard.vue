@@ -1,6 +1,8 @@
 <template>
     <el-card class="box-card cardBox">
+        <slot>
 
+        </slot>
     </el-card>
 </template>
 
@@ -12,9 +14,10 @@ export default {
 
 <style scoped>
 .cardBox {
-    width: 60%;
+    width: 70%;
     margin: auto;
     padding: 0 !important;
 
 }
+
 </style>

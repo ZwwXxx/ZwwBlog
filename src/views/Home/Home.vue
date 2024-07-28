@@ -28,8 +28,8 @@
 
 <script>
 import Article from "@/views/Article/Article.vue";
-import Description from "@/components/Description.vue";
-import Footer from "@/components/Footer.vue";
+import Description from "@/components/SideBar/Description.vue";
+import Footer from "@/components/Footer/Footer.vue";
 import {selectList} from "@/api/article";
 import Loading from "@/components/Loading.vue";
 
@@ -40,7 +40,7 @@ export default {
         return {
             loading: false,
             page: '1',
-            limit: '5',
+            limit: '99',
             searchObj: {},
             articleList: []
         }

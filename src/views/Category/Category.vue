@@ -1,7 +1,7 @@
 <template>
     <div class="categoryBox">
         <BgBoard :title="this.$route.params.cname"/>
-        <el-card class="box-card cardBox" v-show="this.$route.params.cname==='分类'">
+        <MyCard v-show="this.$route.params.cname==='分类'">
             <div class="title">分类-4</div>
             <div class="contentBox">
                 <span
@@ -14,25 +14,25 @@
                       }"
                 >{{ category }}</span>
             </div>
-        </el-card>
-
+        </MyCard>
+        <MyCard  v-show="this.$route.params.cname!='分类'">
         <!--展示具体文章-->
-        <el-card class="box-card cardBox" v-show="this.$route.params.cname!='分类'">
             <Article v-for="article in articleList"
                      :key="article.id"
                      :article="article"
 
             ></Article>
-        </el-card>
+        </MyCard>
     </div>
 </template>
 
 <script>
 import Article from "@/views/Article/Article.vue";
 import {selectList} from "@/api/article";
-import Description from "@/components/Description.vue";
+import Description from "@/components/SideBar/Description.vue";
 import BgBoard from "@/components/BgBoard.vue";
 import ArticleDetail from "@/views/Article/ArticleDetail.vue";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Category",
@@ -54,7 +54,7 @@ export default {
             }
         }
     },
-    components: {ArticleDetail, BgBoard, Description, Article},
+    components: {MyCard, ArticleDetail, BgBoard, Description, Article},
     mounted() {
     },
     created() {
@@ -93,12 +93,6 @@ export default {
 .categoryBox {
     padding-top: 60px;
     min-height: calc(100vh - 70px);
-}
-
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 40px 30px;
 }
 
 .title {

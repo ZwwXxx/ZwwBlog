@@ -1,7 +1,7 @@
 <template>
     <div class="talkBox">
         <BgBoard title="说说" content="记录生活中的点点滴滴,分享碎片化的思考。"/>
-        <div class="talkMain">
+        <MyCard>
             <div class="talkBody" v-for="(item ,index) in talk" :key="index">
                 <div class="leftSide"><img class="avatar"
                                            src="https://cdn.zww0891.fun/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240701112347.jpg"
@@ -12,14 +12,16 @@
                     <div class="toolbar">
                         <div class="timeToNow">
                             <span v-if="item.toNow >= 31536000000">{{ Math.floor(item.toNow / 31536000000) }} 年</span>
-                            <span v-else-if="item.toNow >= 2592000000">{{ Math.floor(item.toNow / 2592000000) }} 月</span>
+                            <span v-else-if="item.toNow >= 2592000000">{{
+                                Math.floor(item.toNow / 2592000000)
+                                }} 月</span>
                             <span v-else-if="item.toNow >= 86400000">{{ Math.floor(item.toNow / 86400000) }} 天</span>
                             <span v-else-if="item.toNow >= 3600000">{{ Math.floor(item.toNow / 3600000) }} 小时</span>
                             <span v-else-if="item.toNow >= 60000">{{ Math.floor(item.toNow / 60000) }} 分钟</span>
                             <span v-else>{{ Math.floor(item.toNow / 1000) }} 秒</span>前
                         </div>
                         <div class="commentNlike">
-                            <div class="comment" @click="showInput(item.id)"><i class="fa fa-commenting-o "></i>
+                            <div class="commentNum" @click="showInput(item.id)"><i class="fa fa-commenting-o "></i>
                                 {{
                                 item.commentNum
                                 }}
@@ -36,22 +38,24 @@
 
                 </div>
             </div>
-        </div>
+        </MyCard>
     </div>
+  <!--</div>-->
 </template>
 
 <script>
 import BgBoard from "@/components/BgBoard.vue";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
-import Comment from "@/components/Comment.vue";
+import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
+import Comment from "@/components/Comment/Comment.vue";
 import {selectList} from "@/api/talk";
 import {selectList as selectTalkCommentList} from "@/api/talkComment";
+import MyCard from "@/components/MyCard.vue";
 // import common from "@/utils/timestampToTime";
 
 
 export default {
     name: "Talk",
-    components: {Comment, CommentInfoInput, BgBoard},
+    components: {MyCard, Comment, CommentInfoInput, BgBoard},
     data() {
         return {
             isShow: false,
@@ -62,8 +66,8 @@ export default {
             isMinute: false,
             isSecond: false,
             now: null,
-            nowDeep:null,
-            test:1
+            nowDeep: null,
+            test: 1
         }
     },
     computed: {
@@ -108,10 +112,11 @@ export default {
             if (day < 1) {
                 return Math.floor(hour)
             }
-            this.isDay=true
+            this.isDay = true
             return Math.floor(day)
         },
         showInput(id) {
+            this.talkComment=[]
             if (id === this.currRepyTalkId) {
                 this.$store.state.currRepyTalkId = null
                 return
@@ -143,19 +148,11 @@ export default {
 </script>
 
 <style scoped>
+
 .talkBox {
     padding-top: 60px;
     min-height: calc(100vh - 70px);
     border-radius: 10px;
-}
-
-.talkMain {
-    width: 62%;
-    margin: 0 auto;
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--bg1);
-    padding: 20px 60px;
 }
 
 .talkBody {
@@ -202,7 +199,7 @@ export default {
     align-items: center;
 }
 
-.comment {
+.commentNum {
     margin-right: 15px;
     cursor: pointer;
 }

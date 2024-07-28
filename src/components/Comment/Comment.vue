@@ -6,7 +6,7 @@
                 <a :href="comment.url" target="_blank" v-show="comment.email">
                     <img :src="`http://q1.qlogo.cn/g?b=qq&nk=${comment.email.split(`@`)[0]}&s=100`" loading="lazy">
                 </a>
-                <img src="../assets/logo.png" v-show="!comment.email" loading="lazy">
+                <img src="../../assets/logo.png" v-show="!comment.email" loading="lazy">
             </div>
             <div class="commentBody">
                 <a class="showNickName" :href="comment.url" target="_blank">{{ comment.nickname }}</a>
@@ -46,7 +46,7 @@
                     <a :href="subComment.url" target="_blank" v-show="subComment.url&&subComment.email">
                         <!--<img :src="`http://q1.qlogo.cn/g?b=qq&nk=${subComment.email.split(`@`)[0]}&s=100`" loading="lazy">-->
                     </a>
-                    <img src="../assets/logo.png" v-show="!subComment.email" loading="lazy">
+                    <img src="../../assets/logo.png" v-show="!subComment.email" loading="lazy">
                 </div>
                 <div class="commentBody">
 
@@ -95,7 +95,7 @@
 
 <script>
 import common from "@/utils/timestampToTime";
-import CommentInfoInput from "@/components/CommentInfoInput.vue";
+import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
 import {commentLike} from "@/api/comment";
 
 export default {
@@ -172,6 +172,8 @@ export default {
     height: 80%;
     width: 663px;
     flex: 1;
+
+
 }
 
 .showComment {

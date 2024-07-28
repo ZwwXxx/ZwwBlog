@@ -1,7 +1,7 @@
 <template>
     <div class="archiveBox">
         <BgBoard title="归档" content="用文字留下岁月的痕迹"/>
-        <el-card class="box-card cardBox">
+        <MyCard>
             <div v-for="(item,index) in archive" :key="index">
                 <h1>{{ item.year }}</h1>
                 <el-timeline :reverse="false">
@@ -16,7 +16,7 @@
                 <!--    <span>{{article.createTime}}</span>{{ article.title }}-->
                 <!--</div>-->
             </div>
-        </el-card>
+        </MyCard>
     </div>
 </template>
 
@@ -24,10 +24,11 @@
 import BgBoard from "@/components/BgBoard.vue";
 import {getArchive} from "@/api/article";
 import common from "@/utils/timestampToTime";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Archive",
-    components: {BgBoard},
+    components: {MyCard, BgBoard},
     data() {
         return {
             archive: []
@@ -63,13 +64,6 @@ export default {
 .archiveBox {
     padding-top: 60px;
     min-height: calc(100vh - 70px);
-}
-
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 0 !important;
-
 }
 .title{
     cursor: pointer

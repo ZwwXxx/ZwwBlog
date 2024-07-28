@@ -1,8 +1,8 @@
 <template>
     <div class="TagBox">
         <BgBoard :title="this.$route.params.tname"/>
-        <el-card class="box-card cardBox" v-show="this.$route.params.tname==='标签'">
-            <div class="title">分类-4</div>
+        <MyCard v-show="this.$route.params.tname==='标签'">
+            <div class="title">标签-{{ tagList.length }}</div>
             <div class="contentBox">
                 <span
                         class="primaryContent"
@@ -12,39 +12,49 @@
                           color:colorArray[randomNumForColor()],
                           fontSize:randomNumForFontSize()+'px',
                       }"
-                >{{ tag }}</span>
+                >{{ tag.tagName }}</span>
             </div>
-        </el-card>
+        </MyCard>
         <!--展示具体文章-->
-        <el-card class="box-card cardBox" v-show="this.$route.params.tname!='标签'">
+        <MyCard v-show="this.$route.params.tname!='标签'">
             <Article v-for="article in articleList"
                      :key="article.id"
                      :article="article"
 
             ></Article>
-        </el-card>
+        </MyCard>
     </div>
 </template>
 
 <script>
 import BgBoard from "@/components/BgBoard.vue";
-import { selectListByTag} from "@/api/article";
+import {selectListByTag} from "@/api/article";
 import Article from "@/views/Article/Article.vue";
+import {selectList} from "@/api/tag";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "Tag",
-    components: {Article, BgBoard},
-    data(){
-        return{
+    components: {MyCard, Article, BgBoard},
+    data() {
+        return {
             page: '1',
             limit: '15',
-            searchObj:{},
-            tagList: ['Java','MySQL'],
-            articleList:[],
+            searchObj: {},
+            tagList: ['Java', 'MySQL'],
+            articleList: [],
             colorArray: ['#cc0035', '#a2af00', '#0077d5', ' #00a81f', '#7500bb', '#f66500'],
         }
     },
-    methods:{
+    created() {
+        selectList(1, 99).then(res => {
+            if (res.code === 20000) {
+                this.tagList = res.data.records
+            }
+
+        })
+    },
+    methods: {
         randomNumForFontSize() {
             return Math.random() * 21 + 15
         },
@@ -52,7 +62,7 @@ export default {
             return Math.floor(Math.random() * 6)
         },
         jumpTo(tag) {
-            this.$router.push(`/tag/${tag}`)
+            this.$router.push(`/tag/${tag.tagName}`)
             this.getArticleList()
         },
         getArticleList() {
@@ -79,11 +89,8 @@ export default {
     padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 40px 30px;
-}
+
+
 
 .title {
     text-align: center;

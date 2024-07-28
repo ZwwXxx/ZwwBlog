@@ -1,7 +1,7 @@
 <template>
     <div class="aboutBox">
         <BgBoard title="关于" content=""/>
-        <el-card class="box-card cardBox">
+        <MyCard>
            <div>
                <h2>技术栈</h2>
                <ul>
@@ -30,16 +30,17 @@
                    <li>爱好: <a href="https://www.minecraft.net/zh-hans">Minecraft</a>,羽毛球</li>
                </ul>
            </div>
-        </el-card>
+        </MyCard>
     </div>
 </template>
 
 <script>
 import BgBoard from "@/components/BgBoard.vue";
+import MyCard from "@/components/MyCard.vue";
 
 export default {
     name: "About",
-    components: {BgBoard}
+    components: {MyCard, BgBoard}
 }
 </script>
 
@@ -49,10 +50,5 @@ export default {
     min-height: calc(100vh - 70px);
 }
 
-.cardBox {
-    width: 60%;
-    margin: auto;
-    padding: 0 !important;
 
-}
 </style>

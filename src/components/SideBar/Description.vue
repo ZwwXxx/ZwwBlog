@@ -1,6 +1,6 @@
 <template>
     <div class="desc">
-        <img src="@/assets/images/微信图片_20240701112347.jpg" class="avatar" alt="avatar">
+        <img src="../../assets/images/微信图片_20240701112347.jpg" class="avatar" alt="avatar">
         <div class="author-name">Zww</div>
         <div class="saying">尽人事，听天命</div>
     </div>
