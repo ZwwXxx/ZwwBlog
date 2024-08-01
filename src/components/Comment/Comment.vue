@@ -42,40 +42,41 @@
         <div v-show="comment.children&&comment.children.length>0">
             <div class="commentBox" v-for="subComment in comment.children" :key="subComment.id"
                  style="padding-left: 50px">
-                <div class="commentAvatar">
-                    <a :href="subComment.url" target="_blank" v-show="subComment.url&&subComment.email">
-                        <!--<img :src="`http://q1.qlogo.cn/g?b=qq&nk=${subComment.email.split(`@`)[0]}&s=100`" loading="lazy">-->
-                    </a>
-                    <img src="../../assets/logo.png" v-show="!subComment.email" loading="lazy">
-                </div>
-                <div class="commentBody">
-
-                    <div class="showComment themeText" style="margin-top: 0">
-                        <a
-                                class="showNickName" :href="subComment.url" target="_blank" style="margin-right: 5px">{{
-                            subComment.nickname
-                            }}
+                <div style="display:flex">
+                    <div class="commentAvatar">
+                        <a :href="subComment.url" target="_blank" v-show="subComment.url&&subComment.email">
+                            <!--<img :src="`http://q1.qlogo.cn/g?b=qq&nk=${subComment.email.split(`@`)[0]}&s=100`" loading="lazy">-->
                         </a>
-                        <a style="color: #00b4d8 ;cursor: pointer" v-if="subComment.replyname!==subComment.nickname">
-                            回复
-                            @{{ subComment.replyname }}
-                        </a>
-                        <!--文章内容区域-->
-                        {{ subComment.commentContent }}
+                        <img src="../../assets/logo.png" v-show="!subComment.email" loading="lazy">
                     </div>
-                    <div class="commentFooter">
-                        <div class="commentTime">{{ getTime(subComment.createTime) }}</div>
-                        <div class="thumbUp"
-                             @click="handleLike(subComment.id)">
-                            <i class="fa fa-heart-o" :id="comment.id"
-                            />
-                            {{ subComment.likes }}
+                    <div class="commentBody">
+
+                        <div class="showComment themeText" style="margin-top: 0">
+                            <a
+                                class="showNickName" :href="subComment.url" target="_blank" style="margin-right: 5px">{{
+                                    subComment.nickname
+                                }}
+                            </a>
+                            <a style="color: #00b4d8 ;cursor: pointer" v-if="subComment.replyname!==subComment.nickname">
+                                <span v-show="subComment.replyname!==comment.nickname">回复@{{ subComment.replyname }}</span>
+                            </a>
+                            <!--文章内容区域-->
+                            {{ subComment.commentContent }}
                         </div>
-                        <!--<i class="fa fa-thumbs-o-down thumbDown"></i>-->
-                        <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
-                        <button style="height: 100%;" @click="showReplyView(subComment.id,subComment.nickname)">
-                            {{ currReply === subComment.id ? '取消回复' : '回复' }}
-                        </button>
+                        <div class="commentFooter">
+                            <div class="commentTime">{{ getTime(subComment.createTime) }}</div>
+                            <div class="thumbUp"
+                                 @click="handleLike(subComment.id)">
+                                <i class="fa fa-heart-o" :id="comment.id"
+                                />
+                                {{ subComment.likes }}
+                            </div>
+                            <!--<i class="fa fa-thumbs-o-down thumbDown"></i>-->
+                            <!--当用户点击回复时，如果针对当前回复对象显示 取消回复选项-->
+                            <button style="height: 100%;" @click="showReplyView(subComment.id,subComment.nickname)">
+                                {{ currReply === subComment.id ? '取消回复' : '回复' }}
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <!--子评论回复输入界面-->
@@ -196,6 +197,7 @@ export default {
     padding: 20px;
     border-bottom: 1px solid #adadad;
     flex: 1;
+    width: 100%;
 }
 
 .replyAvatar {
@@ -204,7 +206,8 @@ export default {
 }
 
 .replyMain {
-    flex: 92%;
+    flex: 1;
+
 }
 
 
@@ -241,13 +244,13 @@ export default {
 
 .thumbUp {
     position: absolute;
-    left: 150px;
+    left: 200px;
     cursor: pointer;
 }
 
 .thumbDown {
     position: absolute;
-    left: 210px;
+    left: 230px;
     cursor: pointer;
 }
 

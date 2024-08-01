@@ -1,6 +1,5 @@
 <template>
     <div style="max-width: 100%">
-        <loading v-show="loading"/>
         <div class="commentTextarea">
                     <textarea class="commentContent"
                               :placeholder="this.$store.state.currReply?`回复@${this.$store.state.currReplyName}`:this.placeholder"

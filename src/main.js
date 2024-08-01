@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
 
+
 // 路由引入
 import VueRouter from "vue-router";
 import router from "@/router";
@@ -27,9 +28,9 @@ import '@kangc/v-md-editor/lib/style/preview.css';
 // // vuepress代码块高亮
 // import Prism from 'prismjs';
 // // 按钮快捷复制代码块内容
-// import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
-// import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
-// VMdPreview.use(createCopyCodePlugin());
+import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
+import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
+VMdPreview.use(createCopyCodePlugin());
 // VMdPreview.use(vuepressTheme,{
 //     // Hljs: hljs
 //     Prism
@@ -53,13 +54,21 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 
 // 字体引入
-import "@/assets/text/text.css"
+// import "./assets/fonts/font-SmileySans.css"
+// import "./assets/fonts/font-Awesome.css"
+// import "./assets/fonts/font-Awesome-All.css"
+import "./assets/fonts/font-ZhuziAWan.css"
+// import "./assets/fonts/font-YSHST.css"
+// import "./assets/fonts/solid/font-solid.css"
 
 // 引入element
 import {
-    Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete,
+    Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete, Row, Col, Pagination,
 } from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(Pagination)
+Vue.use(Row);
+Vue.use(Col);
 Vue.use( Autocomplete)
 Vue.use(Form)
 Vue.use(FormItem)

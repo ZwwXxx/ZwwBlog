@@ -6,7 +6,7 @@
             <div class="contentBox">
                 <span
                         class="primaryContent"
-                        v-for="tag in tagList" :key="tag"
+                        v-for="(tag,index) in tagList" :key="index"
                         @click="jumpTo(tag)"
                         :style="{
                           color:colorArray[randomNumForColor()],
@@ -16,7 +16,7 @@
             </div>
         </MyCard>
         <!--展示具体文章-->
-        <MyCard v-show="this.$route.params.tname!='标签'">
+        <MyCard v-show="this.$route.params.tname!='标签'"  >
             <Article v-for="article in articleList"
                      :key="article.id"
                      :article="article"
@@ -29,12 +29,18 @@
 <script>
 import BgBoard from "@/components/BgBoard.vue";
 import {selectListByTag} from "@/api/article";
-import Article from "@/views/Article/Article.vue";
+import Article from "@/views/Article/ArticleCard.vue";
 import {selectList} from "@/api/tag";
 import MyCard from "@/components/MyCard.vue";
+import index from "vuex";
 
 export default {
     name: "Tag",
+    computed: {
+        index() {
+            return index
+        }
+    },
     components: {MyCard, Article, BgBoard},
     data() {
         return {
@@ -69,7 +75,7 @@ export default {
             if (this.$route.params.cname === '标签') {
                 return
             }
-            this.loading = true
+            this.$store.dispatch('openLoadingPage')
             this.searchObj.tags = this.$route.params.tname
             selectListByTag(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
@@ -77,7 +83,7 @@ export default {
                     this.articleList = res.data.records
                     this.$store.state.total = res.data.total
                 }
-                this.loading = false
+                this.$store.dispatch('closeLoadingPage')
             })
         }
     }
@@ -86,7 +92,6 @@ export default {
 
 <style scoped>
 .TagBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
 

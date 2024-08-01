@@ -66,7 +66,6 @@ export default {
 
 <style scoped>
 .albumBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
 

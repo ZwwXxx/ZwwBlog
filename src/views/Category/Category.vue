@@ -15,8 +15,9 @@
                 >{{ category }}</span>
             </div>
         </MyCard>
-        <MyCard  v-show="this.$route.params.cname!='分类'">
-        <!--展示具体文章-->
+
+
+        <MyCard  v-show="this.$route.params.cname!='分类'" style="min-height: 100vh">
             <Article v-for="article in articleList"
                      :key="article.id"
                      :article="article"
@@ -27,9 +28,9 @@
 </template>
 
 <script>
-import Article from "@/views/Article/Article.vue";
+import Article from "@/views/Article/ArticleCard.vue";
 import {selectList} from "@/api/article";
-import Description from "@/components/SideBar/Description.vue";
+import Description from "@/views/Layout/RightList/RightList.vue";
 import BgBoard from "@/components/BgBoard.vue";
 import ArticleDetail from "@/views/Article/ArticleDetail.vue";
 import MyCard from "@/components/MyCard.vue";
@@ -74,7 +75,7 @@ export default {
             if (this.$route.params.cname === '分类') {
                 return
             }
-            this.loading = true
+            this.$store.dispatch('openLoadingPage')
             this.searchObj.categoryName = this.$route.params.cname
             selectList(this.page, this.limit, this.searchObj).then(res => {
                 // console.log(res)
@@ -82,7 +83,7 @@ export default {
                     this.articleList = res.data.records
                     this.$store.state.total = res.data.total
                 }
-                this.loading = false
+                this.$store.dispatch('closeLoadingPage')
             })
         }
     }
@@ -91,7 +92,6 @@ export default {
 
 <style scoped>
 .categoryBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
 

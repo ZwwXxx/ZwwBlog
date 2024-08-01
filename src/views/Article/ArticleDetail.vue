@@ -1,113 +1,110 @@
 <template>
     <div class="articleDetailBox">
-        <div v-show="!loading" class="leftSide">
-
-            <!--文章展示区域-->
-            <div class="articleBody themeBg ">
-                <div class="articleHeader themeText">
-                    <div class="articleTitle">《{{ article.title }}》</div>
-
-                    <!--<div class="updateTime"><strong>更新日期</strong> : {{ getTime(article.updateTime) }}</div>-->
-                    <div class="titleBar">
-                        <div><i class=" fa fa-clock-o"/> {{ getTime(article.createTime) }}</div>
-                        <div><i class="fa fa-eye"/> {{ article.views }}</div>
-                        <div><i class="fa fa-comment"/> {{ this.$store.state.total }} </div>
-                        <div><i class="fa fa-folder"/> {{ article.categoryName }}</div>
-                        <div><i class="fa fa-tags"/> {{ article.tags}}</div>
-                    </div>
-                </div>
-                <!--将md转为html后渲染-->
-                <!--<div v-html="article.content" class="articleContent themeText" ref="articleContent" />-->
-                <!--直接渲染md-->
-                <!--<div ref="articleContent">-->
-                <v-md-preview :text="article.content" ref="articleContent"
-                              class="articleContent themeText"
-                              @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
-                <!--</div>-->
+        <BgBoard :title="article.title" >
+            <div class="titleBar">
+                <div><i class=" fa fa-clock-o"/> {{ getTime(article.createTime) }}</div>
+                <div><i class="fa fa-eye"/> {{ article.views }}</div>
+                <div><i class="fa fa-comment"/> {{ this.$store.state.total }} </div>
+                <div><i class="fa fa-folder"/> {{ article.categoryName }}</div>
+                <div><i class="fa fa-tags"/> {{ article.tags}}</div>
             </div>
+        </BgBoard>
+       <div class="articleLayOut">
+           <div v-show="!loading" class="leftSide">
+               <!--文章展示区域-->
+               <div class="articleBody themeBg ">
+                   <!--将md转为html后渲染-->
+                   <!--<div v-html="article.content" class="articleContent themeText" ref="articleContent" />-->
+                   <!--直接渲染md-->
+                   <!--<div ref="articleContent">-->
+                   <v-md-preview :text="article.content" ref="articleContent"
+                                 class="articleContent themeText"
+                                 @copy-code-success="handleCopyCodeSuccess"></v-md-preview>
+                   <!--</div>-->
+               </div>
 
-            <!--评论输入区域-->
-            <div class="articleComment themeBg">
-                <div class="commentTitle themeText">评论({{ this.$store.state.total }})</div>
-                <CommentInfoInput :article="article" v-show="!this.$store.state.currReply"/>
-            </div>
+               <!--评论输入区域-->
+               <div class="articleComment themeBg">
+                   <div class="commentTitle themeText">评论({{ this.$store.state.total }})</div>
+                   <CommentInfoInput :article="article" v-show="!this.$store.state.currReply"/>
+               </div>
 
-            <div class="nullComment themeBg themeText" v-show="!this.comments.length">
-                暂无评论~不如您来开个头？
-            </div>
+               <div class="nullComment themeBg themeText" v-show="!this.comments.length">
+                   暂无评论~不如您来开个头？
+               </div>
 
 
-            <!--评论内容区域-->
-            <div
-                    style="border-radius: 20px;overflow: hidden"
-            >
-                <Comment v-for="comment  in comments" :key="comment.id" :comment="comment"/>
-            </div>
+               <!--评论内容区域-->
+               <div
+                   style="border-radius: 20px;overflow: hidden"
+               >
+                   <Comment v-for="comment  in comments" :key="comment.id" :comment="comment"/>
+               </div>
 
-        </div>
+           </div>
 
-        <!--文章目录-->
-        <div v-show="!loading" class="rightSide">
-            <div class="directory  themeBg ">
-                <div class="themeText" style="margin-bottom: 10px;">文章目录</div>
-                <div class="directoryItem ">
-                    <!--<div-->
-                    <!--        v-for="(anchor,index) in titles"-->
-                    <!--        @click="handleAnchorClick(anchor)"-->
-                    <!--        :key="index"-->
-                    <!--        v-show="initSuccess"-->
-                    <!--        class="title"-->
-                    <!--&gt;-->
-                    <!--    <a-->
-                    <!--            style="cursor: pointer;-->
-                    <!--            color: var(&#45;&#45;text-color)"-->
-                    <!--            :style="{ paddingLeft: `${anchor.indent * 20}px` }"-->
-                    <!--            :id="anchor.id">{{ anchor.title }}</a>-->
-                    <!--</div>-->
-                    <ul class="title "
-                        v-show="initSuccess">
-                        <li v-for="(anchor,index) in titles"
-                            :key="index"
-                        >
-                            <!--<a :href="'#'+item.id">-->
-                            <!--    {{ item.title }}-->
-                            <!--</a>-->
-                            <a @click="handleAnchorClick(anchor)"
-                               :id=anchor.id
-                               :style="{paddingLeft:anchor.level * 10+'px'}"
-                               style="color: var(--text-color)"
-                            >
-                                {{ anchor.title }}
-                            </a>
-                        </li>
-                    </ul>
+           <!--文章目录-->
+           <div v-show="!loading" class="rightSide" >
+               <div class="directory  themeBg " ref="directory">
+                   <div class="themeText" style="margin-bottom: 10px;">文章目录</div>
+                   <div class="directoryItem ">
+                       <!--<div-->
+                       <!--        v-for="(anchor,index) in titles"-->
+                       <!--        @click="handleAnchorClick(anchor)"-->
+                       <!--        :key="index"-->
+                       <!--        v-show="initSuccess"-->
+                       <!--        class="title"-->
+                       <!--&gt;-->
+                       <!--    <a-->
+                       <!--            style="cursor: pointer;-->
+                       <!--            color: var(&#45;&#45;text-color)"-->
+                       <!--            :style="{ paddingLeft: `${anchor.indent * 20}px` }"-->
+                       <!--            :id="anchor.id">{{ anchor.title }}</a>-->
+                       <!--</div>-->
+                       <ul class="title "
+                           v-show="initSuccess">
+                           <li v-for="(anchor,index) in titles"
+                               :key="index"
+                           >
+                               <!--<a :href="'#'+item.id">-->
+                               <!--    {{ item.title }}-->
+                               <!--</a>-->
+                               <a @click="handleAnchorClick(anchor)"
+                                  :id=anchor.id
+                                  :style="{paddingLeft:anchor.level * 10+'px'}"
+                                  style="color: var(--text-color)"
+                               >
+                                   {{ anchor.title }}
+                               </a>
+                           </li>
+                       </ul>
 
-                    <!--<ul class="title ">-->
-                    <!--    <li v-for="(item,index) in titles"-->
-                    <!--        :key="index"-->
-                    <!--    >-->
-                    <!--        &lt;!&ndash;<a :href="'#'+item.id">&ndash;&gt;-->
-                    <!--        &lt;!&ndash;    {{ item.title }}&ndash;&gt;-->
-                    <!--        &lt;!&ndash;</a>&ndash;&gt;-->
-                    <!--        <a @click="changeHash(`#${item.id}`)"-->
-                    <!--           :id=item.id-->
-                    <!--           :style="{paddingLeft:item.level * 10+'px'}"-->
-                    <!--           style="color: var(&#45;&#45;text-color)"-->
-                    <!--        >-->
-                    <!--            {{ item.title }}-->
-                    <!--        </a>-->
-                    <!--    </li>-->
-                    <!--</ul>-->
-                </div>
-            </div>
-        </div>
-        <div v-show="loading" class="loading-wrapper">
-            <loading/>
-        </div>
-        <div class="alert alert-success alertBox hidden" ref="alertBox" role="alert">
-            复制成功
-        </div>
-    </div>
+                       <!--<ul class="title ">-->
+                       <!--    <li v-for="(item,index) in titles"-->
+                       <!--        :key="index"-->
+                       <!--    >-->
+                       <!--        &lt;!&ndash;<a :href="'#'+item.id">&ndash;&gt;-->
+                       <!--        &lt;!&ndash;    {{ item.title }}&ndash;&gt;-->
+                       <!--        &lt;!&ndash;</a>&ndash;&gt;-->
+                       <!--        <a @click="changeHash(`#${item.id}`)"-->
+                       <!--           :id=item.id-->
+                       <!--           :style="{paddingLeft:item.level * 10+'px'}"-->
+                       <!--           style="color: var(&#45;&#45;text-color)"-->
+                       <!--        >-->
+                       <!--            {{ item.title }}-->
+                       <!--        </a>-->
+                       <!--    </li>-->
+                       <!--</ul>-->
+                   </div>
+               </div>
+           </div>
+           <div v-show="loading" class="loading-wrapper">
+           </div>
+           <div class="alert alert-success alertBox hidden" ref="alertBox" role="alert">
+               复制成功
+           </div>
+       </div>
+       </div>
 </template>
 
 <script>
@@ -118,13 +115,14 @@ import WangEditor from "@/components/WangEditor/index.vue";
 import {selectList, submitComment} from "@/api/comment";
 import Comment from "@/components/Comment/Comment.vue";
 import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
+import BgBoard from "@/components/BgBoard.vue";
 // import VueMarkdownEditor, {xss} from '@kangc/v-md-editor';
 
 // 调用方法将 markdown 转换成 html 并使用 xss 过滤
 
 export default {
     name: "ArticleDetail",
-    components: {CommentInfoInput, Comment, Loading, WangEditor},
+    components: {BgBoard, CommentInfoInput, Comment, Loading, WangEditor},
     watch: {
         '$route.params.articleId': {
             handler() {
@@ -274,7 +272,7 @@ export default {
             return common.timestampToTime(time, 1)
         },
         async getArticleData() {
-            this.loading = true
+            this.$store.dispatch('openLoadingPage')
             const res = await selectById(this.$route.params.articleId)
             if (res.code === 20000) {
                 this.article = res.data
@@ -285,8 +283,8 @@ export default {
                 this.$store.state.currArticleId = res.data.id
                 this.form.articleId = res.data.id
                 this.getCommentList()
+                this.$store.dispatch('closeLoadingPage')
             }
-            this.loading = false
         },
 
 
@@ -422,6 +420,14 @@ export default {
                 }
 
 
+
+            }
+            // 判断距顶值是否大于banner，如果是则固定目录
+            const toTop=document.documentElement.scrollTop || document.body.scrollTop
+            if (toTop>350){
+                this.$refs.directory.classList.add('directoryFixed')
+            }else {
+                this.$refs.directory.classList.remove('directoryFixed')
             }
         },
         // 节流
@@ -458,12 +464,12 @@ export default {
             //     alert('评论内容和昵称不能为空哦~')
             //     return
             // }
-
+            this.$store.dispatch('openLoadingPage')
             submitComment(this.form).then(res => {
                 window.location.reload()
                 if (res === 20000) {
                     console.log('提交评论成功！')
-
+                    this.$store.dispatch('closeLoadingPage')
                 }
             }).catch(err => {
                 console.log('提交失败,错误信息为', err)
@@ -471,14 +477,12 @@ export default {
         },
         // 获取评论
         getCommentList() {
-            this.loading = true
             selectList(this.article.id, this.limit).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
                     this.comments = res.data.records
                     this.$store.state.total = res.data.total
                 }
-                this.loading = false
             })
         },
     }
@@ -487,9 +491,7 @@ export default {
 </script>
 
 <style scoped>
-.vuepress-markdown-body {
-    background: var(--bg1) !important;
-}
+
 
 .themeText {
     color: var(--text-color);
@@ -500,13 +502,15 @@ export default {
 }
 
 .articleDetailBox {
+    min-height: calc(100vh - 70px);
+}
+.articleLayOut{
     overflow: hidden;
     max-width: 1324px;
-    margin: 0 auto 30px;
+    margin: auto;
     overflow-wrap: break-word;
     min-height: calc(100vh - 100px);
     display: flex;
-    padding-top: 82px;
     position: relative;
     justify-content: center;
 }
@@ -518,23 +522,11 @@ export default {
     overflow: hidden;
 }
 
-.articleHeader {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 2px solid black;
-}
-
-.articleTitle {
-    font-size: 40px;
-    font-weight: bolder;
-}
 
 .titleBar {
     display: flex;
     justify-content: center;
+    z-index: 10;
 }
 
 .titleBar div {
@@ -545,6 +537,7 @@ export default {
 .articleContent {
     min-height: 300px;
     margin-bottom: 20px;
+    padding-top: 40px;
 }
 
 
@@ -554,8 +547,8 @@ export default {
 }
 
 .rightSide {
-    width: 250px;
-    /*background: red;*/
+    width: 223px;
+    position: relative;
 }
 
 .loading-wrapper {
@@ -564,12 +557,11 @@ export default {
 }
 
 .directory {
-    position: fixed;
-    width: 250px;
     border-radius: 20px;
     min-height: 400px;
     padding: 10px;
     color: #414141;
+    width: 223px;
 }
 
 
@@ -580,7 +572,6 @@ export default {
 
 .title a {
     display: block;
-    text-decoration: none;
     padding: 10px;
     color: #414141;
 }
@@ -589,6 +580,7 @@ export default {
     background: var(--bg4);
 }
 
+/*高亮时的样式*/
 .highlight {
     color: #ff1265 !important;
     font-weight: bolder;
@@ -625,5 +617,11 @@ export default {
 .hidden {
     opacity: 0;
     top: 0;
+}
+.directoryFixed{
+    position: fixed;
+    z-index: 99;
+    top: 20px;
+    width: 223px;
 }
 </style>

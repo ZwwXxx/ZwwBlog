@@ -23,11 +23,11 @@
                    <li>昵称: Zww</li>
                    <li>性别: 男</li>
                    <li>出生年份: 2004</li>
-                   <li>身份: 大三在读学生</li>
+                   <li>身份: 学生</li>
                    <li>地点: 广东省汕头市</li>
                    <li>邮箱: 1626016153@qq.com</li>
-                   <li>掌握: Java,Vue2,docker,AdobeEffect,AdobePremiere</li>
-                   <li>爱好: <a href="https://www.minecraft.net/zh-hans">Minecraft</a>,羽毛球</li>
+                   <li>掌握: Java,Vue2,AdobeEffect</li>
+                   <li>爱好: <a href="https://www.minecraft.net/zh-hans">Minecraft</a></li>
                </ul>
            </div>
         </MyCard>
@@ -46,7 +46,6 @@ export default {
 
 <style scoped>
 .aboutBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
 

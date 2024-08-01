@@ -1,44 +1,51 @@
 <template>
-    <div class="container" id="container">
-        <div class="loading-wrapper"  v-show="loading">
-            <loading/>
-        </div>
+    <div class="homeContainer">
         <!--            整体宽度，用来控制主体内容，外层设置父盒子便于flex布局居中-->
-        <div class="content" v-show="!loading">
+        <div class="content">
+            <!--&lt;!&ndash; 文章显示区域&ndash;&gt;-->
+            <!--<div class="lside">-->
+            <!--    <Article v-for="article in articleList"-->
+            <!--             :key="article.id"-->
+            <!--             :article="article"-->
+            <!--    ></Article>-->
+            <!--</div>-->
 
-            <!-- 文章显示区域-->
-            <div class="lside">
-                <Article v-for="article in articleList"
-                         :key="article.id"
-                         :article="article"
-                ></Article>
+
+            <!--&lt;!&ndash; 侧边栏介绍 &ndash;&gt;-->
+            <!--<div class="rside">-->
+            <!--    <Description/>-->
+            <!--</div>-->
+
+            <!--100%为了用户ctrl+滚轮缩小视口时适应，-->
+            <div style="width: 100%;">
+                <el-row :gutter="25">
+                    <el-col :lg="18" :md="24">
+                        <ArticleList/>
+                    </el-col>
+                    <el-col :lg="6" :md="24">
+                        <RightList/>
+                    </el-col>
+                </el-row>
+
             </div>
-
-
-            <!-- 侧边栏介绍 -->
-            <div class="rside">
-                <Description/>
-            </div>
-
-
         </div>
 
     </div>
 </template>
 
 <script>
-import Article from "@/views/Article/Article.vue";
-import Description from "@/components/SideBar/Description.vue";
-import Footer from "@/components/Footer/Footer.vue";
-import {selectList} from "@/api/article";
+import Article from "@/views/Article/ArticleCard.vue";
+import RightList from "@/views/Layout/RightList/RightList.vue";
+import Footer from "@/views/Layout/Footer/Footer.vue";
 import Loading from "@/components/Loading.vue";
+import ArticleList from "@/views/Article/ArticleList.vue";
+import DelayShow from "@/components/DelayShow.vue";
 
 export default {
     name: "Container",
-    components: {Loading, Footer, Description, Article},
+    components: {DelayShow, ArticleList, Loading, Footer, RightList, Article},
     data() {
         return {
-            loading: false,
             page: '1',
             limit: '99',
             searchObj: {},
@@ -51,65 +58,43 @@ export default {
     deactivated() {
         console.log('TestComponent deactivated')
     },
-    created() {
-        this.getArticleList()
-    },
-    methods: {
-        getArticleList() {
-            this.loading = true
-            selectList(this.page, this.limit, this.searchObj).then(res => {
-                // console.log(res)
-                if (res.code === 20000) {
-                    this.articleList = res.data.records
-                    this.$store.state.total=res.data.total
-                }
-                this.loading = false
-            })
-        }
-    }
 }
 </script>
 
 <style scoped>
 
 /* 内容区 */
-.container {
+.homeContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-top: 82px;
-    margin-top: -82px;
     border-radius: 20px;
-    /*max-width: 1024px;*/
+    padding: 0 30px;
 }
 
 .content {
-    margin-top: 20px;
+    margin: auto;
     display: flex;
-    width: 80%;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: -20px;
 }
 
 
 .lside {
-    flex: 70%;
+    flex: 75%;
     overflow-wrap: break-word;
 }
 
 
 .rside {
+    flex: 25%;
     overflow: hidden;
-    flex: 30%;
     height: 400px;
     background: var(--bg1);
-    margin-left: 20px;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.4);
-}
-.loading-wrapper{
-    width: 60%;
-    border-radius: 20px;
-    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
 </style>

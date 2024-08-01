@@ -37,5 +37,19 @@ export function getArchive() {
 }
 
 
+// 获取最新的文章
+
+export function getNewArticleList() {
+    return request({
+        url: `${module}/getNewArticleList`,
+        method: 'get',
+    })
+}
 
 
+export function getHotArticleList() {
+    return request({
+        url: `${module}/getHotArticleList`,
+        method: 'get',
+    })
+}

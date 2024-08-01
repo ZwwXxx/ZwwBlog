@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Banner from "@/components/Banner/Banner.vue";
+import Banner from "@/views/Layout/Banner/Banner.vue";
 import Comment from "@/components/Comment/Comment.vue";
 import CommentInfoInput from "@/components/Comment/CommentInfoInput.vue";
 import BgBoard from "@/components/BgBoard.vue";
@@ -32,18 +32,18 @@ export default {
             ]
         }
     },
-    created() {
+    mounted() {
         this.getAllMessages()
     },
     methods: {
-        async getAllMessages() {
-            this.loading = true
-            const res = await selectListByPage(1, 999)
-            // const res = await selectList()
-            if (res.code === 20000) {
-                this.messages = res.data.records
-            }
-            this.loading = false
+         getAllMessages() {
+            // this.$store.dispatch('openLoadingPage')
+             selectListByPage(1, 44).then(res=>{
+                 if (res.code === 20000) {
+                     this.messages = res.data.records
+                 }
+                 // this.$store.dispatch('closeLoadingPage')
+             })
         }
     }
 }
@@ -51,7 +51,6 @@ export default {
 
 <style scoped>
 .messageBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 
 }

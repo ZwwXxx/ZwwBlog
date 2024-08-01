@@ -7,7 +7,7 @@
         <!--侧边栏-->
 
         <!-- 内容区域 -->
-        <router-view></router-view>
+        <router-view ></router-view>
         <!-- 页脚区域 -->
         <Footer/>
         <!--提示框组件-->
@@ -19,9 +19,9 @@
 
 <script>
 import Container from "@/views/Home/Home.vue";
-import TopNav from "@/components/Header/TopNav.vue";
-import Banner from "@/components/Banner/Banner.vue";
-import Footer from "@/components/Footer/Footer.vue";
+import TopNav from "@/views/Layout/Header/TopNav.vue";
+import Banner from "@/views/Layout/Banner/Banner.vue";
+import Footer from "@/views/Layout/Footer/Footer.vue";
 import Loading from "@/components/Loading.vue";
 
 export default {
@@ -50,12 +50,7 @@ export default {
     /* 显示背景图的中心，靠下位置 */
     /*background-position: center bottom;*/
 
-    /*绿色渐变*/
-    background: linear-gradient(to right, #A0E4CB, #C4E3E5, #BDDFF0);
-    /*肉色渐变*/
-    /*background: linear-gradient(to right bottom, #c7be98, #ccb1bb, #9fbbbe, #96af7b);*/
-    background-size: 400% 400%;
-    animation: gradientAnimation 30s ease infinite;
+
 }
 @keyframes gradientAnimation {
     0% {

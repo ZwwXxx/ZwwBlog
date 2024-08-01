@@ -1,5 +1,5 @@
 <template>
-    <el-card class="box-card cardBox">
+    <el-card class="box-card cardBox" style="min-height: 100vh">
         <slot>
 
         </slot>

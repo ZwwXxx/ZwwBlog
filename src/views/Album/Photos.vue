@@ -54,7 +54,6 @@ export default {
 
 <style scoped>
 .photosBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
 }
 

@@ -103,12 +103,15 @@ export default {
         this.getFriendData()
     },
     methods: {
-        async getFriendData() {
-            this.loading = true
-            const res = await selectList(1, 999)
-            if (res.code === 20000) {
-                this.friends = res.data.records.filter(i => i.status === true)
-            }
+         getFriendData() {
+            // this.$store.state.loading = true
+             selectList(1, 999).then(res=>{
+                 if (res.code === 20000) {
+                     this.friends = res.data.records.filter(i => i.status === true)
+                     // this.$store.state.loading = false
+                 }
+             })
+
         },
         jumpToWeb(url) {
             window.open(url, "_blank");
@@ -146,7 +149,6 @@ export default {
 
 .friendsBox {
     min-height: calc(100vh - 70px);
-    padding-top: 60px;
 }
 
 

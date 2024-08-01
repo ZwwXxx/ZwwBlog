@@ -10,13 +10,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
         articleId: '',
-        theme: localStorage.getItem('theme')||'light',
-        currReply:null,
-        currReplyName:'',
-        currArticleId:null,
-        currRepyTalkId:null,
-        total:null,
-        loading:false,
+        theme: localStorage.getItem('theme') || 'light',
+        currReply: null,
+        currReplyName: '',
+        currArticleId: null,
+        currRepyTalkId: null,
+        total: null,
+        loading: false,
+        websiteInfo:null
     },
     mutations: {
         changeArticle(state, articleId) {
@@ -24,15 +25,31 @@ const store = new Vuex.Store({
         },
         changeTheme(state) {
             state.theme = state.theme === 'dark' ? 'light' : 'dark'
-            localStorage.setItem('theme',state.theme)
-            document.documentElement.dataset.theme=state.theme
+            localStorage.setItem('theme', state.theme)
+            document.documentElement.dataset.theme = state.theme
         },
-        changeCurrReply(state,id){
-            state.currReply=id
+        changeCurrReply(state, id) {
+            state.currReply = id
         },
-        changeCurrReplyTalkId(state,id){
-            state.currRepyTalkId=id
+        changeCurrReplyTalkId(state, id) {
+            state.currRepyTalkId = id
         },
+        updateLoadingStatus(state,status){
+            state.loading=status
+        },
+        setWebsiteInfo(state,value){
+            state.websiteInfo=value
+        }
+    },
+    actions: {
+        openLoadingPage(context) {
+            context.commit('updateLoadingStatus', true)
+        },
+        closeLoadingPage(context){
+         setTimeout(()=>{
+             context.commit('updateLoadingStatus', false)
+         },500)
+        }
     }
 })
 

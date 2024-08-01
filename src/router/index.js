@@ -60,6 +60,11 @@ const routes = [
                 path:'/about',
                 name:'About',
                 component:()=>import('@/views/About/About.vue')
+            },
+            {
+                path:'/history',
+                name:'History',
+                component:()=>import('@/views/History/History.vue')
             }
         ]
     },
@@ -72,4 +77,5 @@ const routes = [
 export default new VueRouter({
     routes,
     // scrollBehavior
+
 })

@@ -150,7 +150,6 @@ export default {
 <style scoped>
 
 .talkBox {
-    padding-top: 60px;
     min-height: calc(100vh - 70px);
     border-radius: 10px;
 }
