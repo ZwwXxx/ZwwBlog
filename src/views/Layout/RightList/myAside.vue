@@ -156,7 +156,7 @@ export default {
     height: 120px;
     border-radius: 50%;
     box-shadow: 0 0 10px black;
-    transition: all 0.4s;
+    transition: all 0.2s;
     animation: huxi_dark 4s ease-in-out infinite;
 }
 

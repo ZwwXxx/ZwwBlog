@@ -58,6 +58,7 @@
                                 }}
                             </a>
                             <a style="color: #00b4d8 ;cursor: pointer" v-if="subComment.replyname!==subComment.nickname">
+                                <!--当回复人为一级评论人的名字时不需要显示，自己脑部b站评论效果吧，或者调一下看下不解释了-->
                                 <span v-show="subComment.replyname!==comment.nickname">回复@{{ subComment.replyname }}</span>
                             </a>
                             <!--文章内容区域-->
