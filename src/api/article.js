@@ -4,20 +4,20 @@ import request from "@/utils/request";
 const module = '/article'
 
 // 获取角色分页列表
-export function selectList(page, limit, searchObj) {
+export function selectList(page, limit,  queryParams) {
     return request({
         url: `${module}/selectList/${[page]}/${limit}`,
         method: 'get',
-        // params: searchObj  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
-        params: searchObj // 使用@RequestBody接收
+        // params:  queryParams  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
+        params:  queryParams // 使用@RequestBody接收
     })
 }
-export function selectListByTag(page, limit, searchObj) {
+export function selectListByTag(page, limit,  queryParams) {
     return request({
         url: `${module}/selectListByTag/${[page]}/${limit}`,
         method: 'get',
-        // params: searchObj  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
-        params: searchObj // 使用@RequestBody接收
+        // params:  queryParams  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
+        params:  queryParams // 使用@RequestBody接收
     })
 }
 

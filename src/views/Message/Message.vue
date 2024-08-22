@@ -40,7 +40,7 @@ export default {
             // this.$store.dispatch('openLoadingPage')
              selectListByPage(1, 44).then(res=>{
                  if (res.code === 20000) {
-                     this.messages = res.data.records
+                     this.messages = res.rows
                  }
                  // this.$store.dispatch('closeLoadingPage')
              })

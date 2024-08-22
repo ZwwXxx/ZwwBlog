@@ -59,7 +59,7 @@ export default {
             }
             selectList(1, 99).then(res => {
                 if (res.code === 20000) {
-                    this.articleList = res.data.records
+                    this.articleList = res.rows
                     this.transfer()
                     localStorage.setItem("articles", JSON.stringify(this.titles))
                 }

@@ -130,14 +130,14 @@ export default {
         getTalkData() {
             selectList(1, 999).then(res => {
                 if (res.code === 20000) {
-                    this.talk = res.data.records
+                    this.talk = res.rows
                 }
             })
         },
         getTalkComment(id) {
             selectTalkCommentList(id, 999).then(res => {
                 if (res.code === 20000) {
-                    this.talkComment = res.data.records
+                    this.talkComment = res.rows
                 }
             })
         }

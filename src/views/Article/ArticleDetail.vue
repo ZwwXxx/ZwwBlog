@@ -477,11 +477,11 @@ export default {
         },
         // 获取评论
         getCommentList() {
-            selectList(this.article.id, this.limit).then(res => {
+            selectList(this.article.id, this.queryParams.pageSize).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
-                    this.comments = res.data.records
-                    this.$store.state.total = res.data.total
+                    this.comments = res.rows
+                    this.$store.state.total = res.total
                 }
             })
         },

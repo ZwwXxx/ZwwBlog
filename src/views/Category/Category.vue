@@ -42,7 +42,7 @@ export default {
             loading: false,
             page: '1',
             limit: '15',
-            searchObj: {},
+             queryParams: {},
             articleList: [],
             categoryList: ['Java', 'MySQL', 'Vue2'],
             colorArray: ['#cc0035', '#a2af00', '#0077d5', ' #00a81f', '#7500bb', '#f66500'],
@@ -76,12 +76,12 @@ export default {
                 return
             }
             this.$store.dispatch('openLoadingPage')
-            this.searchObj.categoryName = this.$route.params.cname
-            selectList(this.page, this.limit, this.searchObj).then(res => {
+            this. queryParams.categoryName = this.$route.params.cname
+            selectList(this.queryParams.pageNum, this.queryParams.pageSize, this. queryParams).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
-                    this.articleList = res.data.records
-                    this.$store.state.total = res.data.total
+                    this.articleList = res.rows
+                    this.$store.state.total = res.total
                 }
                 this.$store.dispatch('closeLoadingPage')
             })

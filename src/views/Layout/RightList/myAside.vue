@@ -129,7 +129,7 @@ export default {
         openNewTab(url) {
             window.open(url)
         },
-        addTotal() {
+       addTotal() {
             this.webTotals.forEach(item => {
                 item.total = this.totalInfo[item.totalKey]
             })

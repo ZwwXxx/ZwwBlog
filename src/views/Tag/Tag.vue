@@ -46,7 +46,7 @@ export default {
         return {
             page: '1',
             limit: '15',
-            searchObj: {},
+             queryParams: {},
             tagList: ['Java', 'MySQL'],
             articleList: [],
             colorArray: ['#cc0035', '#a2af00', '#0077d5', ' #00a81f', '#7500bb', '#f66500'],
@@ -55,7 +55,7 @@ export default {
     created() {
         selectList(1, 99).then(res => {
             if (res.code === 20000) {
-                this.tagList = res.data.records
+                this.tagList = res.rows
             }
 
         })
@@ -76,12 +76,12 @@ export default {
                 return
             }
             this.$store.dispatch('openLoadingPage')
-            this.searchObj.tags = this.$route.params.tname
-            selectListByTag(this.page, this.limit, this.searchObj).then(res => {
+            this. queryParams.tags = this.$route.params.tname
+            selectListByTag(this.queryParams.pageNum, this.queryParams.pageSize, this. queryParams).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
-                    this.articleList = res.data.records
-                    this.$store.state.total = res.data.total
+                    this.articleList = res.rows
+                    this.$store.state.total = res.total
                 }
                 this.$store.dispatch('closeLoadingPage')
             })

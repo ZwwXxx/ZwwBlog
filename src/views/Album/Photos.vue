@@ -42,7 +42,7 @@ export default {
         getPhotosData(categoryName) {
             selectList(1, 999, {category: categoryName}).then(res => {
                 if (res.code === 20000) {
-                    this.photos = res.data.records
+                    this.photos = res.rows
                     this.srcList = this.photos.map(item => item.url)
                     console.log(this.srcList)
                 }

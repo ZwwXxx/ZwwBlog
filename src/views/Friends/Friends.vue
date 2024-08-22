@@ -107,7 +107,7 @@ export default {
             // this.$store.state.loading = true
              selectList(1, 999).then(res=>{
                  if (res.code === 20000) {
-                     this.friends = res.data.records.filter(i => i.status === true)
+                     this.friends = res.rows.filter(i => i.status === true)
                      // this.$store.state.loading = false
                  }
              })

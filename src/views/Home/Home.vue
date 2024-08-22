@@ -48,7 +48,7 @@ export default {
         return {
             page: '1',
             limit: '99',
-            searchObj: {},
+             queryParams: {},
             articleList: []
         }
     },

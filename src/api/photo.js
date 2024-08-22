@@ -2,11 +2,11 @@ import request from "@/utils/request";
 // 定义全局模块
 const module = '/photo'
 
-export function selectList(page,limit,searchObj) {
+export function selectList(page,limit, queryParams) {
     return request({
         url:`${module}/selectList/${page}/${limit}`,
         method:'get',
-        params:searchObj
+        params: queryParams
     })
 }
 

@@ -36,7 +36,6 @@ export default {
     components: {ArticleCard, DelayShow},
     data() {
         return {
-            searchObj: {},
             articleList: [],
             articleTotal: 0,
             queryParams: {
@@ -54,20 +53,20 @@ export default {
     methods: {
         getList() {
             this.$store.dispatch('openLoadingPage')
-            selectList(this.queryParams.pageNum, this.queryParams.pageSize, this.searchObj).then(res => {
-                this.articleList = res.data.records
-                this.articleTotal = res.data.total
+            selectList(this.queryParams.pageNum, this.queryParams.pageSize, this. queryParams).then(res => {
+                this.articleList = res.rows
+                this.articleTotal = res.total
             })
             this.$store.dispatch('closeLoadingPage')
         },
         getArticleList() {
             this.$store.dispatch('openLoadingPage')
-            selectList(this.queryParams.pageNum, this.queryParams.pageSize, this.searchObj).then(res => {
+            selectList(this.queryParams.pageNum, this.queryParams.pageSize, this. queryParams).then(res => {
                 // console.log(res)
                 if (res.code === 20000) {
-                    this.articleList = res.data.records
-                    this.articleTotal = res.data.total
-                    this.$store.state.total = res.data.total
+                    this.articleList = res.rows
+                    this.articleTotal = res.total
+                    this.$store.state.total = res.total
                 }
                 this.$store.dispatch('closeLoadingPage')
             })

@@ -31,7 +31,7 @@ export default {
         return {
             page: '1',
             limit: '5',
-            searchObj: {},
+             queryParams: {},
             articleList: []
         }
     },
