@@ -33,7 +33,7 @@ export default {
     methods: {
         login() {
             login(this.loginForm).then(res => {
-                if (res.code === 20000) {
+                if (res.code === 200) {
                     const {data} = res
                     alert('登录成功')
                     localStorage.setItem('userToken', data.token)

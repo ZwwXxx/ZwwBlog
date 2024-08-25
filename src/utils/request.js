@@ -1,5 +1,6 @@
 //引入axios库
 import axios from "axios";
+import { tansParams } from '@/utils/ruoyi'
 
 // create an axios instance
 const service = axios.create({
@@ -16,6 +17,17 @@ service.interceptors.request.use(
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.setAuthorization(token)
+        }
+        // get请求映射params参数
+        if (config.method === 'get' && config.params) {
+            let url = config.url + '?' + tansParams(config.params)
+            url = url.slice(0, -1)
+            // 由于前面转object为url编码时后多了一个&，这里给他切掉，-1表示到数第一个的意思 0，-1切掉最后一个
+            // let url = 'https://example.com/api?page=1&limit=10&';
+            // url = url.slice(0, -1); // 结果是 'https://example.com/api?page=1&limit=10'
+            config.params = {}
+            config.url = url
+            console.log(config.url)
         }
         return config
     },

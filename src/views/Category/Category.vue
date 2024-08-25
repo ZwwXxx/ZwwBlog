@@ -79,7 +79,7 @@ export default {
             this. queryParams.categoryName = this.$route.params.cname
             selectList(this.queryParams.pageNum, this.queryParams.pageSize, this. queryParams).then(res => {
                 // console.log(res)
-                if (res.code === 20000) {
+                if (res.code === 200) {
                     this.articleList = res.rows
                     this.$store.state.total = res.total
                 }

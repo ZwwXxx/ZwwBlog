@@ -112,7 +112,7 @@ export default {
         // 之前没有存数据的情况下
         if (this.$store.state.websiteInfo === null || !this.$store.state.websiteInfo) {
             getWebsiteInfo().then(res => {
-                if (res.code === 20000) {
+                if (res.code === 200) {
                     console.log('空!')
                     this.$store.commit('setWebsiteInfo', res.data)
                     this.addTotal()

@@ -44,7 +44,7 @@ const routes = [
             {
                 path:'/album',
                 name:'Album',
-                component:()=>import('@/views/Album/Album.vue')
+                component:()=>import('@/views/Album/index.vue')
             },
             {
                 path:'/photos/:id',

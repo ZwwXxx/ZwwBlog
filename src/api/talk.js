@@ -1,11 +1,12 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/talk'
+const module='/front/talk'
 
-export function selectList(talkId,limit) {
+export function selectList(queryParams) {
     return request({
-        url:`${module}/selectList/${talkId}/${limit}`,
-        method:'get'
+        url:`${module}/list`,
+        method:'get',
+        params:queryParams
     })
 }
 export function commentLike(commentId) {

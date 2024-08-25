@@ -21,7 +21,7 @@ module.exports = defineConfig({
         proxy: {
             '/dev-api': {
                 // target: 'http://118.31.228.113:5730/',
-                target: 'http://localhost:8088/',
+                target: 'http://localhost:7777/',
                 ws: true,
                 changeOrigin: true, // 允许跨域
                 pathRewrite: {

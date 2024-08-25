@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/comment'
+const module='/front/comment'
 export function submitComment(form) {
     return request({
         url:`${module}/add`,
@@ -8,9 +8,9 @@ export function submitComment(form) {
         data:form
     })
 }
-export function selectList(articleId,limit) {
+export function selectList(id) {
     return request({
-        url:`${module}/selectList/${articleId}/${limit}`,
+        url:`${module}/selectList/${id}`,
         method:'get'
     })
 }

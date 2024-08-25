@@ -1,11 +1,11 @@
 <template>
-    <div class="messageBox">
-        <BgBoard title="留言" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
-        <MyCard>
-            <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.currReply"/>
-            <Comment v-for="(message,index) in messages" :comment="message" :key="index"/>
-        </MyCard>
-    </div>
+  <div class="messageBox">
+    <BgBoard title="留言" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
+    <MyCard>
+      <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.currReply"/>
+      <Comment v-for="(message,index) in messages" :comment="message" :key="index"/>
+    </MyCard>
+  </div>
 </template>
 
 <script>
@@ -18,40 +18,44 @@ import {selectListByPage} from "@/api/message";
 import MyCard from "@/components/MyCard.vue";
 
 export default {
-    name: "Message",
-    components: {MyCard, Loading, BgBoard, CommentInfoInput, Comment, Banner},
-    data() {
-        return {
-            messages: [
-                // { nickname: '',
-                //     email: '',
-                //     url: '',
-                //     commentContent: '',
-                //     articleId: null,
-                //     pid: null,}
-            ]
-        }
-    },
-    mounted() {
-        this.getAllMessages()
-    },
-    methods: {
-         getAllMessages() {
-            // this.$store.dispatch('openLoadingPage')
-             selectListByPage(1, 44).then(res=>{
-                 if (res.code === 20000) {
-                     this.messages = res.rows
-                 }
-                 // this.$store.dispatch('closeLoadingPage')
-             })
-        }
+  name: "Message",
+  components: {MyCard, Loading, BgBoard, CommentInfoInput, Comment, Banner},
+  data() {
+    return {
+      queryParams: {
+        pageNum: 1,
+        pageSize: 99,
+      },
+      messages: [
+        // { nickname: '',
+        //     email: '',
+        //     url: '',
+        //     commentContent: '',
+        //     articleId: null,
+        //     pid: null,}
+      ]
     }
+  },
+  mounted() {
+    this.getAllMessages()
+  },
+  methods: {
+    getAllMessages() {
+      // this.$store.dispatch('openLoadingPage')
+      selectListByPage(this.queryParams).then(res => {
+        if (res.code === 200) {
+          this.messages = res.rows
+        }
+        // this.$store.dispatch('closeLoadingPage')
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
 .messageBox {
-    min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
 
 }
 

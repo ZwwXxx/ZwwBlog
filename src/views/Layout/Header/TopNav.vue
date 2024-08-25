@@ -74,7 +74,7 @@ export default {
     top: 0;
     transition: all 0.3s;
     width: 100%;
-    z-index: 8889;
+    z-index: 1010;
     background-color: rgba(0, 0, 0, 0.2); /* 调整透明度和颜色 */
     /*backdrop-filter: blur(10px);*/
     /*opacity: 0.7;*/

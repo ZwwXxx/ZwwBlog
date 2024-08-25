@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/talkComment'
+const module='/front/talkComment'
 export function submitComment(form) {
     return request({
         url:`${module}/add`,
@@ -8,10 +8,12 @@ export function submitComment(form) {
         data:form
     })
 }
-export function selectList(talkId,limit) {
+export function selectList(queryParams) {
     return request({
-        url:`${module}/selectList/${talkId}/${limit}`,
-        method:'get'
+        url:`${module}/list/`,
+        method:'get',
+        params:queryParams
+
     })
 }
 export function commentLike(commentId) {

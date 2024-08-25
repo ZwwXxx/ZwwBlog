@@ -55,10 +55,10 @@ export default {
     transform: translateX(20px) translateY(20px);
 }
 .fade-enter-active{
-    transition: opacity 1.2s;
+    transition: opacity 2.4s;
 }
 .fade-leave-active{
-    transition: opacity 2s;
+    transition: opacity 1s;
 }
 
 

@@ -36,7 +36,7 @@ export default {
     },
     created() {
         getArchive().then(res => {
-            if (res.code === 20000) {
+            if (res.code === 200) {
                 this.archive = res.data
             }
         })

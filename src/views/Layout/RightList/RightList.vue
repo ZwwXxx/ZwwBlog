@@ -85,7 +85,7 @@ export default {
     position: fixed;
     right: -7px;
     bottom: 0px;
-    z-index: 8888;
+    z-index: 1009;
     width: 70px;
     height: 900px;
     transition: all 0.5s  ease-in-out;

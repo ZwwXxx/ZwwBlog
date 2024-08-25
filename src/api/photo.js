@@ -1,10 +1,10 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/photo'
+const module='/front/photo'
 
-export function selectList(page,limit, queryParams) {
+export function selectList(queryParams) {
     return request({
-        url:`${module}/selectList/${page}/${limit}`,
+        url:`${module}/list`,
         method:'get',
         params: queryParams
     })

@@ -1,20 +1,20 @@
 import request from "@/utils/request";
 
 // 定义全局模块
-const module = '/article'
+const module='/front/article'
 
 // 获取角色分页列表
-export function selectList(page, limit,  queryParams) {
+export function selectList(queryParams) {
     return request({
-        url: `${module}/selectList/${[page]}/${limit}`,
+        url: `${module}/list`,
         method: 'get',
         // params:  queryParams  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
         params:  queryParams // 使用@RequestBody接收
     })
 }
-export function selectListByTag(page, limit,  queryParams) {
+export function selectListByTag(queryParams) {
     return request({
-        url: `${module}/selectListByTag/${[page]}/${limit}`,
+        url: `${module}/list`,
         method: 'get',
         // params:  queryParams  //使用  @RequestParam("name") String name,接收或者是@PathVariable("前端键值") Integer后端形参名
         params:  queryParams // 使用@RequestBody接收

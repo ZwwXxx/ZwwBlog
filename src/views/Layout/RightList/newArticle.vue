@@ -28,14 +28,14 @@ export default {
     methods: {
         getHotArticleList() {
             getHotArticleList().then((response) => {
-                if (response.code === 20000) {
+                if (response.code === 200) {
                     this.hotList = response.data;
                 }
             });
         },
         getNewArticleList() {
             getNewArticleList().then((response) => {
-                if (response.code === 20000) {
+                if (response.code === 200) {
                     this.newList = response.data;
                 }
             });

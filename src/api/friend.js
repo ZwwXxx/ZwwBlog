@@ -1,22 +1,21 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/friend'
+const module = '/front/friend'
+
 export function submit(form) {
     return request({
-        url:`${module}/add`,
-        method:'post',
-        data:form
+        url: `${module}/add`,
+        method: 'post',
+        data: form
     })
 }
-export function selectList(page,limit) {
+
+export function selectList(queryParams) {
     return request({
-        url:`${module}/selectList/${page}/${limit}`,
-        method:'get'
+        url: `${module}/list`,
+        method: 'get',
+        params: queryParams
     })
 }
-export function commentLike(commentId) {
-    return request({
-        url:`${module}/commentLike/${commentId}/`,
-        method:'get'
-    })
-}
+
+

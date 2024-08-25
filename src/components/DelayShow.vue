@@ -24,7 +24,7 @@ export default {
 
 .animate__zoomIn {
     animation-name: zoomIn;
-    animation-duration: 3s;
+    animation-duration: 6s;
     animation-delay: 200ms;
     animation-iteration-count: 1;
 }

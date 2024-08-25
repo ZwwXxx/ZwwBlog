@@ -1,6 +1,6 @@
 import request from "@/utils/request";
 // 定义全局模块
-const module = '/message'
+const module='/front/message'
 export function submitMessage(form) {
     return request({
         url:`${module}/add`,
@@ -14,9 +14,10 @@ export function selectList() {
         method:'get'
     })
 }
-export function selectListByPage(page,limit) {
+export function selectListByPage(queryParams) {
     return request({
-        url:`${module}/selectList/${[page]}/${limit}`,
-        method:'get'
+        url:`${module}/list`,
+        method:'get',
+        params:queryParams
     })
 }

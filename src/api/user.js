@@ -1,7 +1,7 @@
 import request from "@/utils/request";
 
 
-const module = '/user'
+const module='/front/user'
 
 // 获取角色分页列表
 export function login(data) {

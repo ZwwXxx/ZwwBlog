@@ -274,7 +274,7 @@ export default {
         async getArticleData() {
             this.$store.dispatch('openLoadingPage')
             const res = await selectById(this.$route.params.articleId)
-            if (res.code === 20000) {
+            if (res.code === 200) {
                 this.article = res.data
                 // this.article.content = xss.process(VueMarkdownEditor.themeConfig.markdownParser.render(this.article.content));
                 this.$nextTick(() => {
@@ -467,7 +467,7 @@ export default {
             this.$store.dispatch('openLoadingPage')
             submitComment(this.form).then(res => {
                 window.location.reload()
-                if (res === 20000) {
+                if (res === 200) {
                     console.log('提交评论成功！')
                     this.$store.dispatch('closeLoadingPage')
                 }
@@ -477,9 +477,9 @@ export default {
         },
         // 获取评论
         getCommentList() {
-            selectList(this.article.id, this.queryParams.pageSize).then(res => {
+            selectList(this.article.id).then(res => {
                 // console.log(res)
-                if (res.code === 20000) {
+                if (res.code === 200) {
                     this.comments = res.rows
                     this.$store.state.total = res.total
                 }

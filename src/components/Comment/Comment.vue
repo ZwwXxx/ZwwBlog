@@ -119,7 +119,7 @@ export default {
     methods: {
         async handleLike(cid) {
             const res = await commentLike(cid)
-            if (res.code === 20000) {
+            if (res.code === 200) {
                 window.location.reload()
             }
         },
