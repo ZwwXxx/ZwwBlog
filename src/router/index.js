@@ -1,4 +1,5 @@
 import VueRouter from 'vue-router'
+import store from '@/store'  // 直接在顶部导入store
 // 书写路由表
 const routes = [
     {
@@ -74,8 +75,23 @@ const routes = [
     }
 ]
 
-export default new VueRouter({
+
+const router=new  VueRouter({
     routes,
     // scrollBehavior
 
 })
+
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('userToken')
+
+  // 需要登录的页面
+  if (to.meta.requireAuth && !token) {
+    // 未登录，显示登录框
+    store.dispatch('auth/showLoginModal')
+    next('/')
+  } else {
+    next()
+  }
+})
+export default router

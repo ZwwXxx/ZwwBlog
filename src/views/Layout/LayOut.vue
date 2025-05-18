@@ -2,6 +2,8 @@
   <div class="bgImg">
     <!--登录弹框-->
     <LoginModal/>
+    <!-- 个人中心弹框 -->
+    <UserCenterModal/>
     <!-- 顶部导航区域 -->
     <TopNav/>
     <!-- banner区域 -->
@@ -32,10 +34,19 @@ import Footer from "@/views/Layout/Footer/Footer.vue";
 import Loading from "@/components/Loading.vue";
 import {getWebsiteInfo} from "@/api/website";
 import LoginModal from "@/components/common/LoginModal.vue";
+import UserCenterModal from "@/components/common/UserCenterModal.vue";
 
 export default {
   name: 'LayOut',
-  components: {LoginModal, Loading, Container, TopNav, Banner, Footer},
+  components: {
+    LoginModal, 
+    UserCenterModal,
+    Loading, 
+    Container, 
+    TopNav, 
+    Banner, 
+    Footer
+  },
   computed: {
     websiteInfo() {
       return this.$store.state.websiteInfo

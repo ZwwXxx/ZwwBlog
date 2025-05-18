@@ -13,48 +13,55 @@
         placeholder="搜索文章标题"
         style="width: 120px"
         @select="handleSelect"
-
     />
-    <div>
-      <!--主题切换按钮 -->
-      <!--<div class="changeButton" @click="changeTheme">-->
-      <!--    <transition name="theme-transition">-->
-      <!--    <span :class="{'sun':this.$store.state.theme==='light','moon':this.$store.state.theme==='dark'}">-->
-      <!--    </span>-->
-      <!--    </transition>-->
-      <!--</div>-->
-    </div>
+    
+  
+    
+    
+    <!-- 个人中心弹框组件 -->
   </div>
 </template>
 
 <script>
 import Search from "@/views/Layout/Header/Search.vue";
 import {selectList} from "@/api/article";
+import { mapActions } from 'vuex';
+import UserCenterModal from "@/components/common/UserCenterModal.vue";
 
 export default {
   name: "RightNav",
-  components: {Search},
+  components: {
+    Search,
+    UserCenterModal
+  },
   data() {
     return {
       queryParams: {
         pageNum: 1,
         pageSize: 99,
-        // title: undefined,
-        // status: undefined,
-        // orderByColumn: 'create_time',
-        // isAsc: 'desc',
       },
       articleList: [],
       keyWord: '',
       titlesTest: [{value: "1"}],
       titles: JSON.parse(localStorage.getItem("articles")) || [],
-
+      userAvatar: require('@/assets/images/default-avatar.png') // 默认头像
+    }
+  },
+  computed: {
+    isLoggedIn() {
+      return localStorage.getItem('userToken') !== null;
     }
   },
   created() {
-    this.getArticleList()
+    this.getArticleList();
+    // 如果已登录，获取用户信息（包括头像）
+    if (this.isLoggedIn) {
+      this.getUserInfo();
+    }
   },
   methods: {
+    ...mapActions('auth', ['showLoginModal']),
+    ...mapActions('user', ['showUserCenter']),
     transfer() {
       this.titles = this.articleList.map(item => {
         return {
@@ -91,21 +98,38 @@ export default {
       // 调用 callback 返回建议列表的数据
       cb(results)
     },
-
-    // createStateFilter(queryString) {
-    //     return (state) => {
-    //         return (state.value.toLowerCase().indexOf(queryString.toLowerCase()) > 0);
-    //     };
-    // },
     handleSelect(item) {
       if (item.id != this.$route.params.articleId) {
         this.$router.push(`/articleDetail/${item.id}`)
       }
-      // window.location.reload()
     },
-    changeTheme() {
-      this.$store.commit('app/CHANGE_THEME')
+    // 新增方法
+    showLogin() {
+      this.showLoginModal();
     },
+    handleCommand(command) {
+      if (command === 'userCenter') {
+        // 显示个人中心弹框，而不是路由跳转
+        this.showUserCenter();
+      } else if (command === 'logout') {
+        this.logout();
+      }
+    },
+    logout() {
+      localStorage.removeItem('userToken');
+      this.$message.success('退出登录成功');
+      location.reload(); // 刷新页面以更新登录状态
+    },
+    getUserInfo() {
+      // 调用获取用户信息的API
+      import('@/api/user').then(module => {
+        module.getUserInfo().then(res => {
+          if (res.code === 200 && res.data.avatar) {
+            this.userAvatar = res.data.avatar;
+          }
+        });
+      });
+    }
   }
 }
 </script>
@@ -160,5 +184,14 @@ export default {
   transition: opacity 0.5s, transform 0.5s;
 }
 
+/* 添加用户头像样式 */
+.user-avatar {
+  margin-left: 15px;
+  cursor: pointer;
+}
 
+.el-dropdown-link {
+  display: flex;
+  align-items: center;
+}
 </style>
