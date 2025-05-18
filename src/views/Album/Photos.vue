@@ -12,7 +12,6 @@
                 :preview-src-list="srcList"
                 style="width: 100%;height: 100%;"
                 lazy
-                z-index="9999"
             ></el-image>
           </div>
         </div>
@@ -64,12 +63,43 @@ export default {
 
 .cardBody {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 10px;
-
+  //grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   div {
     /*width: 200px;*/
     height: 140px;
+  }
+}
+/**
+min-width为临界点，比这个宽度大的就显示对应的布局
+必须小的在上面，因为后面覆盖前面，如果小屏不符合在以大屏为主展示
+如果大的在上面，会出现min大于330也就是超小屏，当当前视口为1080时，小屏也符合条件，覆盖大屏@medie监视样式
+也就是说，他既然不大于350.那后面大屏的宽度范围也不满足，因此不会冲突覆盖
+ */
+
+
+/**
+大于150一列展示，后面以此类推
+ */
+
+@media (min-width: 0px) {
+  .cardBody {
+    grid-template-columns: repeat(1,1fr);
+  }
+}
+@media (min-width: 400px) {
+  .cardBody {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media (min-width: 550px) {
+  .cardBody {
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+@media (min-width: 750px) {
+  .cardBody {
+    grid-template-columns: repeat(4,1fr);
   }
 }
 

@@ -19,16 +19,15 @@ module.exports = defineConfig({
         // port: port,
         open: true,
         proxy: {
-            '/dev-api': {
-                // target: 'http://118.31.228.113:5730/',
-                target: 'http://localhost:7777/',
+            [process.env.VUE_APP_BASE_API]: {
+                target: process.env.VUE_APP_SERVER_PATH,
+                // websocket支持
                 ws: true,
-                changeOrigin: true, // 允许跨域
+                changeOrigin: true,
                 pathRewrite: {
-                    '^/dev-api': ''
-                    // 到时候由这个代理服务器发出去的路径前缀/dev-api全部替换为http://localhost:8080/而不是http://localhost:8080/dev-api
+                    ['^' + process.env.VUE_APP_BASE_API]: ''
                 }
             }
-        }
+        },
     }
 })

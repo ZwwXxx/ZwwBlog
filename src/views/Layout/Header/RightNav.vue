@@ -9,11 +9,11 @@
     <!--夜间模式区域-->
     <el-autocomplete
         v-model="keyWord"
-        class="inline-input"
         :fetch-suggestions="querySearch"
         placeholder="搜索文章标题"
-        style="margin-right: 10px"
+        style="width: 120px"
         @select="handleSelect"
+
     />
     <div>
       <!--主题切换按钮 -->
@@ -65,7 +65,7 @@ export default {
     },
     getArticleList() {
       // 已经存在本地存储则返回
-      if (localStorage.getItem("articles")) {
+      if (localStorage.getItem("articles")!== null) {
         return
       }
       // 获取文章列表给搜索栏跳转用的
@@ -74,6 +74,7 @@ export default {
           console.log(res.rows)
           this.articleList = res.rows
           this.transfer()
+          localStorage.removeItem("articles")
           localStorage.setItem("articles", JSON.stringify(this.titles))
         }
       })
@@ -103,7 +104,7 @@ export default {
       // window.location.reload()
     },
     changeTheme() {
-      this.$store.commit('changeTheme')
+      this.$store.commit('app/CHANGE_THEME')
     },
   }
 }
@@ -112,8 +113,6 @@ export default {
 <style scoped>
 /* 将菜单项和搜索款夜间模式头像至右 */
 .right-navbox {
-  display: flex;
-  align-items: center;
 }
 
 .NavAvatar img {

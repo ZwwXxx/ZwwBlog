@@ -44,7 +44,7 @@ export default {
                 {publishType: 'a-link', content: 'https://www.zww0891.fun',linkUrl:'https://www.zww0891.fun'},
                 {publishType: 'p-line', content: '--当前版本--'},
                 {publishType: 'p-line', content: 'V-1.0.0'},
-                {publishType: 'a-link', content: '开源地址,点击这里',linkUrl:'https://github.com/ZwwXxx/ZwwBlog'},
+                {publishType: 'a-link', content: '开源地址,点击这里',linkUrl:''},
             ]
         }
     },

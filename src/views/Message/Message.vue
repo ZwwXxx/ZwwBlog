@@ -1,6 +1,6 @@
 <template>
   <div class="messageBox">
-    <BgBoard title="留言" content="心情不好?那就来这里吐槽一下,保证你会觉得好多了!"/>
+    <BgBoard title="留言" content="期待你的留言"/>
     <MyCard>
       <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.currReply"/>
       <Comment v-for="(message,index) in messages" :comment="message" :key="index"/>

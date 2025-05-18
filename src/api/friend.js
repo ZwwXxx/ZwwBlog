@@ -4,7 +4,7 @@ const module = '/front/friend'
 
 export function submit(form) {
     return request({
-        url: `${module}/add`,
+        url: `${module}`,
         method: 'post',
         data: form
     })

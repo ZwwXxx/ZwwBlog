@@ -9,11 +9,11 @@
         <h1>{{ year }}</h1>
         <div v-for="(history,month) in monthHistory" :key="month">
           <h2>{{ month }}</h2>
-          <el-timeline :reverse="true">
+          <el-timeline :reverse="false">
             <el-timeline-item
                 v-for="(item,index) in history"
                 :key="index"
-                :timestamp="getTime(item.time)">
+                :timestamp="item.time">
               <span class="title"> {{ item.title }}</span>
             </el-timeline-item>
           </el-timeline>
@@ -37,9 +37,10 @@ export default {
   components: {MyCard, BgBoard},
   data() {
     return {
+      //懒得做数据库了，直接硬编码！
       historys: [
-        {time: '2024-8-1', title: '样式1.0完毕，接下来开始整合redis,文件上传等其他功能'},
         {time: '2024-8-25', title: '后台整合若依框架，文件上传,redis,security,代码微重构，采用mybatis而非mybatisPlus'},
+        {time: '2024-8-01', title: '样式1.0完毕，接下来开始整合redis,文件上传等其他功能'},
         {time: '2024-7-28', title: '个人博客1.0正式完结,接下来开始做样式了'},
         {time: '2024-7-27', title: '新增相册页面'},
         {time: '2024-7-27', title: '归档功能完毕'},
@@ -69,7 +70,7 @@ export default {
       // accumulator为累加盒子，history为每一次遍历的对象，如果符合则push到累加盒子里
       this.historys = this.historys.reduce((accumulator, history) => {
         // 将其划分为年月日结构并且map转为number类型并解构赋值给year month... 2023=>year
-        const [year, month, day] = history.time.split('-')
+        const [year, month] = history.time.split('-')
         // 转为字符串XX月后续展示用到
         const yearStr = `${year}年`
         const monthStr = `${month}月`
@@ -81,7 +82,7 @@ export default {
           accumulator[yearStr][monthStr] = []
         }
         // 如果都存在年和月就根据年月push到对应的数组里面
-        accumulator[yearStr][monthStr].push({time: day, title: history.title})
+        accumulator[yearStr][monthStr].push(history)
         return accumulator;
       }, {})
       console.log(this.historys)
@@ -90,6 +91,10 @@ export default {
       const parts = time.split('-');
       return parts[1]
     },
+    // getTime(timeStr) {
+    //   const date = new Date(timeStr);
+    //   return date.getTime();
+    // }
     getTime(time) {
       return common.timestampToTime(time, 0)
     },

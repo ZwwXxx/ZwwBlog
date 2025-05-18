@@ -54,7 +54,7 @@ export default {
         pid: null,
       },
       loading: false,
-      placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~(必填)'
+      placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~'
     }
   },
   methods: {
@@ -138,15 +138,28 @@ export default {
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
 }
-
+.commentorInfo div{
+  margin-bottom: 20px;
+}
 .commentorInfo {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  gap: 10px;
   outline: none;
   border: none;
 }
+@media (min-width: 768px) {
+  .commentorInfo{
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+@media (max-width: 767px) {
+  .commentorInfo {
+    grid-template-columns: 1fr;
+  }
+}
 
 .commentorInfo input {
+  width: 100%;
   border-radius: 5px;
   padding: 10px 10px 10px 30px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);

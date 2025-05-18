@@ -5,7 +5,8 @@ import { tansParams } from '@/utils/ruoyi'
 // create an axios instance
 const service = axios.create({
     // 设置请求基地址，到时候发送请求会在前面统一加上该字符串
-    baseURL: '/dev-api', // url = base url + request url
+    // baseURL: '/dev-api', // url = base url + request url
+    baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
     // withCredentials: true, // send cookies when cross-domain requests
     // 设置请求超时时间
     timeout: 5000 // request timeout

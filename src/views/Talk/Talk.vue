@@ -1,6 +1,6 @@
 <template>
   <div class="talkBox">
-    <BgBoard title="说说" content="记录生活中的点点滴滴,分享碎片化的思考。"/>
+    <BgBoard title="说说" content="记录生活中的点点滴滴"/>
     <MyCard>
       <div class="talkBody" v-for="(item ,index) in talk" :key="index">
         <div class="leftSide"><img class="avatar"
@@ -112,7 +112,7 @@ export default {
         return this.$store.state.currRepyTalkId
       },
       set(talkId) {
-        this.$store.commit('changeCurrReplyTalkId', talkId)
+        this.$store.commit('comment/CHANGE_CURR_REPLY_TALK_ID', talkId)
       }
     },
     currReply: {
@@ -120,7 +120,7 @@ export default {
         return this.$store.state.currReply
       },
       set(commentId) {
-        this.$store.commit('changeCurrReply', commentId)
+        this.$store.commit('comment/CHANGE_CURR_REPLY', commentId)
       }
     },
   },
@@ -131,7 +131,9 @@ export default {
   methods: {
     talkImgListToArray() {
       this.talk.map(item => {
+        if (item.talkImgList){
         item.talkImgList = item.talkImgList.split(',')
+        }
       })
     },
     getTime(toNow) {
@@ -203,8 +205,8 @@ export default {
 .bottom {
   margin: 10px 0;
   display: grid;
-  grid-template-columns: repeat(3, 120px);
-  grid-auto-rows: 120px;
+  grid-template-columns: repeat(3, 100px);
+  grid-auto-rows: 100px;
   grid-gap: 1px;
 }
 
@@ -255,7 +257,7 @@ export default {
 
 .toolbar {
   display: flex;
-  width: 300px;
+  width: 230px;
   justify-content: space-between;
 }
 

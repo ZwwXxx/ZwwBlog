@@ -4,13 +4,16 @@
     <!--内容-->
     <el-row :gutter="25">
       <!--大屏占四分之一，小占1/2，极小就占全部-->
-      <el-col v-for="article in articleList" :lg="8" :sm="12" :xs="24" :key="article.id">
+      <el-col v-for="article in articleList"
+              style="transition: all 0.5s ease-in-out"
+              :lg="8" :sm="12" :xs="24"
+              :key="article.id">
         <ArticleCard :article="article"/>
       </el-col>
     </el-row>
 
     <!--分页插件-->
-    <el-row style="margin-top: 20px">
+    <el-row style="margin: 20px 0">
       <div class="article-page">
         <el-pagination
             background

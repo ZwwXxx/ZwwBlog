@@ -1,6 +1,7 @@
 <template>
   <!--组件的结构-->
-    <div class=" animate__zoomIn">
+    <div
+        class=" animate__zoomIn">
         <slot></slot>
     </div>
 </template>

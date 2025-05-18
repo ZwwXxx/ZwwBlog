@@ -1,22 +1,24 @@
 <template>
-    <el-card class="box-card cardBox" style="min-height: 100vh">
-        <slot>
+<el-row style="padding: 0 20px">
+  <el-card class="box-card cardBox">
+    <slot>
 
-        </slot>
-    </el-card>
+    </slot>
+  </el-card>
+</el-row>
 </template>
 
 <script>
 export default {
-    name: "MyCard"
+  name: "MyCard"
 }
 </script>
 
 <style scoped>
 .cardBox {
-    width: 70%;
-    margin: auto;
-    padding: 0 !important;
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0  !important;
 
 }
 

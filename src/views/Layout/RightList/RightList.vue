@@ -52,8 +52,6 @@ export default {
     },
     methods:{
         handleWindowScroll() {
-            var viewportWidth = window.innerHeight;
-            console.log("Viewport width: " + viewportWidth + "px");
             if (window.scrollY > document.documentElement.clientHeight / 2) {
                 this.showScroll=true
             }

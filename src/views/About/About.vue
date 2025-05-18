@@ -9,7 +9,6 @@
                    <li>前端脚手架: <a href="https://cli.vuejs.org/zh/">Vue-Cli</a></li>
                    <li>UI组件:
                        <a href="">Element UI</a> +
-                       <a href="https://v5.bootcss.com/docs/getting-started/introduction/">Bootstrap5</a>
                    </li>
                    <li>后端框架: <a href="https://spring.io/">Spring</a></li>
                    <li>后端脚手架: <a href="https://spring.io/guides/gs/spring-boot">SpringBoot</a></li>

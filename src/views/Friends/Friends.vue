@@ -51,7 +51,7 @@
             <div class="mask"></div>
             <div class="friendAvatar">
               <img :src="friend.avatar" alt="" v-if="friend.avatar">
-              <img src="@/assets/logo.png" alt="" v-if="!friend.avatar">
+              <img src="../../assets/logo.png" alt="" v-if="!friend.avatar">
             </div>
             <div class="friendName">
               {{ friend.name }}
@@ -194,7 +194,7 @@ export default {
 }
 
 .friendBox {
-  min-height: 500px;
+  //min-height: 500px;
 }
 
 .friendList {
