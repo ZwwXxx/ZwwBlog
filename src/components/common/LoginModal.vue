@@ -18,7 +18,7 @@
         <span style="font-weight: bolder; font-size: 24px">{{ isLogin ? '登录' : '注册' }}</span>
       </template>
       <!-- 切换提示文本 -->
-      <div style="margin: 0 0 40px 0">
+      <div style="margin: 0 0 40px 0">  
         <span v-if="isLogin">
           还没有账号？
           <a href="#" @click.prevent="toggleTab" style="color: #00a2cc">去注册</a>
@@ -31,10 +31,10 @@
       <!-- 统一表单容器 -->
       <div class="simple-login-form">
         <!-- 用户名（始终显示） -->
-        <el-input placeholder="用户名" v-model="formData.username" style="margin-bottom: 15px"></el-input>
+        <el-input placeholder="用户名" v-model="formData.userName" style="margin-bottom: 15px"></el-input>
 
         <!-- 昵称（仅注册显示） -->
-        <el-input v-if="!isLogin" placeholder="昵称" v-model="formData.nickname" style="margin-bottom: 15px"></el-input>
+        <el-input v-if="!isLogin" placeholder="昵称" v-model="formData.nickName" style="margin-bottom: 15px"></el-input>
 
         <!-- 密码（始终显示） -->
         <el-input placeholder="密码" type="password" v-model="formData.password" style="margin-bottom: 15px"></el-input>
@@ -53,7 +53,8 @@
   </div>
 </template>
 <script>
-  import { mapState, mapActions } from 'vuex'
+  import { login, register } from '@/api/auth'
+import { mapState, mapActions } from 'vuex'
 
   export default {
     data() {
@@ -61,7 +62,7 @@
         mousedownCls: [],
         mouseupCls: [],
         formData: {
-          username: '',
+          userName: '',
           password: '',
           nickName: '',
           confirmPassword: ''
@@ -85,21 +86,21 @@
       ...mapActions('auth', ['showLoginModal', 'hideLoginModal']),
       dialogMousedown(e) {
         this.mousedownCls = [...e.target.classList]
-        console.log('鼠标按下的元素类名:', this.mousedownCls)
       },
       dialogMouseup(e) {
         this.mouseupCls = [...e.target.classList]
-        console.log('鼠标抬起的元素类名:', this.mouseupCls)
       },
       beforeDialogClose(done) {
         const isWrapper =
           this.mousedownCls.includes('el-dialog__wrapper') && this.mouseupCls.includes('el-dialog__wrapper')
         const isClose = this.mousedownCls.includes('el-dialog__close') && this.mouseupCls.includes('el-dialog__close')
         if (isWrapper || isClose) {
+          this.formData={}
           done()
         }
       },
       toggleTab() {
+        this.formData={}
         this.isLogin = !this.isLogin
       },
       handleClose() {
@@ -114,17 +115,31 @@
       },
 
       handleLogin() {
-        console.log('登录数据:', {
-          username: this.formData.username,
-          password: this.formData.password
-        })
+        login(this.formData).then(res => {
+            if (res.code === 200) {
+            this.$message.success("登录成功！")
+             this.formData={}
+             this.visible = false
+            } else {
+             this.$message.error("登录失败，用户名或密码错误！")
+          }
+       })
       },
       handleRegister() {
         if (this.formData.password !== this.formData.confirmPassword) {
           this.$message.error('两次密码输入不一致')
           return
         }
-        console.log('注册数据:', this.formData)
+        register(this.formData).then(res => {
+          if (res.code === 200) {
+            this.$message.success("注册成功！")
+            this.visible = false
+            this.formData={}
+          }
+          else {
+             this.$message.error("注册失败，该账号已被注册")
+          }
+        })
       }
     }
   }

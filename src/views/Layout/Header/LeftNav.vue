@@ -1,7 +1,7 @@
 <template>
   <div class="left-nav">
     <!-- logo区域 -->
-    <div class="nav-title" >Zww🍊</div>
+    <div class="nav-title" @click="goHome" style="cursor: pointer;">Zww🍊</div>
 
   </div>
 
@@ -11,6 +11,15 @@
 
 export default {
   name: "Leftnav",
+  methods: {
+    goHome() {
+      if (this.$route.path==='/home') {
+        return
+      }
+   
+      this.$router.push('/')
+    }
+  }
 }
 </script>
 
@@ -26,7 +35,7 @@ export default {
   font-size: 25px;
   font-weight: 800;
   white-space: nowrap;
-  //margin-right: 50px;
+  margin-right: 50px;
 }
 
 
