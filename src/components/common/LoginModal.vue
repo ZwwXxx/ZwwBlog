@@ -8,14 +8,11 @@
   <div
     v-if="visible"
     style="width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 9999"
-    @mousedown.stop
+    @mousedown.stop="dialogMousedown"
+    @mouseup.stop="dialogMouseup"
   >
     <!-- Element UI 的对话框 -->
-    <el-dialog 
-      :visible.sync="visible" 
-      width="400px" 
-      :before-close="beforeDialogClose"
-      :close-on-click-modal="true">
+    <el-dialog :visible.sync="visible" width="400px" :before-close="beforeDialogClose" >
       <!-- 自定义加粗标题 -->
       <template slot="title">
         <span style="font-weight: bolder; font-size: 24px">{{ isLogin ? '登录' : '注册' }}</span>
@@ -88,12 +85,11 @@
       ...mapActions('auth', ['showLoginModal', 'hideLoginModal']),
       dialogMousedown(e) {
         this.mousedownCls = [...e.target.classList]
-        console.log('鼠标按下',this.mousedownCls);
-        
+        console.log('鼠标按下的元素类名:', this.mousedownCls)
       },
       dialogMouseup(e) {
         this.mouseupCls = [...e.target.classList]
-          console.log('鼠标抬起',this.mouseupCls);
+        console.log('鼠标抬起的元素类名:', this.mouseupCls)
       },
       beforeDialogClose(done) {
         const isWrapper =

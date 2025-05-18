@@ -86,7 +86,7 @@ export default {
           this.articleList = res.rows
           this.$store.state.total = res.total
         }
-        this.$store.dispatch('closeLoadingPage')
+        this.$store.dispatch('app/closeLoadingPage')
       })
     }
   }

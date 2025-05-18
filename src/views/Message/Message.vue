@@ -46,7 +46,7 @@ export default {
         if (res.code === 200) {
           this.messages = res.rows
         }
-        // this.$store.dispatch('closeLoadingPage')
+        // this.$store.dispatch('app/closeLoadingPage')
       })
     }
   }

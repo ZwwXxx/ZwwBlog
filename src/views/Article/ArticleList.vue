@@ -55,22 +55,22 @@ export default {
   },
   methods: {
     getList() {
-      this.$store.dispatch('openLoadingPage')
+      this.$store.dispatch('app/openLoading')
       selectList(this.queryParams).then(res => {
         this.articleList = res.rows
         this.articleTotal = res.total
       })
-      this.$store.dispatch('closeLoadingPage')
+      this.$store.dispatch('app/closeLoading')
     },
     getArticleList() {
-      this.$store.dispatch('openLoadingPage')
+      this.$store.dispatch('app/openLoading')
       selectList(this.queryParams).then(res => {
         if (res.code === 200) {
           this.articleList = res.rows
           this.articleTotal = res.total
           this.$store.state.total = res.total
         }
-        this.$store.dispatch('closeLoadingPage')
+        this.$store.dispatch('app/closeLoading')
       })
     },
 
