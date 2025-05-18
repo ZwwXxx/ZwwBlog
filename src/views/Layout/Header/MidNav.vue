@@ -31,8 +31,10 @@
 
 import router from "@/router";
 import { mapState, mapActions } from 'vuex'
+import LoginModal from "@/components/common/LoginModal.vue";
 export default {
   name: "Midnav",
+  components: {LoginModal},
 
   data() {
     return {
@@ -107,7 +109,7 @@ export default {
           name: '登录',
           // icon: 'fa fa-info',
           //不做跳转页面了，而是做一个弹框，方便一点
-          // url: '/login',
+          // url: '/auth',
           svgUrl: require("@/assets/svg/登录2.svg"),
           isModal: true
         },

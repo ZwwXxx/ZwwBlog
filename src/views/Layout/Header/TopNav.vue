@@ -27,7 +27,6 @@
     </el-row>
 
     <!--登录弹框组件-->
-    <LoginModal />
   </div>
 </template>
 

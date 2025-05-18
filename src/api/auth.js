@@ -4,7 +4,7 @@ const module = '/front/auth'
 
 export function login(form) {
     return request({
-        url: `${module}`,
+        url: `${module}/login`,
         method: 'post',
         data: form
     })

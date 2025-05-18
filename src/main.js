@@ -49,6 +49,8 @@ Vue.use(VMdPreview)
 // 引入字体
 import './assets/fonts/font-ZhuziAWan.css'
 
+// 引入全局css文件
+import './assets/global.css'
 // 引入element
 import { Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete, Row, Col, Pagination, Drawer, Avatar, Menu, Submenu, MenuItem, Dialog, Button, Alert } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
