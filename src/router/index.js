@@ -83,7 +83,7 @@ const router=new  VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('userToken')
+  const token = localStorage.getItem('token')
 
   // 需要登录的页面
   if (to.meta.requireAuth && !token) {

@@ -108,7 +108,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 28px;
+  padding: 5px 28px;
   box-sizing: border-box;
   position: fixed;
   top: 0;

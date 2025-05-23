@@ -45,8 +45,8 @@ export default {
                 if (res.code === 200) {
                     const {data} = res
                     this.$message.success('登录成功');
-                    localStorage.setItem('userToken', data.token)
-                    Cookies.set('userToken',data.token)
+                    localStorage.setItem('token', data.token)
+                    Cookies.set('token',data.token)
                     this.dialogVisible = false;
                     this.$router.push('/home')
                 }

@@ -12,6 +12,9 @@ import 'font-awesome/css/font-awesome.min.css'
 
 import store from '@/store'
 
+// 引入stagewise工具栏（仅开发环境）
+import { initToolbar } from '@stagewise/toolbar'
+
 Vue.config.productionTip = false
 
 // // 引入MD渲染插件
@@ -52,8 +55,12 @@ import './assets/fonts/font-ZhuziAWan.css'
 // 引入全局css文件
 import './assets/global.css'
 // 引入element
-import { Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete, Row, Col, Pagination, Drawer, Avatar, Menu, Submenu, MenuItem, Dialog, Button, Alert } from 'element-ui'
+import {Dropdown,DropdownItem, DropdownMenu,Form, Message, FormItem, Input, Card, Image, Timeline, TimelineItem, Autocomplete, Row, Col, Pagination, Drawer, Avatar, Menu, Submenu, MenuItem, Dialog, Button, Alert } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(Dropdown)
+Vue.use(DropdownMenu)
+Vue.use(DropdownItem)
+Vue.use(Dropdown)
 Vue.use(Pagination)
 Vue.use(Row)
 Vue.use(Col)
@@ -80,3 +87,11 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount('#app')
+
+// 仅在开发环境中初始化stagewise工具栏
+if (process.env.NODE_ENV === 'development') {
+  const stagewiseConfig = {
+    plugins: []
+  };
+  initToolbar(stagewiseConfig);
+}

@@ -1,11 +1,11 @@
 <template>
   <div class="mid-nav">
     <!-- 菜单区域 -->
-    <div class="menu" v-for="(m, index) in menu" :key="index">
+    <div class="menu" v-for="(m, index) in displayMenu" :key="index">
       <div
         @click="handleMenuClick(m)"
         :class="{ articleHover: articleHoverIndex === index }"
-        style="font-weight: bold"
+        style="font-weight: bold; display: flex"
         class="tada_parent hvr-underline-from-left singleLinkForStyle"
       >
         <img v-if="m.svgUrl" :src="m.svgUrl" alt="" class="menu-svg-img tada" />
@@ -18,6 +18,11 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <!-- 您的SVG路径 -->
+          <path
+            d="M434.666714 187.469324C297.43919 367.276666 160.191798 547.082201 22.964274 726.889542c-48.854624 64.034092-3.20604 156.297589 77.324255 156.297589h823.421135c80.530295 0 126.198748-92.263496 77.324256-156.297589C863.806396 547.082201 726.559004 367.276666 589.333286 187.469324c-38.933061-51.01125-115.733512-51.01125-154.666572 0z"
+            :fill="scrollTopStyle.color"
+            p-id="2312"
+          ></path>
         </svg>
       </div>
 
@@ -31,6 +36,21 @@
           </div>
         </div>
       </div>
+    </div>
+    <!-- 用户头像区域 -->
+    <div v-if="isLogin && userInfo" style="margin: 0px 10px">
+      <el-dropdown @command="handleCommand" :show-timeout="1">
+        <span class="el-dropdown-link">
+          <el-avatar
+            :src="userInfo.avatar || 'https://cdn.zww0891.fun/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240701112347.jpg'"
+            style="cursor: pointer"
+          ></el-avatar>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="userCenter">个人中心</el-dropdown-item>
+          <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
@@ -116,7 +136,8 @@
             //不做跳转页面了，而是做一个弹框，方便一点
             // url: '/auth',
             svgUrl: require('@/assets/svg/登录2.svg'),
-            isModal: true
+            isModal: true,
+            whenLoginWillHide: true
           }
         ],
         category: [
@@ -133,17 +154,70 @@
         articleHoverIndex: 1,
         scrollTopStyle: {
           color: 'white'
-        }
+        },
+        defaultAvatar: require('@/assets/images/default-avatar.png') // 默认头像，请确保路径正确
       }
     },
+
     mounted() {
       window.addEventListener('scroll', this.scrolling)
     },
     computed: {
-      ...mapState('auth', ['loginModalVisible'])
+      ...mapState('auth', ['loginModalVisible']),
+      ...mapState('user', ['userInfo', 'token']),
+      isLogin() {
+        return !!this.token
+      },
+      displayMenu() {
+        // 如果已登录，过滤掉需要隐藏的菜单项
+        if (this.isLogin) {
+          return this.menu.filter((item) => !item.whenLoginWillHide)
+        }
+        return this.menu
+      }
     },
     methods: {
       ...mapActions('auth', ['showLoginModal', 'hideLoginModal']),
+      ...mapActions('user', ['showUserCenter']),
+      handleCommand(command) {
+        if (command === 'userCenter') {
+          // 显示个人中心弹框，而不是路由跳转
+          this.showUserCenter()
+        } else if (command === 'logout') {
+          this.logout()
+        }
+      },
+      logout() {
+        // 调用后端退出登录接口
+        import('@/api/auth').then(module => {
+          module.logout().then(res => {
+            if (res.code === 200) {
+              // 调用Vuex中的logout action清除用户状态
+              this.$store.dispatch('user/logout')
+              
+              // 清除本地存储中的token和用户信息
+              localStorage.removeItem('token')
+              localStorage.removeItem('userInfo')
+              
+              // 弹出确认对话框询问是否重新登录
+              this.$confirm('退出成功，是否立即重新登录？', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'info'
+              }).then(() => {
+                // 用户点击确定，显示登录弹窗
+                this.showLoginModal()
+              }).catch(() => {
+                // 用户点击取消，不做任何操作
+              })
+            } else {
+              this.$message.error(res.msg || '退出失败，请重试')
+            }
+          }).catch(() => {
+            this.$message.error('退出失败，请重试')
+          })
+        })
+      },
       router() {
         return router
       },
@@ -171,6 +245,10 @@
           return
         }
         this.$router.push(`${url}`)
+      },
+      handleUserAvatarClick() {
+        // 显示用户中心弹窗
+        this.showUserCenter()
       }
     }
   }
@@ -254,6 +332,8 @@
     width: 15px !important;
     margin-left: 5px;
     transform: rotate(180deg);
+    position: relative;
+    top: 3px;
   }
 
   /*下拉箭头悬浮时旋转*/
@@ -313,5 +393,24 @@
     width: 21px;
     height: 21px;
   }
-</style>
 
+  /* 用户头像样式 */
+  .user-avatar-menu {
+    margin-left: 10px;
+  }
+
+  .user-avatar-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid #00b4d8;
+  }
+</style>

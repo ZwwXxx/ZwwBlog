@@ -14,7 +14,7 @@ export function getUserInfo() {
 export function updateUserInfo(data) {
     return request({
         url: `${module}/update`,
-        method: 'put',
+        method: 'post',
         data
     })
 }

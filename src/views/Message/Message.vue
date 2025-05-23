@@ -2,7 +2,7 @@
   <div class="messageBox">
     <BgBoard title="留言" content="期待你的留言"/>
     <MyCard>
-      <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.currReply"/>
+      <CommentInfoInput :custom-placeholder="'留个言再走呗~'" v-show="!this.$store.state.comment.currReply"/>
       <Comment v-for="(message,index) in messages" :comment="message" :key="index"/>
     </MyCard>
   </div>

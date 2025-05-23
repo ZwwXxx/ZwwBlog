@@ -26,7 +26,7 @@
             <!--  👍???-->
             <!--</div>-->
             <div style="cursor: pointer; color: #49b1f5" @click="showReplyView(comment.id, comment.nickname)">
-              {{ this.$store.state.currReply === comment.id ? '取消回复' : '回复' }}
+              {{ this.$store.state.comment.currReply === comment.id ? '取消回复' : '回复' }}
             </div>
           </el-col>
         </el-row>
@@ -37,7 +37,7 @@
     </el-row>
 
     <!--回复框-->
-    <el-row v-show="this.$store.state.currReply === comment.id">
+    <el-row v-show="this.$store.state.comment.currReply === comment.id">
       <div class="replyBox">
         <!--<div class="replyAvatar"><img src="../assets/logo.png" alt=""></div>-->
         <div class="replyMain">
@@ -123,7 +123,7 @@
     computed: {
       currReply: {
         get() {
-          return this.$store.state.currReply
+          return this.$store.state.comment.currReply
         },
         set(commentId) {
           this.$store.commit('comment/CHANGE_CURR_REPLY', commentId)
@@ -141,12 +141,12 @@
         return common.timestampToTime(time, 1)
       },
       showReplyView(commentId, nickName) {
-        if (commentId === this.$store.state.currReply) {
-          this.$store.state.currReply = null
+        if (commentId === this.$store.state.comment.currReply) {
+          this.$store.state.comment.currReply = null
           return
         }
         this.currReply = commentId
-        this.$store.state.currReplyName = nickName
+        this.$store.state.comment.currReplyName = nickName
       }
     }
   }

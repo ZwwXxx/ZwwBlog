@@ -35,6 +35,7 @@ import Loading from "@/components/Loading.vue";
 import {getWebsiteInfo} from "@/api/website";
 import LoginModal from "@/components/common/LoginModal.vue";
 import UserCenterModal from "@/components/common/UserCenterModal.vue";
+import { mapActions } from 'vuex';
 
 export default {
   name: 'LayOut',
@@ -81,6 +82,19 @@ export default {
       ]
     }
   },
+  created() {
+    // 如果有token，自动获取用户信息
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.getUserInfo().catch(err => {
+        console.log('获取用户信息失败', err);
+        // 如果token无效，清除本地存储的token
+        if (err.code === 500 && err.msg && err.msg.includes('token无效')) {
+          localStorage.removeItem('token');
+        }
+      });
+    }
+  },
   mounted() {
     // 之前没有存数据的情况下
     if (this.websiteInfo === null || !this.websiteInfo) {
@@ -99,6 +113,7 @@ export default {
 
   },
   methods: {
+    ...mapActions('user', ['getUserInfo']),
     addTotal() {
       this.webTotals.forEach(item => {
         item.total = this.rawTotal[item.totalKey]

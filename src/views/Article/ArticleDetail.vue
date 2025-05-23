@@ -4,7 +4,7 @@
       <div class="titleBar">
         <div><i class="fa fa-clock-o" /> {{ getTime(article.createTime) }}</div>
         <div><i class="fa fa-eye" /> {{ article.views }}</div>
-        <div><i class="fa fa-comment" /> {{ this.$store.state.total }}</div>
+        <div><i class="fa fa-comment" /> {{ this.$store.state.comment.total }}</div>
         <div><i class="fa fa-folder" /> {{ article.categoryName }}</div>
         <div><i class="fa fa-tags" /> {{ article.tags }}</div>
       </div>
@@ -25,8 +25,8 @@
 
           <!--评论输入区域-->
           <div class="articleComment themeBg">
-            <div class="commentTitle themeText">评论({{ this.$store.state.total }})</div>
-            <CommentInfoInput :article="article" v-show="!this.$store.state.currReply" />
+            <div class="commentTitle themeText">评论({{ this.$store.state.comment.total }})</div>
+            <CommentInfoInput :article="article" v-show="!this.$store.state.comment.currReply" />
           </div>
 
           <div class="nullComment themeBg themeText" v-show="!this.comments.length">暂无评论~不如您来开个头？</div>
@@ -266,7 +266,7 @@ export default {
         this.$nextTick(() => {
           this.getTitles()
         })
-        this.$store.state.currArticleId = res.data.id
+        this.$store.commit('article/SET_CURRENT_ARTICLE', res.data.id)
         this.form.articleId = res.data.id
         this.getCommentList()
         this.$store.dispatch('closeLoadingPage')
@@ -462,7 +462,7 @@ export default {
         // console.log(res)
         if (res.code === 200) {
           this.comments = res.rows
-          this.$store.state.total = res.total
+          this.$store.state.comment.total = res.total
         }
       })
     },

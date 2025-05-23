@@ -2,7 +2,7 @@
   <div style="max-width: 100%">
     <div class="commentTextarea">
                     <textarea class="commentContent"
-                              :placeholder="this.$store.state.currReply?`回复@${this.$store.state.currReplyName}`:this.placeholder"
+                              :placeholder="this.$store.state.comment.currReply?`回复@${this.$store.state.comment.currReplyName}`:this.placeholder"
                               v-model="form.commentContent"/>
     </div>
     <div class="commentorInfo">
@@ -37,6 +37,7 @@ import {submitComment} from "@/api/comment";
 import {submitMessage} from "@/api/message";
 import {submitComment as submitTalkComment} from "@/api/talkComment";
 import Loading from "@/components/Loading.vue";
+import { mapState } from 'vuex';
 
 export default {
   name: "CommentInfoInput",
@@ -57,7 +58,30 @@ export default {
       placeholder: this.customPlaceholder ? this.customPlaceholder : '你的每一条评论我都会look的~~'
     }
   },
+  computed: {
+    ...mapState('user', ['userInfo', 'token']),
+    isLoggedIn() {
+      return !!this.token;
+    }
+  },
+  created() {
+    this.initUserInfo();
+  },
   methods: {
+    initUserInfo() {
+      // 如果用户已登录，从本地存储获取用户信息
+      if (this.isLoggedIn) {
+        try {
+          const localUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+          if (localUserInfo) {
+            this.form.nickname = localUserInfo.nickName || localUserInfo.userName || '';
+            this.form.email = localUserInfo.email || '';
+          }
+        } catch (e) {
+          console.error('解析本地用户信息失败', e);
+        }
+      }
+    },
     // 发起请求后刷新评论区域,回填数据
     commentRefrash() {
       this.$store.state.componentKey = this.$store.state.componentKey + 1
@@ -68,15 +92,31 @@ export default {
         alert('输入内容不能为空')
         return;
       }
-      if (this.form.nickname.trim() === '') {
-        this.form.nickname = '匿名用户'
+      
+      // 如果用户已登录但没有填写昵称，使用本地存储的信息
+      if (this.isLoggedIn && this.form.nickname.trim() === '') {
+        try {
+          const localUserInfo = JSON.parse(localStorage.getItem('userInfo'));
+          if (localUserInfo) {
+            this.form.nickname = localUserInfo.nickName || localUserInfo.userName || '匿名用户';
+            this.form.email = localUserInfo.email || this.form.email;
+          } else {
+            this.form.nickname = '匿名用户';
+          }
+        } catch (e) {
+          console.error('解析本地用户信息失败', e);
+          this.form.nickname = '匿名用户';
+        }
+      } else if (this.form.nickname.trim() === '') {
+        this.form.nickname = '匿名用户';
       }
+      
       // 说说使用该组件
       if (this.$route.path === '/talk') {
         // 由于请求是异步的，articleId如果放在data里会出现赋予null的情况
-        this.form.talkId = this.$store.state.currRepyTalkId
-        this.form.pid = this.$store.state.currReply
-        this.form.replyname = this.$store.state.currReplyName
+        this.form.talkId = this.$store.state.comment.currReplyTalkId
+        this.form.pid = this.$store.state.comment.currReply
+        this.form.replyname = this.$store.state.comment.currReplyName
 
         submitTalkComment(this.form).then(res => {
           window.location.reload()
@@ -87,13 +127,14 @@ export default {
         }).catch(err => {
           console.log('提交失败,错误信息为', err)
         })
+        return; // 添加return防止继续执行
       }
 
       // 留言版使用该组件
       if (this.$route.path === '/message') {
         console.log('留言评论')
-        this.form.pid = this.$store.state.currReply
-        this.form.replyname = this.$store.state.currReplyName
+        this.form.pid = this.$store.state.comment.currReply
+        this.form.replyname = this.$store.state.comment.currReplyName
         submitMessage(this.form).then(res => {
           window.location.reload()
           if (res.code === 200) {
@@ -103,15 +144,13 @@ export default {
         }).catch(err => {
           console.log('提交失败,错误信息为', err)
         })
-
+        return; // 添加return防止继续执行
       }
 
-
-
       // 文章评论使用该组件
-      this.form.articleId = this.$store.state.currArticleId
-      this.form.pid = this.$store.state.currReply
-      this.form.replyname = this.$store.state.currReplyName
+      this.form.articleId = this.$store.state.article.currArticleId
+      this.form.pid = this.$store.state.comment.currReply
+      this.form.replyname = this.$store.state.comment.currReplyName
       submitComment(this.form).then(res => {
         window.location.reload()
         if (res.code === 200) {

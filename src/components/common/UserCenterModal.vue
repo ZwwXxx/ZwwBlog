@@ -72,6 +72,7 @@
 <script>
 import { getUserInfo, updateUserInfo, changePassword, uploadAvatar } from '@/api/user';
 import { mapState, mapActions } from 'vuex';
+import { MessageBox } from 'element-ui';
 
 export default {
   name: 'UserCenterModal',
@@ -186,16 +187,22 @@ export default {
         if (valid) {
           changePassword(this.passwordForm).then(res => {
             if (res.code === 200) {
-              this.$message.success('密码修改成功，请重新登录');
               this.passwordForm = {
                 oldPassword: '',
                 newPassword: '',
                 confirmPassword: ''
               };
               // 清除登录状态，关闭弹窗
-              localStorage.removeItem('userToken');
+              localStorage.removeItem('token');
               this.visible = false;
-              location.reload(); // 刷新页面更新登录状态
+              
+              // 使用 MessageBox.alert 而不是 this.$alert
+              MessageBox.alert('修改密码成功，请重新登录', '提示', {
+                confirmButtonText: '确定',
+                callback: () => {
+                  location.reload(); // 点击确定按钮后刷新页面
+                }
+              });
             } else {
               this.$message.error(res.msg || '密码修改失败');
             }
@@ -245,6 +252,11 @@ export default {
 .user-info h3 {
   margin-top: 0;
   margin-bottom: 10px;
+  color: #409EFF;
+  font-size: 20px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  letter-spacing: 1px;
 }
 
 .user-info p {

@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     isLoggedIn() {
-      return localStorage.getItem('userToken') !== null;
+      return localStorage.getItem('token') !== null;
     }
   },
   created() {
@@ -107,19 +107,7 @@ export default {
     showLogin() {
       this.showLoginModal();
     },
-    handleCommand(command) {
-      if (command === 'userCenter') {
-        // 显示个人中心弹框，而不是路由跳转
-        this.showUserCenter();
-      } else if (command === 'logout') {
-        this.logout();
-      }
-    },
-    logout() {
-      localStorage.removeItem('userToken');
-      this.$message.success('退出登录成功');
-      location.reload(); // 刷新页面以更新登录状态
-    },
+    
     getUserInfo() {
       // 调用获取用户信息的API
       import('@/api/user').then(module => {

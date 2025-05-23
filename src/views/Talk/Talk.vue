@@ -8,8 +8,7 @@
                                    alt=""></div>
         <div class="rightSide">
           <div class="name">Zww</div>
-          <div class="content" v-html="item.talkContent" v-if="item.talkContent">{{ item.talkContent }}
-          </div>
+          <div class="content" v-html="item.talkContent"></div>
           <!--如果大于1张图片则微信朋友圈展示法-->
           <div
               v-if="Array.isArray(item.talkImgList) && item.talkImgList.length > 1"
@@ -109,7 +108,7 @@ export default {
   computed: {
     currRepyTalkId: {
       get() {
-        return this.$store.state.currRepyTalkId
+        return this.$store.state.comment.currReplyTalkId
       },
       set(talkId) {
         this.$store.commit('comment/CHANGE_CURR_REPLY_TALK_ID', talkId)
@@ -117,7 +116,7 @@ export default {
     },
     currReply: {
       get() {
-        return this.$store.state.currReply
+        return this.$store.state.comment.currReply
       },
       set(commentId) {
         this.$store.commit('comment/CHANGE_CURR_REPLY', commentId)
@@ -162,7 +161,7 @@ export default {
     showInput(id) {
       this.talkComment = []
       if (id === this.currRepyTalkId) {
-        this.$store.state.currRepyTalkId = null
+        this.currRepyTalkId = null
         return
       }
       this.currRepyTalkId = id
@@ -252,7 +251,7 @@ export default {
 }
 
 .content {
-  //margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 }
 
 .toolbar {

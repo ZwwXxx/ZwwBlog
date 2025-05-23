@@ -15,9 +15,9 @@ const service = axios.create({
 service.interceptors.request.use(
     // 判断本地存储是否有token
     config => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         if (token) {
-            config.headers.setAuthorization(token)
+          config.headers.setAuthorization('Bearer ' + token)
         }
         // get请求映射params参数
         if (config.method === 'get' && config.params) {
